@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on ben-dale.co.uk</title>
+    <link>https://www.example.com/posts/</link>
+    <description>Recent content in Posts on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Twitter -- &lt;a href=&#39;https://twitter.com/mrbenjamind&#39;&gt;mrbenjamind&lt;/a&gt;&lt;br/&gt;Keybase -- &lt;a href=&#39;https://keybase.io/mrbenjamind&#39;&gt;mrbenjamind&lt;/a&gt;&lt;br/&gt;GitHub -- &lt;a href=&#39;https://github.com/ben-dale&#39;&gt;ben-dale&lt;/a&gt;&lt;br/&gt;ben@ben-dale.co.uk</copyright>
+    <lastBuildDate>Sun, 15 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.example.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Text Clock</title>
+      <link>https://www.example.com/posts/text-clock/</link>
+      <pubDate>Sun, 15 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.example.com/posts/text-clock/</guid>
+      <description>A few years ago I came across a clock design that I hadn&#39;t seen before:
+I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording and &amp;ldquo;light up&amp;rdquo; the words to represent the current time. After an hour or so I had something I was happy with:
+You can see the live version here and the code here.</description>
+    </item>
+    
+  </channel>
+</rss>
