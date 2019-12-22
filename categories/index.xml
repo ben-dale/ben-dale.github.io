@@ -2,13 +2,12 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on ben-dale.co.uk</title>
-    <link>https://www.ben-dale.co.uk/categories/</link>
+    <link>/categories/</link>
     <description>Recent content in Categories on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Twitter -- &lt;a href=&#39;https://twitter.com/mrbenjamind&#39;&gt;mrbenjamind&lt;/a&gt;&lt;br/&gt;Keybase -- &lt;a href=&#39;https://keybase.io/mrbenjamind&#39;&gt;mrbenjamind&lt;/a&gt;&lt;br/&gt;GitHub -- &lt;a href=&#39;https://github.com/ben-dale&#39;&gt;ben-dale&lt;/a&gt;&lt;br/&gt;ben@ben-dale.co.uk</copyright>
     
-	<atom:link href="https://www.ben-dale.co.uk/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>

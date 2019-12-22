@@ -2,34 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ben-dale.co.uk</title>
-    <link>https://www.ben-dale.co.uk/</link>
+    <link>/</link>
     <description>Recent content on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>Twitter -- &lt;a href=&#39;https://twitter.com/mrbenjamind&#39;&gt;mrbenjamind&lt;/a&gt;&lt;br/&gt;Keybase -- &lt;a href=&#39;https://keybase.io/mrbenjamind&#39;&gt;mrbenjamind&lt;/a&gt;&lt;br/&gt;GitHub -- &lt;a href=&#39;https://github.com/ben-dale&#39;&gt;ben-dale&lt;/a&gt;&lt;br/&gt;ben@ben-dale.co.uk</copyright>
     <lastBuildDate>Sun, 22 Dec 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.ben-dale.co.uk/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Text Clock</title>
-      <link>https://www.ben-dale.co.uk/posts/text-clock/</link>
+      <link>/posts/text-clock/</link>
       <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.ben-dale.co.uk/posts/text-clock/</guid>
-      <description>A few years ago I came across a clock design that I hadn&#39;t seen before:
-I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording that highlights to display the current time. After some hacking around I had something I was happy with:
-You can see the live version here and the code here.
-Flash forward 5 years, having recently found an interest in electronics, I thought to myself &amp;ldquo;I want to build a clock&amp;rdquo;, not only for the learning experience but also because I could do with a clock.</description>
+      <guid>/posts/text-clock/</guid>
+      <description>A few years ago I came across a clock design that I hadn&#39;t seen before. I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording that highlights to display the current time.
+I got to work hacking around, figuring out how to translate time in numbers to time in text. After a couple of hours I had something I was fairly happy with.</description>
     </item>
     
     <item>
       <title>About</title>
-      <link>https://www.ben-dale.co.uk/about/</link>
+      <link>/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://www.ben-dale.co.uk/about/</guid>
+      <guid>/about/</guid>
       <description>Software engineer based in Manchester, UK.</description>
     </item>
     
