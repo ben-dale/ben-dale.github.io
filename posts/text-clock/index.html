@@ -27,8 +27,8 @@
 <meta property="og:image:height" content="" />
 <meta property="og:url" content="/posts/text-clock/" />
 <meta property="og:locale" content="en-us" />
-<meta property="article:published_time" content="2019-12-21
-" /> <meta property="article:modified_time" content="2019-12-21
+<meta property="article:published_time" content="2019-12-22
+" /> <meta property="article:modified_time" content="2019-12-22
 " />
 
 
@@ -44,8 +44,9 @@
 <meta
   name="twitter:description"
   content="A few years ago I came across a clock design that I hadn&#39;t seen before:
-I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording and &ldquo;light up&rdquo; the words to represent the current time. After an hour or so I had something I was happy with:
-You can see the live version here and the code here.|"
+I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording that highlights to display the current time. After some hacking around I had something I was happy with:
+You can see the live version here and the code here.
+Flash forward 5 years, having recently found an interest in electronics, I thought to myself &ldquo;I want to build a clock&rdquo;, not only for the learning experience but also because I could do with a clock.|"
 />
 <meta name="twitter:image:src" content="" />
 <meta name="twitter:domain" content="/posts/text-clock/" />
@@ -95,42 +96,42 @@ You can see the live version here and the code here.|"
     <article itemprop="articleBody" id="content" class="w-90 lh-copy">
       <p>A few years ago I came across a clock design that I hadn't seen before:</p>
 <p><img src="/static/text-clock/20.png" alt=""></p>
-<p>I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording and &ldquo;light up&rdquo; the words to represent the current time. After an hour or so I had something I was happy with:</p>
+<p>I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording that highlights to display the current time. After some hacking around I had something I was happy with:</p>
 <p><img src="/static/text-clock/21.png" alt=""></p>
 <p>You can see the live version <a href="https://ben-dale.github.io/text-clock/">here</a> and the code <a href="https://github.com/ben-dale/text-clock/blob/gh-pages/js/index.coffee">here</a>.</p>
-<p>Zip forward 5 years, having recently found an interest in electronics, I thought to myself &ldquo;I want to build a clock&rdquo;, not only for the learning experience but also because I could do with a clock.</p>
+<p>Flash forward 5 years, having recently found an interest in electronics, I thought to myself &ldquo;I want to build a clock&rdquo;, not only for the learning experience but also because I could do with a clock.</p>
 <p>I spent a couple of weekends designing, building and soldering together different parts and this is what I came up with:
 <img src="/static/text-clock/22.jpg" alt=""></p>
 <p>The following sections discuss different parts of the clock, how each part was built, what I learnt and what could be improved.</p>
 <h2 id="the-circuit-design">The circuit design</h2>
-<p>The first step was to think about how the circuit would work. At this early stage, I knew I needed at least twenty-two LEDs: an LED to light up each word. &ldquo;It is&rdquo; was treated as a single word as there are only four characters and they are always lit. I also knew that the words on the clock face could be broken down into logical groups:</p>
+<p>The first step was to think about how the circuit would work. At this early stage, I knew I needed at least twenty-two LEDs: an LED to light up each word. &ldquo;It is&rdquo; was treated as a single word as there are only four characters and they are always lit. I first broke the words down into different groups:</p>
 <p><strong>Group A</strong>: it is</p>
 <p><strong>Group B</strong>: five, ten, quarter, twenty, twenty-five, half</p>
 <p><strong>Group C</strong>: to, past, o'clock</p>
 <p><strong>Group D</strong>: one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve</p>
 <p>You can take one word from each group and string them together into a sentence: &ldquo;it is five past ten&rdquo; or &ldquo;it is twenty-five to three&rdquo;. The only exception is that you do not pick an option from Group B when &ldquo;o'clock&rdquo; is picked from Group C: &ldquo;It is four o'clock&rdquo;.
-I then had to figure out how to individually address twenty-two LEDs with only twenty addressable pins on the Arduino. I researched around and come across a technique known as &ldquo;Charlieplexing&rdquo;.</p>
+I then had to figure out how to individually address twenty-two LEDs with only twenty addressable pins on the Arduino. I researched around and came across a technique called Charlieplexing.</p>
 <p>Charlieplexing exploits the diodic nature of LEDs, that is, LEDs only allow electricity to flow in a single direction.</p>
 <p><img src="/static/text-clock/23.jpg" alt=""></p>
-<p>The above image shows two LED's in parallel, both aligned differently such that their cathodes and anodes are opposite each other.</p>
-<p>If we connect the two circuit inputs to Arduino pins and set the top input to HIGH and bottom input to LOW the left LED will light up:</p>
+<p>The above image shows two LEDs in parallel, both aligned differently such that their cathodes and anodes are opposite each other.</p>
+<p>If we connect the two circuit inputs to Arduino pins and set the top input to HIGH and the bottom input to LOW the left LED will light up:</p>
 <p><img src="/static/text-clock/24.jpg" alt=""></p>
-<p>If we set the top input to LOW and bottom input to HIGH the right LED will light up:</p>
+<p>If we set the top input to LOW and the bottom input to HIGH the right LED will light up:</p>
 <p><img src="/static/text-clock/25.jpg" alt=""></p>
-<p>If we connect more input and more LEDs we can create a matrix of individually addressable LEDs:</p>
+<p>If we connect more inputs and more LEDs we can create a matrix of individually addressable LEDs:</p>
 <p><img src="/static/text-clock/26.jpg" alt=""></p>
 <p>If we set the top input to HIGH, set the middle input to LOW and disconnect the bottom input, the top-left LED turns on:</p>
 <p><img src="/static/text-clock/27.jpg" alt=""></p>
-<p>If we disconnect the top input, set the middle output to LOW and set the bottom output as HIGH, the middle-bottom LED turns on:</p>
+<p>If we disconnect the top input, set the middle input to LOW and set the bottom input to HIGH, the middle-bottom LED turns on:</p>
 <p><img src="/static/text-clock/28.jpg" alt=""></p>
 <p>By controlling which output pin on the Arduino is set to HIGH, which output pin is set to LOW and which output pin is marked as an input (essentially disconnecting it from the circuit) you can individually address LEDs in the matrix.</p>
-<p>One downside to Charlieplexing circuits is that you can only have 1 LED on at a time. Setting two inputs to HIGH and one input to LOW produces weird outcomes. This &ldquo;one LED at a time&rdquo; thing wasn't going to be an issue though, because I could create 2 individual Charlieplexed circuits: one for Group D and one for Group B. Group A is always lit so I'll tie that directly to 5v and ground. Group C only has 3 words in it so I'll tie each of those options to a pin on the Arduino and ground.</p>
+<p>One downside to Charlieplexing is that you can only have 1 LED on at a time. Setting two inputs to HIGH and one input to LOW produces weird outcomes. This &ldquo;1 LED at a time&rdquo; thing wasn't going to be an issue though, because I could create 2 individual Charlieplexed circuits: a circuit for Group D and circuit for Group B. Group A is always lit so I'll connect that directly to 5v and ground. Group C only has 3 words in it so I'll connect each of those to a pin on the Arduino and ground.</p>
 <p>As a reminder, these are the word groups:</p>
 <p><strong>Group A (connected to 5v)</strong>: it is</p>
 <p><strong>Group B (Charlieplexed)</strong>: five, ten, quarter, twenty, twenty-five, half</p>
-<p><strong>Group C (individually addressed by Arduino)</strong>: to, past, o'clock</p>
+<p><strong>Group C (each connected to a pin on the Arduino)</strong>: to, past, o'clock</p>
 <p><strong>Group D (Charlieplexed)</strong>: one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve</p>
-<p>I got started writing code, plugging LEDs, resistors and jumper cables into my breadboard and within a couple of hours I had a prototype display up and running:</p>
+<p>I got started writing code and mounting various components into my breadboard:</p>
 <p><img src="/static/text-clock/30.jpg" alt=""></p>
 <p><img src="/static/text-clock/3.jpg" alt=""></p>
 <p>Given an hour between 0 and 23 and a minute between 0 and 59, the Arduino would work out which LEDs to light up in each Charlieplex and change the outputs respectively. One thing I hadn't put much thought into yet was how to keep track of time, but I'll cover that point later on.</p>
@@ -142,7 +143,7 @@ I then had to figure out how to individually address twenty-two LEDs with only t
 <p><img src="/static/text-clock/32.jpg" alt=""></p>
 <p><img src="/static/text-clock/1.jpg" alt=""></p>
 <p><img src="/static/text-clock/2.jpg" alt=""></p>
-<p>After the letters were written out I took a sharp blade and cut out the letters.</p>
+<p>After the letters were down on paper I took a sharp blade and cut out the letters.</p>
 <h2 id="the-frame">The frame</h2>
 <p>Once I had the face sorted I had to work out how to mount it. I cut off four pieces of sturdy card and glued them together, using triangle pieces to help with stability. I added a slight angle to the bottom of the frame so that the clock sort of leans back a bit when it's stood up.</p>
 <p><img src="/static/text-clock/4.jpg" alt=""></p>
@@ -152,9 +153,9 @@ I then had to figure out how to individually address twenty-two LEDs with only t
 <p>Now I had to figure out how exactly I was going to mount the LEDs behind each word, keeping in mind that I didn't want the light to bleed across words.</p>
 <p>I built a small &ldquo;prototype LED box thing&rdquo; that housed an LED, covered it with some tracing paper and held that behind a word on the clock face:</p>
 <p><img src="/static/text-clock/8.jpg" alt=""></p>
-<p>After some experimentation, I realised that 1 LED behind each word wasn't going to cut it, especially for the longest word &ldquo;twenty-five&rdquo;. The LEDs were too direct as a light source and the light was not spreading out enough within the box. To try and fix this I decided to add more LEDs. I quickly scribbled down which words would need an extra LED or two and worked out that I could probably fit all these extra LEDs into a separate Charlieplex.</p>
+<p>After some experimentation, I realised that 1 LED behind each word wasn't going to cut it, especially for the longest word &ldquo;twenty-five&rdquo;. The light from the LED was not spreading out enough within the box. To try and fix this I decided to add more LEDs. I scribbled down which words would need an extra LED and worked out that I could probably fit all these extra LEDs into a separate Charlieplex.</p>
 <p><img src="/static/text-clock/9.jpg" alt=""></p>
-<p>Regrettably, I rushed through this decision too quickly and missed a couple of things, but we'll explore that in more detail later on. I knew I roughly had enough pins to achieve what I wanted and the worst case was that I only end up with 1 LED behind each word, which works fine, it just doesn't look as good.</p>
+<p>Regrettably, I rushed through this decision too quickly and missed a couple of things, but we'll explore those in more detail later on. I knew I roughly had enough pins to achieve what I wanted and the worst case was that I only end up with 1 LED behind each word, which works fine, it just doesn't look as good.</p>
 <p>I had an idea in mind for the internal LED frame so I got started on that. I cut out some rectangular pieces of card and used them to start building up the internal frame, positioning them based on how the words sat on the clock face:</p>
 <p><img src="/static/text-clock/10.jpg" alt=""></p>
 <p><img src="/static/text-clock/11.jpg" alt=""></p>
@@ -165,11 +166,11 @@ I then had to figure out how to individually address twenty-two LEDs with only t
 <p><img src="/static/text-clock/15.jpg" alt=""></p>
 <p><img src="/static/text-clock/14.jpg" alt=""></p>
 <h2 id="tracking-time">Tracking time</h2>
-<p>One thing that I hadn't solved yet was how to keep track of time, which incidentally is pretty important for a clock. Whilst building the frame and the clock face, in the back of my mind, I had this scattered idea that I could maybe count the number of seconds since the Arduino was plugged in or something&hellip; and then to change the hour and minutes I would have two switches&hellip; having it always start at midnight&hellip; but the more I thought about it and researched it as an option the less suitable it felt. I remembered that my Arduino starter kit came with a clock module, labelled &ldquo;DS1307&rdquo;, which looks a bit like this:</p>
+<p>One thing that I hadn't solved yet was how to keep track of time. Whilst building the frame and the clock face in the back of my mind, I had this scattered idea that I could maybe count the number of seconds since the Arduino was plugged in or something&hellip; and then to change the hour and minutes I would have two switches&hellip; having it always start at midnight&hellip; but the more I thought about it and researched it as an option the less suitable it felt. I remembered that my Arduino starter kit came with a clock module, labelled &ldquo;DS1307&rdquo;, which looks a bit like this:</p>
 <p><img src="/static/text-clock/35.jpg" alt=""></p>
 <p>These are handly little modules that fairly accurately keep track of time using a crystal oscillator. If the module loses power it falls back onto the lithium cell battery and keeps on counting the seconds. This meant that I could unplug the clock and still have the time running in the background.</p>
 <p>I researched how to wire this module up to the Arduino and what library I needed to communicate with it. It didn't work. For some reason, I kept getting &ldquo;15:34:00, May 9th 2918&rdquo; or something out of the module. I tried to set the time on the module but that didn't work either.</p>
-<p>I searched around on different forums and after trying lots of different code examples it still didn't work. I assumed that my module was broke in some way. I checked the battery but that had power so it wasn't that. I left the module for a bit and researched how easy it was to build a clock circuit myself. It turns out that it wouldn't take too much effort but I didn't have many of the parts so I decided to go back to the module and try one more time. I came across some example code online that used a different library written for a DS3231 module. I thought &ldquo;what the heck, worth a punt&rdquo; and ran it. It worked, which was weird but I didn't question it. I had a working clock. I set the time on the module, made changes to the code where I needed and that was that. I think they might have used the wrong chip on the module or something, I'm not too sure but I had a working clock so I didn't give it much more thought.</p>
+<p>I searched around on different forums and after trying lots of different code examples it still didn't work. I assumed that my module was broke in some way. I checked the battery but that had power so it wasn't that. I left the module for a bit and researched how easy it was to build a clock circuit myself. It turns out that it wouldn't take too much effort but I didn't have many of the parts so I decided to go back to the module and try one more time. I came across some example code online that used a different library written for a DS3231 module. I thought &ldquo;what the heck&rdquo; and ran it. It worked, which was weird but I didn't question it. I had a working clock. I set the time on the module, made changes to the code where I needed and that was that. I think they might have used the wrong chip on the module or something, I'm not too sure but I had a working clock so I didn't give it much more thought.</p>
 <h2 id="the-wiring-and-final-assembly">The wiring and final assembly</h2>
 <p>It was time to wire everything up, starting with the LEDs. Each leg of the 32 LEDs needed a wire soldering to them. I also decided to wire up the first Charlieplex, which was Group D (all of the hours), to get an idea on how it would all fit together.</p>
 <p>Soon after starting I realised the wire I had wasn't the best type of wire for the job. It was too thick and heavy but it was the only corded wire I had. To be fair, it wasn't <em>terrible</em>.</p>
@@ -193,13 +194,13 @@ I then had to figure out how to individually address twenty-two LEDs with only t
 <h3 id="the-wires">The wires</h3>
 <p>The wires were way to thick for the job. The next version will use much thinner corded wire.</p>
 <h3 id="charlieplexing">Charlieplexing</h3>
-<p>Carlieplexing the LEDs was a good idea in theory, and it was interesting to learn about whilst trying to apply it to a real problem I had (which incidentally is one of the best ways I learn), but had I given the project some more consideration and done a bit more prototyping I would have realised that I needed quite a few more LEDs than I first thought. It might have been that I'd come up with a more elegant solution for Charlieplexing thirty-two LEDs, or that I would have used a different technique altogether. In the next version, I'm going to try and use a few shift register chips which should give me much more LED control for a similar number of Arduino pins.</p>
+<p>Charlieplexing the LEDs was a good idea in theory, and it was interesting to learn about whilst trying to apply it to a real problem I had, but had I given the project some more consideration and done a bit more prototyping I would have realised that I needed quite a few more LEDs than I first thought. It might have been that I'd come up with a more elegant solution for Charlieplexing thirty-two LEDs, or that I would have used a different technique altogether. In the next version, I'm going to try and use a few shift register chips which should give me much more control of the LEDs for a similar number of Arduino pins.</p>
 <h3 id="the-missing-led">The missing LED</h3>
 <p>I miscounted the number of pins I had on the Arduino and one of the LEDs inside the clock isn't connected to anything. It's the middle LED of &ldquo;twenty-five&rdquo;, which is also the only 3 LED word. Had I planned the Charlieplexing properly I wouldn't have missed this LED.</p>
 <h3 id="glueing-paper-to-paper">Glueing paper to paper</h3>
 <p>I used a glue stick to bind the tracing paper to the back of the clock face. This, unfortunately, added moisture to the clock face and it now has a subtle &ldquo;dried out wet paper&rdquo; look in the light. I'll probably tape the tracing paper to the back of the clock face next time.</p>
 <h3 id="the-leds">The LEDs</h3>
-<p>Honestly, they're too bright for the job. I should have either doubled up the tracing paper or ran the LEDs on a lower voltage. I could have also positioned the LEDs differently, which I'll be experimenting within the next version.</p>
+<p>Honestly, they're too bright for the job. I should have either doubled up the tracing paper or ran the LEDs on a lower current. I could have also positioned the LEDs differently, which I'll be experimenting within the next version.</p>
 <h3 id="a-bug-in-the-code">A bug in the code?</h3>
 <p>A day after I had the clock on display I noticed one of the LEDs wasn't lit in &ldquo;seven&rdquo; when it read &ldquo;It is seven o'clock&rdquo;.</p>
 <p><img src="/static/text-clock/19.jpg" alt=""></p>
