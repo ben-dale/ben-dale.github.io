@@ -3,30 +3,35 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://www.ben-dale.co.uk/</loc>
+    <loc>/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/my-first-writeup/</loc>
+    <lastmod>2020-02-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/text-clock/</loc>
     <lastmod>2019-12-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://www.ben-dale.co.uk/posts/</loc>
-    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+    <loc>/about/</loc>
   </url>
   
   <url>
-    <loc>https://www.ben-dale.co.uk/posts/text-clock/</loc>
-    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+    <loc>/categories/</loc>
   </url>
   
   <url>
-    <loc>https://www.ben-dale.co.uk/about/</loc>
-  </url>
-  
-  <url>
-    <loc>https://www.ben-dale.co.uk/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>https://www.ben-dale.co.uk/tags/</loc>
+    <loc>/tags/</loc>
   </url>
   
 </urlset>
