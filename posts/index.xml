@@ -17,8 +17,8 @@
       <pubDate>Sun, 16 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>/posts/vulnhub-sunset-nightfall/</guid>
-      <description>Here&amp;rsquo;s my writeup for Nightfall, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
-Writeup The description for this box states the following:
+      <description>Here&amp;rsquo;s my write0up for Nightfall, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Write-up The description for this box states the following:
 Nightfall is a born2root VM designed for beginners. Virtualbox is strongly recommended for doing this challenge. There wasn&amp;rsquo;t much to go off there so I ran a port scan using nmap to see what was running:
 kali@kali:~/Documents/vulnhub/nightfall/nmap$ nmap -sV -sC -oA nmap 10.0.2.19 Starting Nmap 7.</description>
     </item>
@@ -29,8 +29,8 @@ kali@kali:~/Documents/vulnhub/nightfall/nmap$ nmap -sV -sC -oA nmap 10.0.2.19 St
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
       <guid>/posts/my-first-writeup/</guid>
-      <description>This weekend I managed to fully root a VulnHub box without looking at another person&amp;rsquo;s writeup for a hint, for the first time! This box was created by Daniel Solstad and can be downloaded here. Here&amp;rsquo;s my writeup.
-Writeup The description for this box states:
+      <description>This weekend I managed to fully root a VulnHub box without looking at another person&amp;rsquo;s write-up for a hint, for the first time! This box was created by Daniel Solstad and can be downloaded here. Here&amp;rsquo;s my write-up.
+Write-up The description for this box states:
 Eric is trying to reach out on the Internet, but is he following best practice? Flags: - /root/flag.txt - /home/eric/flag.txt Once I had Eric set up and running I ran a port scan:</description>
     </item>
     
