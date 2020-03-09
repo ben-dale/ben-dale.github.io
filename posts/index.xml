@@ -6,10 +6,21 @@
     <description>Recent content in Posts on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 16 Feb 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 09 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>VulnHub: HappyCorp</title>
+      <link>/posts/vulnhub-happycorp/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/vulnhub-happycorp/</guid>
+      <description>Here&amp;rsquo;s my write-up for HappyCorp, a VulnHub box created by Zayotic.
+Write-up The description for this box states the following:
++- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | Name: Happycorp | IP: DHCP | | Date: 2019-March-05 | Goal: Get Root! | | Author: Zayotic | Difficultly: ??? | +- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | | | + Average beginner/intermediate VM, only a few twists | | + May find it easy/hard (depends on YOUR background) | | + .</description>
+    </item>
     
     <item>
       <title>VulnHub: Sunset Nightfall</title>
