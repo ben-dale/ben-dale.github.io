@@ -6,10 +6,21 @@
     <description>Recent content in Posts on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 28 Mar 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 05 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>VulnHub: Cloud AV</title>
+      <link>/posts/vulnhub-boredhackerblog-cloudav/</link>
+      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/vulnhub-boredhackerblog-cloudav/</guid>
+      <description>Here&amp;rsquo;s my write-up for Cloud AV, a VulnHub box created by BorderHackerBlog.
+Write-up The description for this box states the following:
+Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service. Currently, it&amp;#39;s in beta mode. You&amp;#39;ve been asked to test the setup and find vulnerabilities and escalate privs. Difficulty: Easy Tasks involved: port scanning webapp attacks sql injection command injection brute forcing code analysis Virtual Machine: Format: Virtual Machine (Virtualbox OVA) Operating System: Linux Networking: DHCP Service: Enabled IP Address Automatically assign This works better with VirtualBox than VMware The listed tasks are exploits I have some familiarity with so I decided that this would be a good box to brush up some techniques.</description>
+    </item>
     
     <item>
       <title>I forget when I&#39;m on the VPN</title>
