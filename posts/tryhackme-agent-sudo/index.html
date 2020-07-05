@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>TryHackMe: Agent Sudo - ben-dale.co.uk</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:title" content="TryHackMe: Agent Sudo" />
+<meta property="og:description" content="Here&rsquo;s my write-up for Agent Sudo, a CTF challenge created by DesKel.
+Write-up I deployed the box using TryHackMe&rsquo;s interface and scanned the host using nmap:
+kali@kali:~$ nmap -sC -sV 10.10.108.158 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 15:15 EDT Nmap scan report for 10.10.108.158 Host is up (0.021s latency). Not shown: 997 closed ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/tryhackme-agent-sudo/" />
+<meta property="article:published_time" content="2020-07-03T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-07-03T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TryHackMe: Agent Sudo"/>
+<meta name="twitter:description" content="Here&rsquo;s my write-up for Agent Sudo, a CTF challenge created by DesKel.
+Write-up I deployed the box using TryHackMe&rsquo;s interface and scanned the host using nmap:
+kali@kali:~$ nmap -sC -sV 10.10.108.158 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 15:15 EDT Nmap scan report for 10.10.108.158 Host is up (0.021s latency). Not shown: 997 closed ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0."/>
+<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/all.css" />
+</head>
+
+<body>
+	<div class="container wrapper">
+		<div class="header">
+	
+		<div class="avatar">
+			<a href="/">
+				<img src="/static/img/logo.png" alt="ben-dale.co.uk" />
+			</a>
+		</div>
+	
+	<h1 class="site-title"><a href="/">ben-dale.co.uk</a></h1>
+	<div class="site-description"><p>some guy that does some stuff</p><nav class="nav social">
+			<ul class="flat"><li class="li-social"><a href="https://github.com/ben-dale"><i title="Github" class="icons fab fa-github"></i></a></li><li class="li-social"><a href="https://twitter.com/mrbenjamind"><i title="Twitter" class="icons fab fa-twitter"></i></a></li><li class="li-social"><a href="https://keybase.io/mrbenjamind"><i title="Keybase" class="icons fab fa-keybase"></i></a></li></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post">
+			<div class="author">
+				
+			</div>
+			<div class="post-header">
+				
+					<div class="meta">
+						<div class="date">
+							<span class="day">03</span>
+							<span class="rest">Jul 2020</span>
+						</div>
+					</div>
+				
+				<div class="matter">
+					<h1 class="title">TryHackMe: Agent Sudo</h1>
+				</div>
+			</div>
+			<div class="markdown">
+				<p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/agentsudoctf">Agent Sudo</a>, a CTF challenge created by <a href="https://tryhackme.com/p/DesKel">DesKel</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~$ nmap -sC -sV 10.10.108.158
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 15:15 EDT
+Nmap scan report for 10.10.108.158
+Host is up (0.021s latency).
+Not shown: 997 closed ports
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 ef:1f:5d:04:d4:77:95:06:60:72:ec:f0:58:f2:cc:07 (RSA)
+|   256 5e:02:d1:9a:c4:e7:43:06:62:c1:9e:25:84:8a:e7:ea (ECDSA)
+|_  256 2d:00:5c:b9:fd:a8:c8:d8:80:e3:92:4f:8b:4f:18:e2 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Annoucement
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre></div><p>I first tried to log in to the FTP server using an anonymous login but that didn&rsquo;t work so I started looking for things on port <code>80</code>. Viewing the root webpage in Firefox gave me some interesting information:</p>
+<p><img src="/static/agent_sudo/1.png" alt=""></p>
+<p>I sent a request using Burp with the user-agent header set to &ldquo;R&rdquo; to see what would happen.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">User-Agent: R
+</code></pre></div><p>This was the response:</p>
+<p><img src="/static/agent_sudo/2.png" alt=""></p>
+<p>The first line of the response body read the following:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">What are you doing! Are you one of the 25 employees? If not, I going to report this incident
+</code></pre></div><p>I presumed that the other 25 employees were other agents, all sharing a similar codename to Agent R. I used the Intruder feature in Burp to make 26 requests, all to the root page with a different User-Agent.</p>
+<p><img src="/static/agent_sudo/3.png" alt=""></p>
+<p>Setting the user-agent to <code>User-Agent: C</code> resulted in a <code>302</code> response, which redirected me to <code>agent_C_attention.php</code>, which contained the following:</p>
+<p><img src="/static/agent_sudo/4.png" alt=""></p>
+<p>Now that I had a username I decided to give brute-forcing the FTP server a shot using Hydra.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hydra -l chris -P /usr/share/wordlists/rockyou.txt 10.10.180.158 ftp -V -f -I
+</code></pre></div><p>This proved successful and I now had some credentials for <code>chris</code>.</p>
+<p><img src="/static/agent_sudo/5.png" alt=""></p>
+<p>I logged in to the FTP server as <code>chris</code> and found three files: <code>To_agentJ.txt</code>, <code>cute-alien.jpg</code> and <code>cutie.png</code>.</p>
+<p><img src="/static/agent_sudo/6.png" alt=""></p>
+<p>Reading the contents of <code>To_agentJ.txt</code> revealed that some sort of steganography work was going to be required:</p>
+<p><img src="/static/agent_sudo/7.png" alt=""></p>
+<p>I used <code>stegoveritas</code> to scan <code>cutie.png</code> which revealed a hidden password-protected zip file:</p>
+<p><img src="/static/agent_sudo/8.png" alt=""></p>
+<p><img src="/static/agent_sudo/9.png" alt=""></p>
+<p>I used <code>john</code> to crack the zip file password, which turned out to be &ldquo;alien&rdquo;; probably something I should have guessed in retrospect.</p>
+<p><img src="/static/agent_sudo/10.png" alt=""></p>
+<p>The zip file contained the file <code>To_agentR.txt</code>, the contents being:</p>
+<p><img src="/static/agent_sudo/11.png" alt=""></p>
+<p>The value &ldquo;QXJlYTUx&rdquo; screamed &ldquo;base64&rdquo; at me, so I decoded it and found the value &ldquo;Area51&rdquo;.</p>
+<p><img src="/static/agent_sudo/12.png" alt=""></p>
+<p>I moved on to <code>cute-alien.jpg</code> and found that it also contained a hidden message, however, this was password protected:</p>
+<p><img src="/static/agent_sudo/13.png" alt=""></p>
+<p>I tried &ldquo;Area51&rdquo; and&hellip; success!</p>
+<p><img src="/static/agent_sudo/14.png" alt=""></p>
+<p>Now I had a set of credentials for <code>james</code>. I managed to log in using these credentials over SSH:</p>
+<p><img src="/static/agent_sudo/15.png" alt=""></p>
+<p>I enumerated the box for a little while, trying a few different things. It turned out that there were some interesting <code>sudo</code> permissions set for <code>james</code>:</p>
+<p><img src="/static/agent_sudo/16.png" alt=""></p>
+<p><img src="/static/agent_sudo/19.png" alt=""></p>
+<p>I did a bit of research and found an exploit using <code>searchsploit</code> that I thought would be successful.
+The full exploit can be viewed on exploit-db <a href="https://www.exploit-db.com/exploits/47502">here</a>.</p>
+<p><img src="/static/agent_sudo/17.png" alt=""></p>
+<p><img src="/static/agent_sudo/18.png" alt=""></p>
+<p>The last step was to run the exploit and hope for the best:</p>
+<p><img src="/static/agent_sudo/20.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>This was a fun little box that wasn&rsquo;t too challenging and kept me interested the whole way through. Thanks, DesKel!</p>
+
+			</div>
+			<div class="tags">
+				
+				
+				
+				
+					
+				
+					
+				
+				
+			</div></div>
+	</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div class="footertext"></div>
+	</nav>
+</div>
+
+
+
+</body>
+</html>
