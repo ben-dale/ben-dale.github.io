@@ -128,7 +128,7 @@ PORT    STATE  SERVICE  VERSION
 <p><img src="/static/mrrobot/6.png" alt=""></p>
 <p>I assumed that I&rsquo;d been given this dictionary for a reason, then remembered the wp-admin page. I still didn&rsquo;t have a username so I started with a few names from the TV show and I got a different error message back when I tried &ldquo;elliot&rdquo;:</p>
 <p><img src="/static/mrrobot/7.png" alt=""></p>
-<p>Now that I had a username and a clean dictionary file, I decided to use <code>wpscan</code>'s brute-force option to crack Elliot&rsquo;s account:</p>
+<p>Now that I had a username and a clean dictionary file, I decided to use <code>wpscan</code>&rsquo;s brute-force option to crack Elliot&rsquo;s account:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">wpscan -U elliot -P no_dupes.dic --url 192.168.1.206 --password-attack wp-login
 </code></pre></div><p><img src="/static/mrrobot/8.png" alt=""></p>
 <p>Success! I logged into Elliot&rsquo;s account and looked around for any draft posts, media, comments, anything that might be hiding a key. I looked at the list of users and found a second user:</p>

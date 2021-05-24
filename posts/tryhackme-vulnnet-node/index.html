@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>TryHackMe: VulnNet Node - ben-dale.co.uk</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:title" content="TryHackMe: VulnNet Node" />
+<meta property="og:description" content="Here&rsquo;s my write-up for VulnNet Node, a CTF challenge created by TheCyb3rW0lf.
+Write-up I deployed the box using TryHackMe&rsquo;s interface and scanned the host using nmap:
+I also ran a full port scan but this was the only port open. Node.js running Express, hosting a webpage.
+I took a look at the website in my browser and found a fairly simple website with some sort of account functionality.
+I followed the link to the login page." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/tryhackme-vulnnet-node/" />
+<meta property="article:published_time" content="2021-05-24T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-05-24T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TryHackMe: VulnNet Node"/>
+<meta name="twitter:description" content="Here&rsquo;s my write-up for VulnNet Node, a CTF challenge created by TheCyb3rW0lf.
+Write-up I deployed the box using TryHackMe&rsquo;s interface and scanned the host using nmap:
+I also ran a full port scan but this was the only port open. Node.js running Express, hosting a webpage.
+I took a look at the website in my browser and found a fairly simple website with some sort of account functionality.
+I followed the link to the login page."/>
+<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/all.css" />
+</head>
+
+<body>
+	<div class="container wrapper">
+		<div class="header">
+	
+		<div class="avatar">
+			<a href="/">
+				<img src="/static/img/logo.png" alt="ben-dale.co.uk" />
+			</a>
+		</div>
+	
+	<h1 class="site-title"><a href="/">ben-dale.co.uk</a></h1>
+	<div class="site-description"><p>some guy that does some stuff</p><nav class="nav social">
+			<ul class="flat"><li class="li-social"><a href="https://github.com/ben-dale"><i title="Github" class="icons fab fa-github"></i></a></li><li class="li-social"><a href="https://twitter.com/mrbenjamind"><i title="Twitter" class="icons fab fa-twitter"></i></a></li><li class="li-social"><a href="https://keybase.io/mrbenjamind"><i title="Keybase" class="icons fab fa-keybase"></i></a></li></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+			<li>
+				<a href="/about">About</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post">
+			<div class="author">
+				
+			</div>
+			<div class="post-header">
+				
+					<div class="meta">
+						<div class="date">
+							<span class="day">24</span>
+							<span class="rest">May 2021</span>
+						</div>
+					</div>
+				
+				<div class="matter">
+					<h1 class="title">TryHackMe: VulnNet Node</h1>
+				</div>
+			</div>
+			<div class="markdown">
+				<p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/vulnnetnode">VulnNet Node</a>, a CTF challenge created by <a href="https://tryhackme.com/p/TheCyb3rW0lf">TheCyb3rW0lf</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<p><img src="/static/vulnnet_node/1.png" alt=""></p>
+<p>I also ran a full port scan but this was the only port open. Node.js running Express, hosting a webpage.</p>
+<p>I took a look at the website in my browser and found a fairly simple website with some sort of account functionality.</p>
+<p><img src="/static/vulnnet_node/2.png" alt=""></p>
+<p>I followed the link to the login page.</p>
+<p><img src="/static/vulnnet_node/3.png" alt=""></p>
+<p>I tried a few different inputs but couldn&rsquo;t make anything interesting happen, so I took a look at the source code.</p>
+<p><img src="/static/vulnnet_node/4.png" alt=""></p>
+<p>The form wasn&rsquo;t wired up to anything. Weird. At this point, I had already starting capturing traffic with Burp so I went back to Burp and took another look at the requests and responses.</p>
+<p><img src="/static/vulnnet_node/5.png" alt=""></p>
+<p>I could see a cookie that was being sent from my browser to the application on requests. Burp decoded the cookie from base64 which showed it contained some JSON which (I presumed) was being parsed by the application in some way. I modified the contents of the cookie and could see my changes reflected in the response. I wondered if there was some sort of template injection so I tried a few different things to trigger an error, in hopes that an error might give me a bit more to work with.</p>
+<p>I set the cookie&rsquo;s &ldquo;username&rdquo; value to &ldquo;\&rdquo; and the following error was returned:</p>
+<p><img src="/static/vulnnet_node/6.png" alt=""></p>
+<p>This error showed that the application was using a library called &ldquo;node-serialize&rdquo;. I began researching different exploits and vulnerabilities that might be present within the node-serialize library, and came across <a href="https://opsecx.com/index.php/2017/02/08/exploiting-node-js-deserialization-bug-for-remote-code-execution/">an interesting blog post</a>. This blog post summarised an exploit present in node-serialize, and even provided a python script to generate a payload which would initiate a reverse shell. I downloaded the script, ran it, set up netcat to listen for the connection back, and sent the payload.</p>
+<p><img src="/static/vulnnet_node/7.png" alt=""></p>
+<p><img src="/static/vulnnet_node/8.png" alt=""></p>
+<p>I had successfully gained shell access to the machine. I took a look around and found another user on the box: &ldquo;serv-manage&rdquo;. I also ran <code>sudo -l</code> to see what the &ldquo;www&rdquo; user could do.</p>
+<p><img src="/static/vulnnet_node/9.png" alt=""></p>
+<p><a href="https://gtfobins.github.io/gtfobins/npm/#shell">GTFOBins</a> documented a way to initiate a shell via NPM. If I could do this, I would get shell access as the &ldquo;serv-manage&rdquo; user.</p>
+<p>After a few attempts (and a fair bit of mistyping) I had a shell.</p>
+<p><img src="/static/vulnnet_node/10.png" alt=""></p>
+<p>I then took a look at what sudo privileges &ldquo;serv-manage&rdquo; had, and found that they had access to run three <code>systemctl</code> commands and edit a couple of files in <code>/etc/systemd/system</code>. If I could alter what these scripts were executing, I could potentially get a remote shell as the root user.</p>
+<p><img src="/static/vulnnet_node/11.png" alt=""></p>
+<p><img src="/static/vulnnet_node/12.png" alt=""></p>
+<p>I upgraded my shell because I knew I would need to use an editor to edit these files. For future me:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">On the remote machine:
+python3 -c &#34;import pty;pty.spawn(&#39;/bin/bash&#39;)&#34;; export TERM=xterm
+
+ctrl + Z to background the session
+
+On my machine:
+stty raw -echo; fg
+</code></pre></div><p>vulnnnet-auto.timer ran vulnnet-job.service every 30 minutes. The first thing to do was to change vulnnnet-auto.timer to run every minute, just to speed things up a bit. The second thing to do was to change the command vulnnet-job.service was executing. I set up netcat to listen on a different port on my machine and had vulnnet-job.service initiate a remote connection back to my machine.</p>
+<p><img src="/static/vulnnet_node/13.png" alt=""></p>
+<p><img src="/static/vulnnet_node/14.png" alt=""></p>
+<p>I saved the files, ran the commands, waited a few seconds, and I had root!</p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A fun challenge that had me scratching my head a few times. Thanks, TheCyb3rW0lf!</p>
+
+			</div>
+			<div class="tags">
+				
+				
+				
+				
+					
+				
+					
+				
+				
+			</div></div>
+	</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div class="footertext"></div>
+	</nav>
+</div>
+
+
+
+</body>
+</html>

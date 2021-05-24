@@ -6,10 +6,19 @@
     <description>Recent content in Posts on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 11 Jul 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Mon, 24 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe: VulnNet Node</title>
+      <link>/posts/tryhackme-vulnnet-node/</link>
+      <pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/tryhackme-vulnnet-node/</guid>
+      <description>Here&amp;rsquo;s my write-up for VulnNet Node, a CTF challenge created by TheCyb3rW0lf.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+I also ran a full port scan but this was the only port open. Node.js running Express, hosting a webpage.
+I took a look at the website in my browser and found a fairly simple website with some sort of account functionality.
+I followed the link to the login page.</description>
+    </item>
     
     <item>
       <title>VulnHub: Sunset Decoy</title>
