@@ -5,18 +5,14 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>VulnHub: Cloud AV - ben-dale.co.uk</title><meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<meta property="og:title" content="VulnHub: Cloud AV" />
-<meta property="og:description" content="Here&rsquo;s my write-up for Cloud AV, a VulnHub box created by BorderHackerBlog.
-Write-up The description for this box states the following:
-Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service. Currently, it&#39;s in beta mode. You&#39;ve been asked to test the setup and find vulnerabilities and escalate privs. Difficulty: Easy Tasks involved: port scanning webapp attacks sql injection command injection brute forcing code analysis Virtual Machine: Format: Virtual Machine (Virtualbox OVA) Operating System: Linux Networking: DHCP Service: Enabled IP Address Automatically assign This works better with VirtualBox than VMware The listed tasks are exploits I have some familiarity with so I decided that this would be a good box to brush up some techniques." />
+<meta property="og:description" content="My write-up for Cloud AV, a VulnHub box created by BoredHackerBlog." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/posts/vulnhub-boredhackerblog-cloudav/" />
 <meta property="article:published_time" content="2020-04-05T00:00:00+00:00" />
 <meta property="article:modified_time" content="2020-04-05T00:00:00+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="VulnHub: Cloud AV"/>
-<meta name="twitter:description" content="Here&rsquo;s my write-up for Cloud AV, a VulnHub box created by BorderHackerBlog.
-Write-up The description for this box states the following:
-Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service. Currently, it&#39;s in beta mode. You&#39;ve been asked to test the setup and find vulnerabilities and escalate privs. Difficulty: Easy Tasks involved: port scanning webapp attacks sql injection command injection brute forcing code analysis Virtual Machine: Format: Virtual Machine (Virtualbox OVA) Operating System: Linux Networking: DHCP Service: Enabled IP Address Automatically assign This works better with VirtualBox than VMware The listed tasks are exploits I have some familiarity with so I decided that this would be a good box to brush up some techniques."/>
+<meta name="twitter:description" content="My write-up for Cloud AV, a VulnHub box created by BoredHackerBlog."/>
 <link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="/css/all.css" />
@@ -49,10 +45,6 @@ Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service. Currently
 				<a href="/posts">All posts</a>
 			</li>
 			
-			<li>
-				<a href="/about">About</a>
-			</li>
-			
 		</ul>
 	</nav>
 </div>
@@ -76,7 +68,7 @@ Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service. Currently
 				</div>
 			</div>
 			<div class="markdown">
-				<p>Here&rsquo;s my write-up for <a href="https://www.vulnhub.com/entry/boredhackerblog-cloud-av,453/">Cloud AV</a>, a VulnHub box created by <a href="http://www.boredhackerblog.info/">BorderHackerBlog</a>.</p>
+				<p>Here&rsquo;s my write-up for <a href="https://www.vulnhub.com/entry/boredhackerblog-cloud-av,453/">Cloud AV</a>, a VulnHub box created by <a href="http://www.boredhackerblog.info/">BoredHackerBlog</a>.</p>
 <h3 id="write-up">Write-up</h3>
 <p>The description for this box states the following:</p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service.

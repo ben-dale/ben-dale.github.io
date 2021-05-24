@@ -49,7 +49,7 @@ kali@kali:~$ nmap -sC -sV 10.10.108.158 Starting Nmap 7.80 ( https://nmap.org ) 
           <pubDate>Sun, 05 Apr 2020 00:00:00 &#43;0000</pubDate>
           
           <guid>/posts/vulnhub-boredhackerblog-cloudav/</guid>
-          <description>Here&amp;rsquo;s my write-up for Cloud AV, a VulnHub box created by BorderHackerBlog.
+          <description>Here&amp;rsquo;s my write-up for Cloud AV, a VulnHub box created by BoredHackerBlog.
 Write-up The description for this box states the following:
 Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service. Currently, it&amp;#39;s in beta mode. You&amp;#39;ve been asked to test the setup and find vulnerabilities and escalate privs. Difficulty: Easy Tasks involved: port scanning webapp attacks sql injection command injection brute forcing code analysis Virtual Machine: Format: Virtual Machine (Virtualbox OVA) Operating System: Linux Networking: DHCP Service: Enabled IP Address Automatically assign This works better with VirtualBox than VMware The listed tasks are exploits I have some familiarity with so I decided that this would be a good box to brush up some techniques.</description>
         </item>
@@ -110,14 +110,6 @@ Eric is trying to reach out on the Internet, but is he following best practice? 
           <guid>/posts/text-clock/</guid>
           <description>A few years ago I came across a clock design that I hadn&amp;rsquo;t seen before. I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording that highlights to display the current time.
 I got to work hacking around, figuring out how to translate time in numbers to time in text. After a couple of hours I had something I was fairly happy with.</description>
-        </item>
-        <item>
-          <title>About</title>
-          <link>/about/</link>
-          <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
-          
-          <guid>/about/</guid>
-          <description>Software engineer based in Manchester, UK.</description>
         </item>
         
   </channel>
