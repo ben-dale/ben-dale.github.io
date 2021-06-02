@@ -6,17 +6,27 @@
     <description>Recent content on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Jun 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 02 Jun 2021 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-          <title>TryHackMe: Githappens</title>
+          <title>TryHackMe: Cyborg</title>
+          <link>/posts/tryhackme-cyborg/</link>
+          <pubDate>Wed, 02 Jun 2021 00:00:00 &#43;0000</pubDate>
+          
+          <guid>/posts/tryhackme-cyborg/</guid>
+          <description>Here&amp;rsquo;s my write-up for Cyborg, a CTF challenge created by fieldraccoon.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+└─$ nmap -sC -sV 10.10.12.196 Starting Nmap 7.91 ( https://nmap.org ) at 2021-06-01 11:07 EDT Nmap scan report for 10.10.12.196 Host is up (0.025s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 db:b2:70:f3:07:ac:32:00:3f:81:b8:d0:3a:89:f3:65 (RSA) | 256 68:e6:85:2f:69:65:5b:e7:c6:31:2c:8e:41:67:d7:ba (ECDSA) |_ 256 56:2c:79:92:ca:23:c3:91:49:35:fa:dd:69:7c:ca:ab (ED25519) 80/tcp open http Apache httpd 2.</description>
+        </item>
+        <item>
+          <title>TryHackMe: Git Happens</title>
           <link>/posts/tryhackme-githappens/</link>
           <pubDate>Tue, 01 Jun 2021 00:00:00 &#43;0000</pubDate>
           
           <guid>/posts/tryhackme-githappens/</guid>
-          <description>Here&amp;rsquo;s my write-up for Githappens, a CTF challenge created by hydragyrum.
+          <description>Here&amp;rsquo;s my write-up for Git Happens, a CTF challenge created by hydragyrum.
 Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
 ─$ nmap -sC -sV 10.10.184.212 Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-31 14:30 EDT Nmap scan report for 10.10.184.212 Host is up (0.026s latency). Not shown: 999 closed ports PORT STATE SERVICE VERSION 80/tcp open http nginx 1.14.0 (Ubuntu) | http-git: | 10.10.184.212:80/.git/ | Git repository found!</description>
         </item>
