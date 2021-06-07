@@ -6,7 +6,30 @@
     <description>Recent content in Posts on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe: Res</title>
+      <link>/posts/tryhackme-res/</link>
+      <pubDate>Mon, 07 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/tryhackme-res/</guid>
+      <description>Here&amp;rsquo;s my write-up for Res, a CTF challenge created by stuxnet.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+An Apache webserver was accessible on port 80, and on port 6379, Redis. I checked out port 80 which just returned the default Apache webpage. I set up gobuster to scan the server but killed it after five minutes as it didn&amp;rsquo;t find anything, and I&amp;rsquo;m pretty sure this wasn&amp;rsquo;t the right track to be on.</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: dogcat</title>
+      <link>/posts/tryhackme-dogcat/</link>
+      <pubDate>Sun, 06 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/posts/tryhackme-dogcat/</guid>
+      <description>Here&amp;rsquo;s my write-up for dogcat, a CTF challenge created by jammy.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+Two ports: SSH on port 22 and Apache on port 80. I took a look first at what was running on port 80.
+It was a website that showed you pictures of cats and dogs. Awh how nice. The showing of dogs and cats was controlled by a query parameter in the URL:</description>
+    </item>
+    
     <item>
       <title>TryHackMe: Cyborg</title>
       <link>/posts/tryhackme-cyborg/</link>
