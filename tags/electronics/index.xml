@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>electronics on ben-dale.co.uk</title>
+    <link>/tags/electronics/</link>
+    <description>Recent content in electronics on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/electronics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>I forget when I&#39;m on the VPN</title>
+      <link>/on-vpn/</link>
+      <pubDate>Sat, 28 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/on-vpn/</guid>
+      <description>The COVID-19 breakout has resulted in me working from home for the foreseeable, which means I&amp;rsquo;m using the work VPN more than I&amp;rsquo;m used to. Typically I don&amp;rsquo;t have to use the work VPN as I tend to work in the office most of the time but being at home has me flipping in and out of the VPN a couple of times a day. One thing I keep forgetting about the VPN is whether I&amp;rsquo;m on it or not.</description>
+    </item>
+    
+    <item>
+      <title>Text Clock</title>
+      <link>/text-clock/</link>
+      <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/text-clock/</guid>
+      <description>A few years ago I came across a clock design that I hadn&amp;rsquo;t seen before. I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording that highlights to display the current time.
+I got to work hacking around, figuring out how to translate time in numbers to time in text. After a couple of hours I had something I was fairly happy with.</description>
+    </item>
+    
+  </channel>
+</rss>

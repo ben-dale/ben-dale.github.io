@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on ben-dale.co.uk</title>
+    <link>/tags/git/</link>
+    <description>Recent content in git on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VulnHub: SP Eric</title>
+      <link>/my-first-writeup/</link>
+      <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/my-first-writeup/</guid>
+      <description>This weekend I managed to fully root a VulnHub box without looking at another person&amp;rsquo;s write-up for a hint, for the first time! This box was created by Daniel Solstad and can be downloaded here. Here&amp;rsquo;s my write-up.
+Write-up The description for this box states:
+Eric is trying to reach out on the Internet, but is he following best practice? Flags: - /root/flag.txt - /home/eric/flag.txt  Once I had Eric set up and running I ran a port scan:</description>
+    </item>
+    
+  </channel>
+</rss>
