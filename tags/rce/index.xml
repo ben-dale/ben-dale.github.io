@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>rce on ben-dale.co.uk</title>
+    <link>/tags/rce/</link>
+    <description>Recent content in rce on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 05 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/rce/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VulnHub: Cloud AV</title>
+      <link>/vulnhub-boredhackerblog-cloudav/</link>
+      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/vulnhub-boredhackerblog-cloudav/</guid>
+      <description>Here&amp;rsquo;s my write-up for Cloud AV, a VulnHub box created by BoredHackerBlog.
+Write-up The description for this box states the following:
+Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service. Currently, it&#39;s in beta mode. You&#39;ve been asked to test the setup and find vulnerabilities and escalate privs. Difficulty: Easy Tasks involved: port scanning webapp attacks sql injection command injection brute forcing code analysis Virtual Machine: Format: Virtual Machine (Virtualbox OVA) Operating System: Linux Networking: DHCP Service: Enabled IP Address Automatically assign This works better with VirtualBox than VMware  The listed tasks are exploits I have some familiarity with so I decided that this would be a good box to brush up some techniques.</description>
+    </item>
+    
+  </channel>
+</rss>

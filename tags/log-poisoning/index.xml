@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>log-poisoning on ben-dale.co.uk</title>
+    <link>/tags/log-poisoning/</link>
+    <description>Recent content in log-poisoning on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 07 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/log-poisoning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe: Res</title>
+      <link>/tryhackme-res/</link>
+      <pubDate>Mon, 07 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tryhackme-res/</guid>
+      <description>Here&amp;rsquo;s my write-up for Res, a CTF challenge created by stuxnet.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+An Apache webserver was accessible on port 80, and on port 6379, Redis. I checked out port 80 which just returned the default Apache webpage. I set up gobuster to scan the server but killed it after five minutes as it didn&amp;rsquo;t find anything, and I&amp;rsquo;m pretty sure this wasn&amp;rsquo;t the right track to be on.</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: dogcat</title>
+      <link>/tryhackme-dogcat/</link>
+      <pubDate>Sun, 06 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tryhackme-dogcat/</guid>
+      <description>Here&amp;rsquo;s my write-up for dogcat, a CTF challenge created by jammy.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+Two ports: SSH on port 22 and Apache on port 80. I took a look first at what was running on port 80.
+It was a website that showed you pictures of cats and dogs. Awh how nice. The showing of dogs and cats was controlled by a query parameter in the URL:</description>
+    </item>
+    
+  </channel>
+</rss>

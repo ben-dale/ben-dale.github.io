@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nfs on ben-dale.co.uk</title>
+    <link>/tags/nfs/</link>
+    <description>Recent content in nfs on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 09 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/nfs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>VulnHub: HappyCorp</title>
+      <link>/vulnhub-happycorp/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/vulnhub-happycorp/</guid>
+      <description>Here&amp;rsquo;s my write-up for HappyCorp, a VulnHub box created by Zayotic.
+Write-up The description for this box states the following:
++- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | Name: Happycorp | IP: DHCP | | Date: 2019-March-05 | Goal: Get Root! | | Author: Zayotic | Difficultly: ??? | +- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | | | + Average beginner/intermediate VM, only a few twists | | + May find it easy/hard (depends on YOUR background) | | + .</description>
+    </item>
+    
+  </channel>
+</rss>

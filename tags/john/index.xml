@@ -6,7 +6,18 @@
     <description>Recent content in john on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 02 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/john/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 07 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/john/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe: Res</title>
+      <link>/tryhackme-res/</link>
+      <pubDate>Mon, 07 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tryhackme-res/</guid>
+      <description>Here&amp;rsquo;s my write-up for Res, a CTF challenge created by stuxnet.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+An Apache webserver was accessible on port 80, and on port 6379, Redis. I checked out port 80 which just returned the default Apache webpage. I set up gobuster to scan the server but killed it after five minutes as it didn&amp;rsquo;t find anything, and I&amp;rsquo;m pretty sure this wasn&amp;rsquo;t the right track to be on.</description>
+    </item>
+    
     <item>
       <title>TryHackMe: Cyborg</title>
       <link>/tryhackme-cyborg/</link>
@@ -27,6 +38,29 @@ Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned th
       <description>Here&amp;rsquo;s my write-up for Agent Sudo, a CTF challenge created by DesKel.
 Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
 kali@kali:~$ nmap -sC -sV 10.10.108.158 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 15:15 EDT Nmap scan report for 10.10.108.158 Host is up (0.021s latency). Not shown: 997 closed ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: HappyCorp</title>
+      <link>/vulnhub-happycorp/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/vulnhub-happycorp/</guid>
+      <description>Here&amp;rsquo;s my write-up for HappyCorp, a VulnHub box created by Zayotic.
+Write-up The description for this box states the following:
++- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | Name: Happycorp | IP: DHCP | | Date: 2019-March-05 | Goal: Get Root! | | Author: Zayotic | Difficultly: ??? | +- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | | | + Average beginner/intermediate VM, only a few twists | | + May find it easy/hard (depends on YOUR background) | | + .</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: Sunset Nightfall</title>
+      <link>/vulnhub-sunset-nightfall/</link>
+      <pubDate>Sun, 16 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/vulnhub-sunset-nightfall/</guid>
+      <description>Here&amp;rsquo;s my write-up for Nightfall, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Write-up The description for this box states the following:
+Nightfall is a born2root VM designed for beginners. Virtualbox is strongly recommended for doing this challenge.  There wasn&amp;rsquo;t much to go off there so I ran a port scan using nmap to see what was running:
+kali@kali:~/Documents/vulnhub/nightfall/nmap$ nmap -sV -sC -oA nmap 10.</description>
     </item>
     
   </channel>

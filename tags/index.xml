@@ -37,9 +37,81 @@
     <item>
       <title>john</title>
       <link>/tags/john/</link>
-      <pubDate>Wed, 02 Jun 2021 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 07 Jun 2021 00:00:00 +0000</pubDate>
       
       <guid>/tags/john/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>log-poisoning</title>
+      <link>/tags/log-poisoning/</link>
+      <pubDate>Mon, 07 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/log-poisoning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redis</title>
+      <link>/tags/redis/</link>
+      <pubDate>Mon, 07 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>lfi</title>
+      <link>/tags/lfi/</link>
+      <pubDate>Sun, 06 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/lfi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>git</title>
+      <link>/tags/git/</link>
+      <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/git/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>node</title>
+      <link>/tags/node/</link>
+      <pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/node/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>systemd</title>
+      <link>/tags/systemd/</link>
+      <pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/systemd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>fcrackzip</title>
+      <link>/tags/fcrackzip/</link>
+      <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/fcrackzip/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pspy</title>
+      <link>/tags/pspy/</link>
+      <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/pspy/</guid>
       <description></description>
     </item>
     
@@ -53,6 +125,33 @@
     </item>
     
     <item>
+      <title>command-injection</title>
+      <link>/tags/command-injection/</link>
+      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/command-injection/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rce</title>
+      <link>/tags/rce/</link>
+      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/rce/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sqli</title>
+      <link>/tags/sqli/</link>
+      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/sqli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>electronics</title>
       <link>/tags/electronics/</link>
       <pubDate>Sat, 28 Mar 2020 00:00:00 +0000</pubDate>
@@ -62,11 +161,38 @@
     </item>
     
     <item>
-      <title>git</title>
-      <link>/tags/git/</link>
-      <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
+      <title>nikto</title>
+      <link>/tags/nikto/</link>
+      <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>/tags/git/</guid>
+      <guid>/tags/nikto/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>wp-scan</title>
+      <link>/tags/wp-scan/</link>
+      <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/wp-scan/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>nfs</title>
+      <link>/tags/nfs/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/nfs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>smb</title>
+      <link>/tags/smb/</link>
+      <pubDate>Sun, 16 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/smb/</guid>
       <description></description>
     </item>
     

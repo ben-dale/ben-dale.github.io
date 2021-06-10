@@ -31,6 +31,18 @@ Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned th
     </item>
     
     <item>
+      <title>VulnHub: Sunset Decoy</title>
+      <link>/vulnhub-sunset-decoy/</link>
+      <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/vulnhub-sunset-decoy/</guid>
+      <description>Here&amp;rsquo;s my write-up for Sunset: Decoy, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Write-up The description for this box states the following:
+Easy/Intermediate (May variate depending on your background) It is recommended to run this machine in Virtualbox.  I ran nmap to see which services were exposed:
+kali@kali:~$ nmap -sC -sV -p- 192.168.1.123 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-11 04:11 EDT Nmap scan report for 60832e9f188106ec5bcc4eb7709ce592 (192.</description>
+    </item>
+    
+    <item>
       <title>TryHackMe: Agent Sudo</title>
       <link>/tryhackme-agent-sudo/</link>
       <pubDate>Fri, 03 Jul 2020 00:00:00 +0000</pubDate>
@@ -39,6 +51,29 @@ Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned th
       <description>Here&amp;rsquo;s my write-up for Agent Sudo, a CTF challenge created by DesKel.
 Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
 kali@kali:~$ nmap -sC -sV 10.10.108.158 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 15:15 EDT Nmap scan report for 10.10.108.158 Host is up (0.021s latency). Not shown: 997 closed ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: HappyCorp</title>
+      <link>/vulnhub-happycorp/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/vulnhub-happycorp/</guid>
+      <description>Here&amp;rsquo;s my write-up for HappyCorp, a VulnHub box created by Zayotic.
+Write-up The description for this box states the following:
++- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | Name: Happycorp | IP: DHCP | | Date: 2019-March-05 | Goal: Get Root! | | Author: Zayotic | Difficultly: ??? | +- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | | | + Average beginner/intermediate VM, only a few twists | | + May find it easy/hard (depends on YOUR background) | | + .</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: Sunset Nightfall</title>
+      <link>/vulnhub-sunset-nightfall/</link>
+      <pubDate>Sun, 16 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/vulnhub-sunset-nightfall/</guid>
+      <description>Here&amp;rsquo;s my write-up for Nightfall, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Write-up The description for this box states the following:
+Nightfall is a born2root VM designed for beginners. Virtualbox is strongly recommended for doing this challenge.  There wasn&amp;rsquo;t much to go off there so I ran a port scan using nmap to see what was running:
+kali@kali:~/Documents/vulnhub/nightfall/nmap$ nmap -sV -sC -oA nmap 10.</description>
     </item>
     
     <item>

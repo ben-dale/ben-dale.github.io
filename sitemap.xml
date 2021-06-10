@@ -20,22 +20,46 @@
     <loc>/tryhackme-bountyhacker/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
+    <loc>/tags/john/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/log-poisoning/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/redis/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
     <loc>/tryhackme-res/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/lfi/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
     <loc>/tryhackme-dogcat/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
-    <loc>/tags/john/</loc>
+    <loc>/tryhackme-cyborg/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
-    <loc>/tryhackme-cyborg/</loc>
+    <loc>/tags/git/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
     <loc>/tryhackme-githappens/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
+    <loc>/tags/node/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/systemd/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
     <loc>/tryhackme-vulnnet-node/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/fcrackzip/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/pspy/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
     <loc>/vulnhub-sunset-decoy/</loc>
@@ -47,6 +71,15 @@
     <loc>/tryhackme-agent-sudo/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
+    <loc>/tags/command-injection/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/rce/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/sqli/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
     <loc>/vulnhub-boredhackerblog-cloudav/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
@@ -56,16 +89,25 @@
     <loc>/on-vpn/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
+    <loc>/tags/nikto/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
     <loc>/vulnhub-mr-robot/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/wp-scan/</loc>
+    <lastmod>2021-06-10T21:43:44+01:00</lastmod>
+  </url><url>
+    <loc>/tags/nfs/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
     <loc>/vulnhub-happycorp/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
-    <loc>/vulnhub-sunset-nightfall/</loc>
+    <loc>/tags/smb/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
-    <loc>/tags/git/</loc>
+    <loc>/vulnhub-sunset-nightfall/</loc>
     <lastmod>2021-06-10T21:43:44+01:00</lastmod>
   </url><url>
     <loc>/tags/metasploit/</loc>
