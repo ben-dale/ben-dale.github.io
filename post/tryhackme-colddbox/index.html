@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for ColddBox, a TryHackMe box created by fieldraccoon.">
+    <title>TryHackMe: ColddBox | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: ColddBox</span></h1>
+
+<h2 class="date">2021/06/28</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/wordpress">wordpress</a> <a href="/tags/wpscan">wpscan</a> <a href="/tags/php">php</a> <a href="/tags/suid">suid</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/colddboxeasy">ColddBox</a>, a CTF challenge created by <a href="https://tryhackme.com/p/C0ldd">C0ldd</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<p><img src="/static/colddbox/1.png" alt=""></p>
+<p>Two ports were open: HTTP on port 80 and SSH on 4512.</p>
+<p>Wordpress was running on port 80, and given its proclivity for vulnerabilities, I started scanning the IP with <code>gobuster</code>.</p>
+<p><img src="/static/colddbox/2.png" alt=""></p>
+<p><code>gobuster</code> identified a page under &ldquo;/hidden&rdquo; which exposed some important information:</p>
+<blockquote>
+<p>C0ldd, you changed Hugo&rsquo;s password, when you can send it to him so he can continue uploading his articles. Philip</p>
+</blockquote>
+<p>I now had three potential usernames: c0ldd, hugo, and philip.</p>
+<p>I used the wp-admin page to verify these usernames were valid using the error message it returned:</p>
+<p><img src="/static/colddbox/3.png" alt=""></p>
+<p>Next I used <code>wpscan</code> to brute-force passwords for these users, and within a couple of minutes I had the password for c0ldd.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wpscan --url http://10.10.111.188 -U <span style="color:#e6db74">&#39;hugo,c0ldd,philip&#39;</span> -P /usr/share/wordlists/rockyou.txt
+</code></pre></div><p><img src="/static/colddbox/4.png" alt=""></p>
+<p>I logged into the account and started to look around. I needed a shell so I changed the theme&rsquo;s 404-page contents to be a reverse shell.</p>
+<p><img src="/static/colddbox/5.png" alt=""></p>
+<p><img src="/static/colddbox/6.png" alt=""></p>
+<p>I had a shell as &ldquo;www-data&rdquo; but needed to escalate to an account that could do something. I wondered if any binaries had the SUID bit set. The <code>find</code> binary did, which would let me <a href="https://gtfobins.github.io/gtfobins/find/#shell">initiate a shell as the root user</a>.</p>
+<p><img src="/static/colddbox/7.png" alt=""></p>
+<p><img src="/static/colddbox/8.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A quick box to brush up on some basic Wordpress hacking. Thank you C0ldd!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

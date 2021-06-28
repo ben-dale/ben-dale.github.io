@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>wpscan on ben-dale.co.uk</title>
+    <link>/tags/wpscan/</link>
+    <description>Recent content in wpscan on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/wpscan/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe: ColddBox</title>
+      <link>/post/tryhackme-colddbox/</link>
+      <pubDate>Mon, 28 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-colddbox/</guid>
+      <description>Here&amp;rsquo;s my write-up for ColddBox, a CTF challenge created by C0ldd.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+Two ports were open: HTTP on port 80 and SSH on 4512.
+Wordpress was running on port 80, and given its proclivity for vulnerabilities, I started scanning the IP with gobuster.
+gobuster identified a page under &amp;ldquo;/hidden&amp;rdquo; which exposed some important information:
+ C0ldd, you changed Hugo&amp;rsquo;s password, when you can send it to him so he can continue uploading his articles.</description>
+    </item>
+    
+  </channel>
+</rss>
