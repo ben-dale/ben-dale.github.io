@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on ben-dale.co.uk</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 11 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Lab: Docker</title>
+      <link>/post/the-lab-docker/</link>
+      <pubDate>Fri, 11 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/the-lab-docker/</guid>
+      <description>A deep dive into some common Docker misconfigurations, exploitations, etc. for learning and reference purposes, using a Ubuntu Server VM called &amp;ldquo;lab&amp;rdquo;.
+Disclaimer: I&amp;rsquo;m not a Docker expert, these are just some notes I put together whilst researching Docker security and general usage, for my own interest. The information here is taken from a wide variety of sources.
+Disclaimer for the disclaimer: That&amp;rsquo;s smart talk for &amp;ldquo;I just wanted to f*ck about with Docker&amp;rdquo;.</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: Bounty Hacker</title>
+      <link>/post/tryhackme-bounty-hacker/</link>
+      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-bounty-hacker/</guid>
+      <description>Here&amp;rsquo;s my write-up for Bounty Hacker, a CTF challenge created by Sevuhl.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+ Port 21: vsftpd 3.0.3 Port 22: OpenSSH 7.2p2 Port 80: Apache httpd 2.4.18  I started with the FTP server on port 21 because nmap reported that anonymous login was allowed. There I found two files: &amp;ldquo;task.txt&amp;rdquo; and &amp;ldquo;locks.txt&amp;rdquo;.
+Given that I had found a potential username and a list of (what looked like) passwords, I had a go at brute-forcing SSH.</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: Res</title>
+      <link>/post/tryhackme-res/</link>
+      <pubDate>Mon, 07 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-res/</guid>
+      <description>Here&amp;rsquo;s my write-up for Res, a CTF challenge created by stuxnet.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+An Apache webserver was accessible on port 80, and on port 6379, Redis. I checked out port 80 which just returned the default Apache webpage. I set up gobuster to scan the server but killed it after five minutes as it didn&amp;rsquo;t find anything, and I&amp;rsquo;m pretty sure this wasn&amp;rsquo;t the right track to be on.</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: dogcat</title>
+      <link>/post/tryhackme-dogcat/</link>
+      <pubDate>Sun, 06 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-dogcat/</guid>
+      <description>Here&amp;rsquo;s my write-up for dogcat, a CTF challenge created by jammy.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+Two ports: SSH on port 22 and Apache on port 80. I took a look first at what was running on port 80.
+It was a website that showed you pictures of cats and dogs. Awh how nice. The showing of dogs and cats was controlled by a query parameter in the URL:</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: Cyborg</title>
+      <link>/post/tryhackme-cyborg/</link>
+      <pubDate>Wed, 02 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-cyborg/</guid>
+      <description>Here&amp;rsquo;s my write-up for Cyborg, a CTF challenge created by fieldraccoon.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+└─$ nmap -sC -sV 10.10.12.196 Starting Nmap 7.91 ( https://nmap.org ) at 2021-06-01 11:07 EDT Nmap scan report for 10.10.12.196 Host is up (0.025s latency). Not shown: 998 closed ports PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0) | ssh-hostkey: | 2048 db:b2:70:f3:07:ac:32:00:3f:81:b8:d0:3a:89:f3:65 (RSA) | 256 68:e6:85:2f:69:65:5b:e7:c6:31:2c:8e:41:67:d7:ba (ECDSA) |_ 256 56:2c:79:92:ca:23:c3:91:49:35:fa:dd:69:7c:ca:ab (ED25519) 80/tcp open http Apache httpd 2.</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: Git Happens</title>
+      <link>/post/tryhackme-git-happens/</link>
+      <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-git-happens/</guid>
+      <description>Here&amp;rsquo;s my write-up for Git Happens, a CTF challenge created by hydragyrum.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+─$ nmap -sC -sV 10.10.184.212 Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-31 14:30 EDT Nmap scan report for 10.10.184.212 Host is up (0.026s latency). Not shown: 999 closed ports PORT STATE SERVICE VERSION 80/tcp open http nginx 1.14.0 (Ubuntu) | http-git: | 10.10.184.212:80/.git/ | Git repository found!</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: VulnNet Node</title>
+      <link>/post/tryhackme-vulnnet-node/</link>
+      <pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-vulnnet-node/</guid>
+      <description>Here&amp;rsquo;s my write-up for VulnNet Node, a CTF challenge created by TheCyb3rW0lf.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+I also ran a full port scan but this was the only port open. Node.js running Express, hosting a webpage.
+I took a look at the website in my browser and found a fairly simple website with some sort of account functionality.
+I followed the link to the login page.</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: Sunset Decoy</title>
+      <link>/post/vulnhub-sunset-decoy/</link>
+      <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnhub-sunset-decoy/</guid>
+      <description>Here&amp;rsquo;s my write-up for Sunset: Decoy, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Write-up The description for this box states the following:
+Easy/Intermediate (May variate depending on your background) It is recommended to run this machine in Virtualbox. I ran nmap to see which services were exposed:
+kali@kali:~$ nmap -sC -sV -p- 192.168.1.123 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-11 04:11 EDT Nmap scan report for 60832e9f188106ec5bcc4eb7709ce592 (192.</description>
+    </item>
+    
+    <item>
+      <title>TryHackMe: Agent Sudo</title>
+      <link>/post/tryhackme-agent-sudo/</link>
+      <pubDate>Fri, 03 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-agent-sudo/</guid>
+      <description>Here&amp;rsquo;s my write-up for Agent Sudo, a CTF challenge created by DesKel.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+kali@kali:~$ nmap -sC -sV 10.10.108.158 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 15:15 EDT Nmap scan report for 10.10.108.158 Host is up (0.021s latency). Not shown: 997 closed ports PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 3.0.3 22/tcp open ssh OpenSSH 7.6p1 Ubuntu 4ubuntu0.</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: Cloud AV</title>
+      <link>/post/vulnhub-cloud-av/</link>
+      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnhub-cloud-av/</guid>
+      <description>Here&amp;rsquo;s my write-up for Cloud AV, a VulnHub box created by BoredHackerBlog.
+Write-up The description for this box states the following:
+Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service. Currently, it&#39;s in beta mode. You&#39;ve been asked to test the setup and find vulnerabilities and escalate privs. Difficulty: Easy Tasks involved: port scanning webapp attacks sql injection command injection brute forcing code analysis Virtual Machine: Format: Virtual Machine (Virtualbox OVA) Operating System: Linux Networking: DHCP Service: Enabled IP Address Automatically assign This works better with VirtualBox than VMware The listed tasks are exploits I have some familiarity with so I decided that this would be a good box to brush up some techniques.</description>
+    </item>
+    
+    <item>
+      <title>I forget when I&#39;m on the VPN</title>
+      <link>/post/i-forget-when-im-on-the-vpn/</link>
+      <pubDate>Sat, 28 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/i-forget-when-im-on-the-vpn/</guid>
+      <description>The COVID-19 breakout has resulted in me working from home for the foreseeable, which means I&amp;rsquo;m using the work VPN more than I&amp;rsquo;m used to. Typically I don&amp;rsquo;t have to use the work VPN as I tend to work in the office most of the time but being at home has me flipping in and out of the VPN a couple of times a day. One thing I keep forgetting about the VPN is whether I&amp;rsquo;m on it or not.</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: Mr-Robot</title>
+      <link>/post/vulnhub-mr-robot/</link>
+      <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnhub-mr-robot/</guid>
+      <description>Here&amp;rsquo;s my write-up for Mr-Robot, a VulnHub box created by Leon Johnson.
+Write-up The description for this box states the following:
+Based on the show, Mr Robot. This VM has three keys hidden in different locations. Your goal is to find all three. Each key is progressively difficult to find. The VM isn&#39;t too difficult. There isn&#39;t any advanced exploitation or reverse engineering. The level is considered beginner-intermediate. Once I found out what IP the box was running on I scanned the ports using nmap:</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: HappyCorp</title>
+      <link>/post/vulnhub-happycorp/</link>
+      <pubDate>Mon, 09 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnhub-happycorp/</guid>
+      <description>Here&amp;rsquo;s my write-up for HappyCorp, a VulnHub box created by Zayotic.
+Write-up The description for this box states the following:
++- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | Name: Happycorp | IP: DHCP | | Date: 2019-March-05 | Goal: Get Root! | | Author: Zayotic | Difficultly: ??? | +- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+ | | | + Average beginner/intermediate VM, only a few twists | | + May find it easy/hard (depends on YOUR background) | | + .</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: Sunset Nightfall</title>
+      <link>/post/vulnhub-sunset-nightfall/</link>
+      <pubDate>Sun, 16 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnhub-sunset-nightfall/</guid>
+      <description>Here&amp;rsquo;s my write-up for Nightfall, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
+Write-up The description for this box states the following:
+Nightfall is a born2root VM designed for beginners. Virtualbox is strongly recommended for doing this challenge. There wasn&amp;rsquo;t much to go off there so I ran a port scan using nmap to see what was running:
+kali@kali:~/Documents/vulnhub/nightfall/nmap$ nmap -sV -sC -oA nmap 10.0.2.19 Starting Nmap 7.</description>
+    </item>
+    
+    <item>
+      <title>VulnHub: SP Eric</title>
+      <link>/post/vulnhub-sp-eric/</link>
+      <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnhub-sp-eric/</guid>
+      <description>This weekend I managed to fully root a VulnHub box without looking at another person&amp;rsquo;s write-up for a hint, for the first time! This box was created by Daniel Solstad and can be downloaded here. Here&amp;rsquo;s my write-up.
+Write-up The description for this box states:
+Eric is trying to reach out on the Internet, but is he following best practice? Flags: - /root/flag.txt - /home/eric/flag.txt Once I had Eric set up and running I ran a port scan:</description>
+    </item>
+    
+    <item>
+      <title>Text Clock</title>
+      <link>/post/text-clock/</link>
+      <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/post/text-clock/</guid>
+      <description>A few years ago I came across a clock design that I hadn&amp;rsquo;t seen before. I thought the design was pretty cool and I wondered how hard it would be to build a webpage that would display similar wording that highlights to display the current time.
+I got to work hacking around, figuring out how to translate time in numbers to time in text. After a couple of hours I had something I was fairly happy with.</description>
+    </item>
+    
+  </channel>
+</rss>

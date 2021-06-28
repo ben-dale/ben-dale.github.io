@@ -1,0 +1,13 @@
+header {
+    background: black;
+}
+
+a {
+    color: black;
+    text-decoration: underline;
+}
+
+.article-meta {
+    background: white;
+    border-radius: 0;
+}

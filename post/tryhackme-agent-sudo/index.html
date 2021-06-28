@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Agent Sudo, a TryHackMe box created by DesKel.">
+    <title>TryHackMe: Agent Sudo | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: Agent Sudo</span></h1>
+
+<h2 class="date">2020/07/03</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/ftp">ftp</a> <a href="/tags/ssh">ssh</a> <a href="/tags/hydra">hydra</a> <a href="/tags/steganography">steganography</a> <a href="/tags/john">john</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/agentsudoctf">Agent Sudo</a>, a CTF challenge created by <a href="https://tryhackme.com/p/DesKel">DesKel</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<pre><code>kali@kali:~$ nmap -sC -sV 10.10.108.158
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-02 15:15 EDT
+Nmap scan report for 10.10.108.158
+Host is up (0.021s latency).
+Not shown: 997 closed ports
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   2048 ef:1f:5d:04:d4:77:95:06:60:72:ec:f0:58:f2:cc:07 (RSA)
+|   256 5e:02:d1:9a:c4:e7:43:06:62:c1:9e:25:84:8a:e7:ea (ECDSA)
+|_  256 2d:00:5c:b9:fd:a8:c8:d8:80:e3:92:4f:8b:4f:18:e2 (ED25519)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+|_http-title: Annoucement
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre><p>I first tried to log in to the FTP server using an anonymous login but that didn&rsquo;t work so I started looking for things on port <code>80</code>. Viewing the root webpage in Firefox gave me some interesting information:</p>
+<p><img src="/static/agent_sudo/1.png" alt=""></p>
+<p>I sent a request using Burp with the user-agent header set to &ldquo;R&rdquo; to see what would happen.</p>
+<pre><code>User-Agent: R
+</code></pre><p>This was the response:</p>
+<p><img src="/static/agent_sudo/2.png" alt=""></p>
+<p>The first line of the response body read the following:</p>
+<pre><code>What are you doing! Are you one of the 25 employees? If not, I going to report this incident
+</code></pre><p>I presumed that the other 25 employees were other agents, all sharing a similar codename to Agent R. I used the Intruder feature in Burp to make 26 requests, all to the root page with a different User-Agent.</p>
+<p><img src="/static/agent_sudo/3.png" alt=""></p>
+<p>Setting the user-agent to <code>User-Agent: C</code> resulted in a <code>302</code> response, which redirected me to <code>agent_C_attention.php</code>, which contained the following:</p>
+<p><img src="/static/agent_sudo/4.png" alt=""></p>
+<p>Now that I had a username I decided to give brute-forcing the FTP server a shot using Hydra.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hydra -l chris -P /usr/share/wordlists/rockyou.txt 10.10.180.158 ftp -V -f -I
+</code></pre></div><p>This proved successful and I now had some credentials for <code>chris</code>.</p>
+<p><img src="/static/agent_sudo/5.png" alt=""></p>
+<p>I logged in to the FTP server as <code>chris</code> and found three files: <code>To_agentJ.txt</code>, <code>cute-alien.jpg</code> and <code>cutie.png</code>.</p>
+<p><img src="/static/agent_sudo/6.png" alt=""></p>
+<p>Reading the contents of <code>To_agentJ.txt</code> revealed that some sort of steganography work was going to be required:</p>
+<p><img src="/static/agent_sudo/7.png" alt=""></p>
+<p>I used <code>stegoveritas</code> to scan <code>cutie.png</code> which revealed a hidden password-protected zip file:</p>
+<p><img src="/static/agent_sudo/8.png" alt=""></p>
+<p><img src="/static/agent_sudo/9.png" alt=""></p>
+<p>I used <code>john</code> to crack the zip file password, which turned out to be &ldquo;alien&rdquo;; probably something I should have guessed in retrospect.</p>
+<p><img src="/static/agent_sudo/10.png" alt=""></p>
+<p>The zip file contained the file <code>To_agentR.txt</code>, the contents being:</p>
+<p><img src="/static/agent_sudo/11.png" alt=""></p>
+<p>The value &ldquo;QXJlYTUx&rdquo; screamed &ldquo;base64&rdquo; at me, so I decoded it and found the value &ldquo;Area51&rdquo;.</p>
+<p><img src="/static/agent_sudo/12.png" alt=""></p>
+<p>I moved on to <code>cute-alien.jpg</code> and found that it also contained a hidden message, however, this was password protected:</p>
+<p><img src="/static/agent_sudo/13.png" alt=""></p>
+<p>I tried &ldquo;Area51&rdquo; and&hellip; success!</p>
+<p><img src="/static/agent_sudo/14.png" alt=""></p>
+<p>Now I had a set of credentials for <code>james</code>. I managed to log in using these credentials over SSH:</p>
+<p><img src="/static/agent_sudo/15.png" alt=""></p>
+<p>I enumerated the box for a little while, trying a few different things. It turned out that there were some interesting <code>sudo</code> permissions set for <code>james</code>:</p>
+<p><img src="/static/agent_sudo/16.png" alt=""></p>
+<p><img src="/static/agent_sudo/19.png" alt=""></p>
+<p>I did a bit of research and found an exploit using <code>searchsploit</code> that I thought would be successful.
+The full exploit can be viewed on exploit-db <a href="https://www.exploit-db.com/exploits/47502">here</a>.</p>
+<p><img src="/static/agent_sudo/17.png" alt=""></p>
+<p><img src="/static/agent_sudo/18.png" alt=""></p>
+<p>The last step was to run the exploit and hope for the best:</p>
+<p><img src="/static/agent_sudo/20.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>This was a fun little box that wasn&rsquo;t too challenging and kept me interested the whole way through. Thanks, DesKel!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

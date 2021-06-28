@@ -9,10 +9,10 @@
     <lastBuildDate>Mon, 24 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/node/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TryHackMe: VulnNet Node</title>
-      <link>/tryhackme-vulnnet-node/</link>
+      <link>/post/tryhackme-vulnnet-node/</link>
       <pubDate>Mon, 24 May 2021 00:00:00 +0000</pubDate>
       
-      <guid>/tryhackme-vulnnet-node/</guid>
+      <guid>/post/tryhackme-vulnnet-node/</guid>
       <description>Here&amp;rsquo;s my write-up for VulnNet Node, a CTF challenge created by TheCyb3rW0lf.
 Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
 I also ran a full port scan but this was the only port open. Node.js running Express, hosting a webpage.

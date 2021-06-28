@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Cyborg, a TryHackMe box created by fieldraccoon.">
+    <title>TryHackMe: Cyborg | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: Cyborg</span></h1>
+
+<h2 class="date">2021/06/02</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/ssh">ssh</a> <a href="/tags/john">john</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/cyborgt8">Cyborg</a>, a CTF challenge created by <a href="https://tryhackme.com/p/fieldraccoon">fieldraccoon</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<pre><code>└─$ nmap -sC -sV 10.10.12.196
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-06-01 11:07 EDT
+Nmap scan report for 10.10.12.196
+Host is up (0.025s latency).
+Not shown: 998 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 db:b2:70:f3:07:ac:32:00:3f:81:b8:d0:3a:89:f3:65 (RSA)
+|   256 68:e6:85:2f:69:65:5b:e7:c6:31:2c:8e:41:67:d7:ba (ECDSA)
+|_  256 56:2c:79:92:ca:23:c3:91:49:35:fa:dd:69:7c:ca:ab (ED25519)
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Apache2 Ubuntu Default Page: It works
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 10.70 seconds
+</code></pre><p>Two ports: 80 and 22. I first took a look at what was running on port 80 in my browser.</p>
+<p><img src="/static/cyborg/1.png" alt=""></p>
+<p>It was just the default Apache page, so I set up <code>gobuster</code> to scan the website. It quickly found two interesting pages:</p>
+<pre><code>/etc
+/admin
+</code></pre><p>Under <code>/admin</code> I found a basic website, some sort of personal website for someone called Alex.</p>
+<p><img src="/static/cyborg/2.png" alt=""></p>
+<p>I found a chat log on the website where Alex had mentioned a proxy setup that they were having trouble with, but also a backup they had taken called &ldquo;music_archive&rdquo;.</p>
+<p><img src="/static/cyborg/5.png" alt=""></p>
+<p>I clicked around the website some more and saw that I could download a tar archive. Was this the archive Alex had mentioned?</p>
+<p><img src="/static/cyborg/6.png" alt=""></p>
+<p><img src="/static/cyborg/7.png" alt=""></p>
+<p>Under <code>/etc</code> something was serving documents.</p>
+<p><img src="/static/cyborg/3.png" alt=""></p>
+<p><img src="/static/cyborg/4.png" alt=""></p>
+<p>Inside <code>passwd</code> I found the following content:</p>
+<pre><code>music_archive:$apr1$BpZ.Q.1m$F0qqPwHSOG50URuOVQTTn.
+</code></pre><p>I guessed that this was the password for the archive I had just downloaded, although the password looked hashed. I took a look at <a href="http://pentestmonkey.net/cheat-sheet/john-the-ripper-hash-formats">a list of hashed password formats</a> and found a match.</p>
+<p><img src="/static/cyborg/9.png" alt=""></p>
+<p>I copied the hash into a text file and used <code>john</code> to crack the password with the rockyou wordlist.</p>
+<p><img src="/static/cyborg/10.png" alt=""></p>
+<p>I now had some credentials:</p>
+<pre><code>music_archive:squidward
+</code></pre><p>Back to the archive. I unpacked the archive and inside was a README that stated the archive had been made with something called <a href="https://borgbackup.readthedocs.io/">Borg</a>.</p>
+<p><img src="/static/cyborg/8.png" alt=""></p>
+<p>I downloaded a copy of Borg and found a command to list archives. I used the password &ldquo;squidward&rdquo; and it worked!</p>
+<p><img src="/static/cyborg/11.png" alt=""></p>
+<p>With the password confirmed I could extract the contents. This looked like a copy of Alex&rsquo;s home directory.</p>
+<p><img src="/static/cyborg/12.png" alt=""></p>
+<p>A note in Alex&rsquo;s documents gave me a second set of credentials.</p>
+<p><img src="/static/cyborg/13.png" alt=""></p>
+<p>With these credentials I SSH&rsquo;d into Alex&rsquo;s account and found the first flag.</p>
+<p><img src="/static/cyborg/14.png" alt=""></p>
+<p><img src="/static/cyborg/15.png" alt=""></p>
+<p>After finding <code>user.txt</code> I took a look at what sudo permissions Alex had. Alex&rsquo;s user can run a backup script as root without a password. I took a look at the permissions of this script and noticed that Alex was the owner, but didn&rsquo;t have write permissions. If I could change what the script was doing I could run it as root, essentially running what I wanted as root. I updated the permissions on <code>backup.sh</code> with <code>chmod</code> and then added a line to the end of <code>backup.sh</code> that would start a new interactive bash session.</p>
+<p><img src="/static/cyborg/16.png" alt=""></p>
+<p><img src="/static/cyborg/17.png" alt=""></p>
+<p><img src="/static/cyborg/19.png" alt=""></p>
+<p>Once I had everything in place I ran the script as root, giving me access to <code>root.txt</code></p>
+<p><img src="/static/cyborg/18.png" alt=""></p>
+<p><img src="/static/cyborg/20.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>I had a lot of fun with this box. It wasn&rsquo;t too challenging and was a nice re-introduction into the world of CTF&rsquo;s after a bit of time off. Thanks, fieldraccoon!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

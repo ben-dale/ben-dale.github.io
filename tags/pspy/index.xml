@@ -9,13 +9,13 @@
     <lastBuildDate>Sat, 11 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/pspy/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VulnHub: Sunset Decoy</title>
-      <link>/vulnhub-sunset-decoy/</link>
+      <link>/post/vulnhub-sunset-decoy/</link>
       <pubDate>Sat, 11 Jul 2020 00:00:00 +0000</pubDate>
       
-      <guid>/vulnhub-sunset-decoy/</guid>
+      <guid>/post/vulnhub-sunset-decoy/</guid>
       <description>Here&amp;rsquo;s my write-up for Sunset: Decoy, a VulnHub box created by whitecr0wz, which is part of the Sunset series.
 Write-up The description for this box states the following:
-Easy/Intermediate (May variate depending on your background) It is recommended to run this machine in Virtualbox.  I ran nmap to see which services were exposed:
+Easy/Intermediate (May variate depending on your background) It is recommended to run this machine in Virtualbox. I ran nmap to see which services were exposed:
 kali@kali:~$ nmap -sC -sV -p- 192.168.1.123 Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-11 04:11 EDT Nmap scan report for 60832e9f188106ec5bcc4eb7709ce592 (192.</description>
     </item>
     

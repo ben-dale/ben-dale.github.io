@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Bounty Hacker, a TryHackMe box created by Sevuhl.">
+    <title>TryHackMe: Bounty Hacker | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: Bounty Hacker</span></h1>
+
+<h2 class="date">2021/06/10</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/ftp">ftp</a> <a href="/tags/ssh">ssh</a> <a href="/tags/hydra">hydra</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/cowboyhacker">Bounty Hacker</a>, a CTF challenge created by <a href="https://tryhackme.com/p/Sevuhl">Sevuhl</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<p><img src="/static/bountyhacker/1.png" alt=""></p>
+<ul>
+<li>Port 21: vsftpd 3.0.3</li>
+<li>Port 22: OpenSSH 7.2p2</li>
+<li>Port 80: Apache httpd 2.4.18</li>
+</ul>
+<p>I started with the FTP server on port 21 because nmap reported that anonymous login was allowed. There I found two files: &ldquo;task.txt&rdquo; and &ldquo;locks.txt&rdquo;.</p>
+<p><img src="/static/bountyhacker/3.png" alt="">
+<img src="/static/bountyhacker/2.png" alt=""></p>
+<p>Given that I had found a potential username and a list of (what looked like) passwords, I had a go at brute-forcing SSH.</p>
+<p><img src="/static/bountyhacker/4.png" alt=""></p>
+<p>I logged in using the credentials and found the first flag.</p>
+<p><img src="/static/bountyhacker/5.png" alt=""></p>
+<p>The next thing to do was to elevate to the root user, to find the second flag. For this, I checked lin&rsquo;s sudo permissions and could see that they could run &ldquo;/bin/tar&rdquo; as root.</p>
+<p><img src="/static/bountyhacker/6.png" alt=""></p>
+<p><a href="https://gtfobins.github.io/gtfobins/tar/#sudo">GTFOBins</a> lists a way to get a shell if a user is permitted to run &ldquo;/bin/tar&rdquo; as the root user.</p>
+<p><img src="/static/bountyhacker/8.png" alt=""></p>
+<p>Using this method I gained access to the root account and found the second flag.</p>
+<p><img src="/static/bountyhacker/7.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A fun little box, and one I&rsquo;d recommend to any beginner. Thank you Sevuhl!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

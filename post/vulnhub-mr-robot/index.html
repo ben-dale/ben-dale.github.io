@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Mr-Robot, a VulnHub box created by sho_luv.">
+    <title>VulnHub: Mr-Robot | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">VulnHub: Mr-Robot</span></h1>
+
+<h2 class="date">2020/03/11</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/nikto">nikto</a> <a href="/tags/wp-scan">wp-scan</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://www.vulnhub.com/entry/mr-robot-1,151/">Mr-Robot</a>, a VulnHub box created by <a href="https://twitter.com/sho_luv">Leon Johnson</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>The description for this box states the following:</p>
+<pre><code>Based on the show, Mr Robot. 
+This VM has three keys hidden in different locations. Your goal is to find all three. Each key is progressively difficult to find. 
+The VM isn't too difficult. There isn't any advanced exploitation or reverse engineering. The level is considered beginner-intermediate.
+</code></pre><p>Once I found out what IP the box was running on I scanned the ports using <code>nmap</code>:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/mrrobot$ nmap -sC -sV -oA ports 192.168.1.206
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-03-10 10:56 EDT
+Nmap scan report for linux (192.168.1.206)
+Host is up (0.0013s latency).
+Not shown: 997 filtered ports
+PORT    STATE  SERVICE  VERSION
+22/tcp  closed ssh
+80/tcp  open   http     Apache httpd
+|_http-server-header: Apache
+|_http-title: Site doesn't have a title (text/html).
+443/tcp open   ssl/http Apache httpd
+|_http-server-header: Apache
+|_http-title: Site doesn't have a title (text/html).
+| ssl-cert: Subject: commonName=www.example.com
+| Not valid before: 2015-09-16T10:45:03
+|_Not valid after:  2025-09-13T10:45:03
+</code></pre><p>Port 22 was closed which is a shame, but 80 and 443 were open. I had a quick look at the SSL certificate but didn&rsquo;t find anything useful and stuck to port 80 for the entirety of this CTF.</p>
+<p>I opened up Firefox and had a look at what was running on port 80:</p>
+<p><img src="/static/mrrobot/1.png" alt=""></p>
+<p><code>prepare</code>, <code>fsociety</code> and <code>wakeup</code> played a small video clip from the Mr Robot TV show. <code>inform</code> and <code>question</code> showed two different galleries of images, one containing newspaper clippings and a running dialogue by Mr Robot himself, and another containing Banksy-style art.</p>
+<p><img src="/static/mrrobot/2.png" alt=""></p>
+<p><code>join</code> opened up a new page where Mr Robot asked me for my e-mail address, although the request that backed this question didn&rsquo;t lead anywhere:</p>
+<p><img src="/static/mrrobot/3.png" alt=""></p>
+<p>After some initial manual investigation of the website I ran <code>nikto</code> to see what it could find, and it identified the website as running on WordPress:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/mrrobot$ nikto -host http://192.168.1.206
+...
++ /wp-login/: Admin login page/section found.
++ /wordpress: A Wordpress installation was found.
++ /wp-admin/wp-login.php: Wordpress login found
+...
+</code></pre><p>I ran <code>wpscan</code> to find out a little bit more information:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/mrrobot$ wpscan --url http://192.168.1.206
+...
+[+] http://192.168.1.206/robots.txt
+ | Found By: Robots Txt (Aggressive Detection)
+ | Confidence: 100%
+...
+</code></pre><p><code>wpscan</code> didn&rsquo;t find anything particularly interesting, but it did identify <code>robots.txt</code> so I took a look:</p>
+<p><img src="/static/mrrobot/4.png" alt=""></p>
+<p>The first key was found:</p>
+<p><img src="/static/mrrobot/5.png" alt=""></p>
+<p>I then downloaded <code>fsocity.dic</code> and took a look at the contents. After looking at the raw data to verify it was indeed a dictionary, I counted the entries, checked if there were any duplicates (which there were) and deduplicated the file:</p>
+<p><img src="/static/mrrobot/6.png" alt=""></p>
+<p>I assumed that I&rsquo;d been given this dictionary for a reason, then remembered the wp-admin page. I still didn&rsquo;t have a username so I started with a few names from the TV show and I got a different error message back when I tried &ldquo;elliot&rdquo;:</p>
+<p><img src="/static/mrrobot/7.png" alt=""></p>
+<p>Now that I had a username and a clean dictionary file, I decided to use <code>wpscan</code>&rsquo;s brute-force option to crack Elliot&rsquo;s account:</p>
+<pre><code>wpscan -U elliot -P no_dupes.dic --url 192.168.1.206 --password-attack wp-login
+</code></pre><p><img src="/static/mrrobot/8.png" alt=""></p>
+<p>Success! I logged into Elliot&rsquo;s account and looked around for any draft posts, media, comments, anything that might be hiding a key. I looked at the list of users and found a second user:</p>
+<p><img src="/static/mrrobot/9.png" alt=""></p>
+<p>Looking at the info for this second user I found a potential hint at a key, but this didn&rsquo;t lead anywhere:</p>
+<p><img src="/static/mrrobot/10.png" alt=""></p>
+<p>When I couldn&rsquo;t find anything interesting I shifted my attention to the installed plugins, with the hopes of creating a reverse shell. None of the installed plugins were active, so I activated HelloDolly and edited the PHP to call back to my machine, which I had set up listening for a connection using netcat:</p>
+<p><img src="/static/mrrobot/11.png" alt=""></p>
+<p>I executed the script by hitting http://192.168.1.206/wp-content/plugins/hello.php in Firefox and a couple of seconds later I had a shell:</p>
+<p><img src="/static/mrrobot/12.png" alt=""></p>
+<p><code>/etc/passwd</code> listed the user &ldquo;robot&rdquo;. I decided to check out the home directory of &ldquo;robot&rdquo; which luckily was readable and found a couple of interesting files:</p>
+<p><img src="/static/mrrobot/13.png" alt=""></p>
+<p><img src="/static/mrrobot/14.png" alt=""></p>
+<p>I didn&rsquo;t have read permissions for <code>key-2-of-3.txt</code> but I did for <code>password.raw-md5</code>:</p>
+<p><img src="/static/mrrobot/15.png" alt=""></p>
+<p>I decided to try and crack this password using an online tool first before using <code>john</code>, but thankfully it was an easy password to crack:</p>
+<p><img src="/static/mrrobot/16.png" alt=""></p>
+<p><img src="/static/mrrobot/17.png" alt=""></p>
+<p>Now that I was logged in as &ldquo;robot&rdquo; I could read the second key file:</p>
+<p><img src="/static/mrrobot/18.png" alt=""></p>
+<p>I assumed that the final key would only be accessible to &ldquo;root&rdquo; so I started on some privilege escalation techniques. After a few different attempts I came across a copy of <code>nmap</code> that had a SUID flag set and was owned by root:</p>
+<p><img src="/static/mrrobot/19.png" alt=""></p>
+<p>I found out that <code>nmap</code> has an interactive mode that lets you drop down into a shell, which is how I got a root shell:</p>
+<p><img src="/static/mrrobot/20.png" alt=""></p>
+<p>I took a look at <code>/root</code> and my assumptions were validated; I had the final key:</p>
+<p><img src="/static/mrrobot/21.png" alt=""></p>
+<p><img src="/static/mrrobot/22.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>I&rsquo;d been meaning to take a look at this box for a while, given I&rsquo;m a big fan of the TV show. I had a lot of fun finding the different keys and it was a good box for me to practice some exploits I&rsquo;d previously learned about and used on other boxes. Thanks Leon 👍</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

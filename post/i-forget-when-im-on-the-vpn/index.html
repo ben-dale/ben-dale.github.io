@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Honest, I do.">
+    <title>I forget when I&#39;m on the VPN | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">I forget when I&rsquo;m on the VPN</span></h1>
+
+<h2 class="date">2020/03/28</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/electronics">electronics</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>The COVID-19 breakout has resulted in me working from home for the foreseeable, which means I&rsquo;m using the work VPN more than I&rsquo;m used to. Typically I don&rsquo;t have to use the work VPN as I tend to work in the office most of the time but being at home has me flipping in and out of the VPN a couple of times a day. One thing I keep forgetting about the VPN is whether I&rsquo;m on it or not. This can cause a minute or two of confusion when I&rsquo;m trying to access certain things on the Co-op network. There&rsquo;s a tiny icon on the top left of my screen which indicates if the VPN connection is active or not, but ideally, I would like something a bit more visible. Something that will constantly be in the periphery of my vision at all times. That&rsquo;s why I spent an evening and a morning putting together a little lightbox which lights up when I&rsquo;m connected to the VPN and turns off when I&rsquo;m disconnected from it.</p>
+<p>The first task was to come up with a circuit. I decided that I would build a smaller version of my text-clock, just with the text &ldquo;ON VPN&rdquo; that would light up like the &ldquo;ON AIR&rdquo; signs you see above studio doors.</p>
+<p><img src="/static/on_vpn/1.jpg" alt=""></p>
+<p>I threw together a small circuit of six red LEDs with six 220 ohm resistors in parallel, which you can see above. The idea was to have a script that ran on my machine every few seconds and sent either a &ldquo;1&rdquo; or a &ldquo;0&rdquo; to the Arduino via the Arduino&rsquo;s serial port, depending on whether the VPN connection was active or not. The Arduino would then turn on the LEDs if the connection to the VPN was active, and turn them off if not.</p>
+<p><img src="/static/on_vpn/2.png" alt=""></p>
+<p>The above code is what is loaded onto the Arduino. The python script that will run on my machine is below:</p>
+<p><img src="/static/on_vpn/3.png" alt=""></p>
+<p>Initially, I wanted to run this script every few seconds via a cronjob or something, however, it turns out every time you initiate a connection to the Arduino via the serial port, the Arduino restarts losing all previous state. This wasn&rsquo;t going to work for this scenario so I decided to instead write a script that would connect to the Arduino at the beginning and then loop &ldquo;forever&rdquo;.</p>
+<p>The code which determines whether or not the machine is on the VPN isn&rsquo;t particularly sophisticated. It runs <code>ifconfig</code> and greps the result for <code>utun2</code> which is present in the <code>ifconfig</code> output when connected to the VPN. If <code>utun2</code> is in the output <code>ifconfig</code> then it writes &ldquo;1&rdquo; to the Arduino, which turns the lights on, otherwise, it writes a &ldquo;0&rdquo; to the Arduino, which turns the lights off.</p>
+<p>Once that was all working I got started on making this solution (if you can call a terrible hack a solution) a bit more permanent.</p>
+<p><img src="/static/on_vpn/4.jpg" alt=""></p>
+<p>I didn&rsquo;t want the lightbox to be much bigger than the Arduino Nano so I used my smallest stencil and stencilled out the letters &ldquo;ON VPN&rdquo;. These letters were cut out from the paper, creating some negative space for the light to come through.</p>
+<p>Next, I got started on the frame to hold everything together. One of the things I learnt when making the text-clock was that when the LEDs are pointing out the light doesn&rsquo;t disperse very well. The plan was to have the LEDs point inwards so that the light wouldn&rsquo;t come through the letters as harshly as they do currently on my text-clock.</p>
+<p><img src="/static/on_vpn/5.jpg" alt=""></p>
+<p>I cut some scraps of paper and got to work soldering (which I&rsquo;m still terrible at btw) and hot glueing.</p>
+<p><img src="/static/on_vpn/6.jpg" alt=""></p>
+<p><img src="/static/on_vpn/7.jpg" alt=""></p>
+<p>Once I had a basic frame in place I hooked up the resistors to the positive leads and hooked this circuit up to the Arduino to check everything was working as expected.</p>
+<p><img src="/static/on_vpn/8.jpg" alt=""></p>
+<p><img src="/static/on_vpn/9.jpg" alt=""></p>
+<p><img src="/static/on_vpn/10.jpg" alt=""></p>
+<p>Once I was happy with how it looked I covered all the exposed wires with a bit of insulation tape and soldered the circuit onto the Arduino Nano. I also mounted the Arduino onto the back of the frame using hot glue.</p>
+<p><img src="/static/on_vpn/11.jpg" alt=""></p>
+<p><img src="/static/on_vpn/12.jpg" alt=""></p>
+<p>The last thing to do was to apply the face to the frame. I glued a piece of transparent paper to the back of the wording and wrapped the entire cardboard frame.</p>
+<p><img src="/static/on_vpn/13.jpg" alt=""></p>
+<p><img src="/static/on_vpn/14.jpg" alt=""></p>
+<p>This was a nice little project to get myself back into electronics as I hadn&rsquo;t done any in a while. I&rsquo;m hoping I can get back into this hobby over the next few months&hellip; it&rsquo;s not like I won&rsquo;t have the time!</p>
+<p><img src="/static/on_vpn/15.jpg" alt=""></p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

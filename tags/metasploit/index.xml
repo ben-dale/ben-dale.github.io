@@ -9,13 +9,13 @@
     <lastBuildDate>Sun, 09 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/metasploit/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VulnHub: SP Eric</title>
-      <link>/my-first-writeup/</link>
+      <link>/post/vulnhub-sp-eric/</link>
       <pubDate>Sun, 09 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>/my-first-writeup/</guid>
+      <guid>/post/vulnhub-sp-eric/</guid>
       <description>This weekend I managed to fully root a VulnHub box without looking at another person&amp;rsquo;s write-up for a hint, for the first time! This box was created by Daniel Solstad and can be downloaded here. Here&amp;rsquo;s my write-up.
 Write-up The description for this box states:
-Eric is trying to reach out on the Internet, but is he following best practice? Flags: - /root/flag.txt - /home/eric/flag.txt  Once I had Eric set up and running I ran a port scan:</description>
+Eric is trying to reach out on the Internet, but is he following best practice? Flags: - /root/flag.txt - /home/eric/flag.txt Once I had Eric set up and running I ran a port scan:</description>
     </item>
     
   </channel>

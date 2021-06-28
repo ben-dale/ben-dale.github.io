@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Git Happens, a TryHackMe box created by hydragyrum.">
+    <title>TryHackMe: Git Happens | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: Git Happens</span></h1>
+
+<h2 class="date">2021/06/01</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/git">git</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/githappens">Git Happens</a>, a CTF challenge created by <a href="https://tryhackme.com/p/hydragyrum">hydragyrum</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<pre><code>─$ nmap -sC -sV 10.10.184.212 
+Starting Nmap 7.91 ( https://nmap.org ) at 2021-05-31 14:30 EDT
+Nmap scan report for 10.10.184.212
+Host is up (0.026s latency).
+Not shown: 999 closed ports
+PORT   STATE SERVICE VERSION
+80/tcp open  http    nginx 1.14.0 (Ubuntu)
+| http-git: 
+|   10.10.184.212:80/.git/
+|     Git repository found!
+|_    Repository description: Unnamed repository; edit this file 'description' to name the...
+|_http-server-header: nginx/1.14.0 (Ubuntu)
+|_http-title: Super Awesome Site!
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.54 seconds
+</code></pre><p>I also checked all ports (using the <code>-p-</code> flag) but only port 80 was reported as open.</p>
+<p>I checked out the website in my browser and found a login screen. I messed around with it for a few moments but couldn&rsquo;t make anything interesting happen.</p>
+<p><img src="/static/githappens/1.png" alt=""></p>
+<p>I checked the source code and noticed that there was some JS that was obfuscated.</p>
+<p><img src="/static/githappens/2.png" alt=""></p>
+<p>I tried to use a few online tools to un-obfuscate the code but I couldn&rsquo;t make it any more readable. I left this thought for a moment and remembered that a <code>.git</code> directory was found by nmap.</p>
+<p><img src="/static/githappens/3.png" alt=""></p>
+<p>I downloaded a copy of <a href="https://github.com/internetwache/GitTools">GitTools</a> so that I could download the <code>.git</code> directory onto my machine for further investigation.</p>
+<p><img src="/static/githappens/4.png" alt=""></p>
+<p>I checked the git log and could see a fair number of commits. Reading through the commits it was pretty clear that a developer had attempted a clean-up job after writing some initial code.</p>
+<p><img src="/static/githappens/5.png" alt=""></p>
+<p>I checked out commit <code>395e087</code> and took a look at <code>index.html</code>.</p>
+<p><img src="/static/githappens/6.png" alt=""></p>
+<p><img src="/static/githappens/7.png" alt=""></p>
+<p>The password was found! This is as far as the box goes, so quite a quick one.</p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A fun quick challenge. I use Git every day so this was very familiar territory for me, but a great example of what can happen when you have secrets in your Git history, or when your <code>.git</code> directory is made public&hellip; or both! Thanks, hydragyrum!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+
