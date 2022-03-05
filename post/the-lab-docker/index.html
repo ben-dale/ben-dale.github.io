@@ -265,6 +265,31 @@ echo $host_path
 <h2 id="docker-images">Docker images</h2>
 <h3 id="automated-image-scanning">Automated image scanning</h3>
 <h2 id="docker-registry">Docker registry</h2>
+<p>A registry is an instance of the registry image running within Docker.</p>
+<p>To start the registry container:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -d -p 5000:5000 --restart<span style="color:#f92672">=</span>always --name registry registry:2
+</code></pre></div><p><img src="/static/the-lab-docker/34.png" alt=""></p>
+<p>Docker registry on the lab machine is now visible to other machines on the network.</p>
+<p><img src="/static/the-lab-docker/35.png" alt=""></p>
+<p>You can interact with the registry directly using the <a href="https://docs.docker.com/registry/spec/api/">HTTP API</a>.</p>
+<p><img src="/static/the-lab-docker/36.png" alt=""></p>
+<p>The above registry has no repositories. Images are stored in collections, known as a &ldquo;repository&rdquo;. Let&rsquo;s pull Ubuntu 16.04, tag it, and push it to the local repository.</p>
+<blockquote>
+<p>When the first part of the tag is a hostname and port, Docker interprets this as the location of a registry, when pushing.</p>
+</blockquote>
+<p><img src="/static/the-lab-docker/37.png" alt=""></p>
+<p>&ldquo;my-ubuntu&rdquo; can be seen in the list of repositories from another machine on the network.</p>
+<p><img src="/static/the-lab-docker/38.png" alt=""></p>
+<p>Listing tags for a specific repository:</p>
+<p><img src="/static/the-lab-docker/39.png" alt=""></p>
+<p>Useful and interesting (raises eyebrows, winks) data can be found within an image&rsquo;s manifest.</p>
+<blockquote>
+<p>A single manifest is information about an image, such as layers, size, and digest. The docker manifest command also gives users additional information such as the os and architecture an image was built for.</p>
+</blockquote>
+<p>For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl 192.168.1.226:5000/v2/my-ubuntu/manifests/latest -s | jq
+</code></pre></div><p><img src="/static/the-lab-docker/40.png" alt=""></p>
+<h3 id="pushing-malicious-images">Pushing malicious images</h3>
 <h2 id="docker-network">Docker network</h2>
 <h2 id="useful-links">Useful links</h2>
 <p><a href="https://docs.docker.com/get-started/overview/">Official Docker overview</a> - Straight from the whale&rsquo;s mouth.</p>

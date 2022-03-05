@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Gallery, a TryHackMe box created by Mikaa.">
+    <title>TryHackMe: Gallery | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: Gallery</span></h1>
+
+<h2 class="date">2022/03/04</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/sqli">sqli</a> <a href="/tags/lfi">lfi</a> <a href="/tags/linpeas">linpeas</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/gallery666">Gallery</a>, a CTF challenge created by <a href="https://twitter.com/mika_sec">Mikaa</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<p><img src="/static/gallery/1.png" alt=""></p>
+<p>I took a quick look at what was running on port <code>80</code> but as suspected it was the default apache install page. Port <code>8080</code> however was running some sort of image gallery CMS system.</p>
+<p><img src="/static/gallery/2.png" alt=""></p>
+<p>I took a look at the source code for the page and found a couple of potential interesting rabbit holes to go down: a commented out &ldquo;forgot-password.html&rdquo; reference and a &ldquo;create_account.php&rdquo; reference.</p>
+<p><img src="/static/gallery/3.png" alt=""></p>
+<p><img src="/static/gallery/4.png" alt=""></p>
+<p>These, unfortunately, didn&rsquo;t lead anywhere interesting: <code>forgot-password.html</code> returned a 404 response, and <code>create_account.php</code> returned an empty page showing the string &ldquo;disabled&rdquo;. I spent a couple of minutes trying to mess with URL query parameters to see if I could enable the <code>create_account.php</code> page, but no luck.</p>
+<p>Back on the login page, I took a look at the request that was made when a user tried to log in and saw that the response contained the SQL query that was executed:</p>
+<p><img src="/static/gallery/5.png" alt=""></p>
+<p>I captured this request using Burp so that I could play around a little more with it and found that it was vulnerable to an SQL injection attack.</p>
+<p><img src="/static/gallery/7.png" alt=""></p>
+<p>I used the same attack in my browser, entering <code>admin'or'a'='a</code> as the username, and I was in.</p>
+<p><img src="/static/gallery/8.png" alt=""></p>
+<p><img src="/static/gallery/10.png" alt=""></p>
+<p>This application allows a user to create galleries and upload image files to those galleries. I wondered if I could upload a malicious file and get the application to execute the code in it. I saw from a scan I was running in the background that an &ldquo;uploads&rdquo; directory was found, which presumably was where the uploaded files were stored.</p>
+<p><img src="/static/gallery/9.png" alt=""></p>
+<p><img src="/static/gallery/11.png" alt=""></p>
+<p>I opened a gallery and uploaded a reverse shell file to it, with the hopes of executing the code via the uploads page. This turned out to be unnecessary because the reverse shell was executed when I refreshed the gallery page.</p>
+<p><img src="/static/gallery/13.png" alt=""></p>
+<p><img src="/static/gallery/14.png" alt=""></p>
+<p>Now that I was on the machine, I started looking for config files that might contain passwords and found <code>initialize.php</code> which contained a database username and password.</p>
+<p><img src="/static/gallery/15.png" alt=""></p>
+<p>One of the flags for this machine was to find the admin user&rsquo;s hashed password:</p>
+<p><img src="/static/gallery/16.png" alt=""></p>
+<p><img src="/static/gallery/17.png" alt=""></p>
+<p>I then moved to enumerate the entire machine. To speed up the process I used <a href="https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS">linPEAS</a>.</p>
+<p><img src="/static/gallery/18.png" alt=""></p>
+<p>Thankfully, <code>mike</code> had left their password in a history file that <code>linPEAS</code> was able to find.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">╔══════════╣ Searching passwords in history files
+...
+sudo -lb3stpassw0rdbr0xx
+sudo -l
+</code></pre></div><p><img src="/static/gallery/19.png" alt=""></p>
+<p><img src="/static/gallery/20.png" alt=""></p>
+<p>Now that I had access to <code>mike</code>'s account, I could look around the contents of their home directory, and came across a file containing usernames and passwords. I tried these passwords for the <code>root</code> user, but no luck.</p>
+<p><img src="/static/gallery/21.png" alt=""></p>
+<p>I ran <code>linPEAS</code> again, this time as <code>mike</code>, and found that <code>mike</code> was able to run a shell script as <code>root</code>, without a password.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">User mike may run the following commands on gallery:
+    <span style="color:#f92672">(</span>root<span style="color:#f92672">)</span> NOPASSWD: /bin/bash /opt/rootkit.sh
+</code></pre></div><p>I took a look at the contents of <code>rootkit.sh</code> and noticed that <code>nano</code> could be executed. I remembered that there was <a href="https://gtfobins.github.io/gtfobins/nano/#sudo">a trick</a> to initialize a shell from inside <code>nano</code> which would effectively give us access to the <code>root</code> user.</p>
+<p><img src="/static/gallery/22.png" alt=""></p>
+<p>For this, I had to upgrade my shell, so that <code>nano</code> would run.</p>
+<p><img src="/static/gallery/23.png" alt=""></p>
+<p>Once that was done, I executed <code>rootkit.sh</code>, entered &ldquo;read&rdquo; when prompted, and executed the commands from within <code>nano</code> to initialize a shell.</p>
+<p><img src="/static/gallery/24.png" alt=""></p>
+<p><img src="/static/gallery/25.png" alt=""></p>
+<p>I could now execute commands as the <code>root</code> user.</p>
+<p><img src="/static/gallery/26.png" alt=""></p>
+<p><img src="/static/gallery/27.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>It&rsquo;s been a while since I&rsquo;ve had a chance to sit down and work through a box. This was a fairly easy box to attack, and I recommend it to anyone as a smaller, bite-sized alternative to <a href="https://owasp.org/www-project-juice-shop/">Juice Shop</a>. Thanks Mikaa!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

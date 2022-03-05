@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linpeas on ben-dale.co.uk</title>
+    <link>/tags/linpeas/</link>
+    <description>Recent content in linpeas on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 04 Mar 2022 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/linpeas/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TryHackMe: Gallery</title>
+      <link>/post/tryhackme-gallery/</link>
+      <pubDate>Fri, 04 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-gallery/</guid>
+      <description>Here&amp;rsquo;s my write-up for Gallery, a CTF challenge created by Mikaa.
+Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+I took a quick look at what was running on port 80 but as suspected it was the default apache install page. Port 8080 however was running some sort of image gallery CMS system.
+I took a look at the source code for the page and found a couple of potential interesting rabbit holes to go down: a commented out &amp;ldquo;forgot-password.</description>
+    </item>
+    
+  </channel>
+</rss>

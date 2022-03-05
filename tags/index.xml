@@ -6,7 +6,38 @@
     <description>Recent content in Tags on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 04 Mar 2022 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>lfi</title>
+      <link>/tags/lfi/</link>
+      <pubDate>Fri, 04 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/lfi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linpeas</title>
+      <link>/tags/linpeas/</link>
+      <pubDate>Fri, 04 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/linpeas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sqli</title>
+      <link>/tags/sqli/</link>
+      <pubDate>Fri, 04 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/sqli/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>php</title>
       <link>/tags/php/</link>
@@ -107,15 +138,6 @@
     </item>
     
     <item>
-      <title>lfi</title>
-      <link>/tags/lfi/</link>
-      <pubDate>Sun, 06 Jun 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/lfi/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>git</title>
       <link>/tags/git/</link>
       <pubDate>Tue, 01 Jun 2021 00:00:00 +0000</pubDate>
@@ -184,15 +206,6 @@
       <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
       
       <guid>/tags/rce/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>sqli</title>
-      <link>/tags/sqli/</link>
-      <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/sqli/</guid>
       <description></description>
     </item>
     
