@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>linpeas on ben-dale.co.uk</title>
-    <link>/tags/linpeas/</link>
-    <description>Recent content in linpeas on ben-dale.co.uk</description>
+    <title>doas on ben-dale.co.uk</title>
+    <link>/tags/doas/</link>
+    <description>Recent content in doas on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 11 Mar 2022 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/tags/linpeas/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/tags/doas/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -20,18 +20,6 @@
       <description>Here&amp;rsquo;s my write-up for Plotted-TMS, a CTF challenge created by sa.infinity8888.
 Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
 ┌──(kali㉿kali)-[~] └─$ nmap -sC -sV 10.10.167.242 Starting Nmap 7.92 ( https://nmap.org ) at 2022-03-06 08:24 EST Nmap scan report for 10.10.167.242 Host is up (0.088s latency). All 1000 scanned ports on 10.10.167.242 are in ignored states. Not shown: 1000 closed tcp ports (conn-refused) Service detection performed.</description>
-    </item>
-    
-    <item>
-      <title>TryHackMe: Gallery</title>
-      <link>/post/tryhackme-gallery/</link>
-      <pubDate>Fri, 04 Mar 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/post/tryhackme-gallery/</guid>
-      <description>Here&amp;rsquo;s my write-up for Gallery, a CTF challenge created by Mikaa.
-Write-up I deployed the box using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
-I took a quick look at what was running on port 80 but as suspected it was the default apache install page. Port 8080 however was running some sort of image gallery CMS system.
-I took a look at the source code for the page and found a couple of potential interesting rabbit holes to go down: a commented out &amp;ldquo;forgot-password.</description>
     </item>
     
   </channel>

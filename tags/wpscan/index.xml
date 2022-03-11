@@ -25,5 +25,16 @@ gobuster identified a page under &amp;ldquo;/hidden&amp;rdquo; which exposed som
  C0ldd, you changed Hugo&amp;rsquo;s password, when you can send it to him so he can continue uploading his articles.</description>
     </item>
     
+    <item>
+      <title>VulnHub: Mr-Robot</title>
+      <link>/post/vulnhub-mr-robot/</link>
+      <pubDate>Wed, 11 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/vulnhub-mr-robot/</guid>
+      <description>Here&amp;rsquo;s my write-up for Mr-Robot, a VulnHub box created by Leon Johnson.
+Write-up The description for this box states the following:
+Based on the show, Mr Robot. This VM has three keys hidden in different locations. Your goal is to find all three. Each key is progressively difficult to find. The VM isn&#39;t too difficult. There isn&#39;t any advanced exploitation or reverse engineering. The level is considered beginner-intermediate. Once I found out what IP the box was running on I scanned the ports using nmap:</description>
+    </item>
+    
   </channel>
 </rss>
