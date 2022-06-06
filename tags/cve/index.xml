@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cve on ben-dale.co.uk</title>
+    <link>/tags/cve/</link>
+    <description>Recent content in cve on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 17 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/cve/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe: Anonymous</title>
+      <link>/post/tryhackme-anonymous/</link>
+      <pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-anonymous/</guid>
+      <description>Here&amp;rsquo;s my write-up for Bounty Hacker, a CTF challenge created by Nameless0ne.
+Write-up I deployed the machine using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+└──╼ $nmap -sV -sC 10.10.187.223 Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-17 19:17 CEST Nmap scan report for 10.10.187.223 Host is up (0.061s latency). Not shown: 996 closed tcp ports (conn-refused) PORT STATE SERVICE VERSION 21/tcp open ftp vsftpd 2.0.8 or later | ftp-anon: Anonymous FTP login allowed (FTP code 230) |_drwxrwxrwx 2 111 113 4096 Jun 04 2020 scripts [NSE: writeable] | ftp-syst: | STAT: | FTP server status: | Connected to ::ffff:10.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,7 +6,25 @@
     <description>Recent content in Tags on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 17 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>cve</title>
+      <link>/tags/cve/</link>
+      <pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/cve/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ftp</title>
+      <link>/tags/ftp/</link>
+      <pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ftp/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>honeypot</title>
       <link>/tags/honeypot/</link>
@@ -130,15 +148,6 @@
       <pubDate>Fri, 11 Jun 2021 00:00:00 +0000</pubDate>
       
       <guid>/tags/docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ftp</title>
-      <link>/tags/ftp/</link>
-      <pubDate>Thu, 10 Jun 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ftp/</guid>
       <description></description>
     </item>
     

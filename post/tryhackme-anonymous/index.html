@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Anonymous, a TryHackMe machine created by Nameless0ne.">
+    <title>TryHackMe: Anonymous | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: Anonymous</span></h1>
+
+<h2 class="date">2022/05/17</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/ftp">ftp</a> <a href="/tags/cve">cve</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/anonymous">Bounty Hacker</a>, a CTF challenge created by <a href="https://tryhackme.com/p/Nameless0ne">Nameless0ne</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the machine using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">└──╼ $nmap -sV -sC 10.10.187.223
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-17 19:17 CEST
+Nmap scan report for 10.10.187.223
+Host is up (0.061s latency).
+Not shown: 996 closed tcp ports (conn-refused)
+PORT    STATE SERVICE     VERSION
+21/tcp  open  ftp         vsftpd 2.0.8 or later
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_drwxrwxrwx    2 111      113          4096 Jun 04  2020 scripts [NSE: writeable]
+| ftp-syst: 
+|   STAT: 
+| FTP server status:
+|      Connected to ::ffff:10.11.23.23
+|      Logged in as ftp
+|      TYPE: ASCII
+|      No session bandwidth limit
+|      Session timeout in seconds is 300
+|      Control connection is plain text
+|      Data connections will be plain text
+|      At session startup, client count was 4
+|      vsFTPd 3.0.3 - secure, fast, stable
+|_End of status
+22/tcp  open  ssh         OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 8b:ca:21:62:1c:2b:23:fa:6b:c6:1f:a8:13:fe:1c:68 (RSA)
+|   256 95:89:a4:12:e2:e6:ab:90:5d:45:19:ff:41:5f:74:ce (ECDSA)
+|_  256 e1:2a:96:a4:ea:8f:68:8f:cc:74:b8:f0:28:72:70:cd (ED25519)
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 4.7.6-Ubuntu (workgroup: WORKGROUP)
+Service Info: Host: ANONYMOUS; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2022-05-17T17:18:19
+|_  start_date: N/A
+|_clock-skew: mean: 7s, deviation: 0s, median: 6s
+|_nbstat: NetBIOS name: ANONYMOUS, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: &lt;unknown&gt; (unknown)
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+| smb-os-discovery: 
+|   OS: Windows 6.1 (Samba 4.7.6-Ubuntu)
+|   Computer name: anonymous
+|   NetBIOS computer name: ANONYMOUS\x00
+|   Domain name: \x00
+|   FQDN: anonymous
+|_  System time: 2022-05-17T17:18:19+00:00
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 14.92 seconds
+</code></pre></div><p>A pretty long output, but this machine had the following ports exposed:</p>
+<ul>
+<li>Port 21: 2.0.8 or later</li>
+<li>Port 22: OpenSSH 7.6p1</li>
+<li>Ports 139 and 445: Samba</li>
+</ul>
+<p>I started with the FTP server on port 21 because nmap reported that anonymous login was allowed.</p>
+<p><img src="/static/anonymous/1.png" alt=""></p>
+<p>I downloaded the files to take a closer look.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">ftp&gt; get clean.sh
+local: clean.sh remote: clean.sh
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for clean.sh (314 bytes).
+226 Transfer complete.
+314 bytes received in 0.01 secs (23.5569 kB/s)
+ftp&gt; get removed_files.log
+local: removed_files.log remote: removed_files.log
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for removed_files.log (2021 bytes).
+226 Transfer complete.
+2021 bytes received in 0.00 secs (2.7339 MB/s)
+ftp&gt; get to_do.txt
+local: to_do.txt remote: to_do.txt
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for to_do.txt (68 bytes).
+226 Transfer complete.
+68 bytes received in 0.05 secs (1.3251 kB/s)
+ftp&gt; exit
+221 Goodbye.
+</code></pre></div><p><img src="/static/anonymous/2.png" alt=""></p>
+<p><img src="/static/anonymous/3.png" alt=""></p>
+<p>It looked like &ldquo;clean.sh&rdquo; was run as part of a cronjob, given the modified date of the &ldquo;removed_files.log&rdquo; file, to which &ldquo;clean.sh&rdquo; sends output.</p>
+<p>I used <code>curlftpfs</code> to mount the ftp directory on my machine so I could edit the &ldquo;clean.sh&rdquo; script. I planned to add a reverse shell one-liner to the end of the script.</p>
+<p><img src="/static/anonymous/4.png" alt=""></p>
+<p><img src="/static/anonymous/5.png" alt=""></p>
+<p>I waited around a minute and could see the connection back to my machine.</p>
+<p><img src="/static/anonymous/6.png" alt=""></p>
+<p><img src="/static/anonymous/7.png" alt=""></p>
+<p>I had the user flag, now I had to escalate to the root user.</p>
+<p>I uploaded <a href="https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS">LinPEAS</a> to the machine and ran it.</p>
+<p><img src="/static/anonymous/8.png" alt=""></p>
+<p>LinPEAS reported that the machine was vulnerable to CVE-2021-4043.</p>
+<p>I attempted to run a couple of different exploits that were written in C, but the lack of <code>gcc</code> on the machine was making it a little difficult. I gave up and looked for a <a href="https://github.com/joeammond/CVE-2021-4034">python version</a>. This ran perfectly.</p>
+<p><img src="/static/anonymous/9.png" alt=""></p>
+<p><img src="/static/anonymous/10.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A fun machine to wind down with at the end of a long day. Nothing too advanced, but a little bit of recon muscle working. Thanks Nameless0ne!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+
