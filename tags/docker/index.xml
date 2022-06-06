@@ -6,11 +6,7 @@
     <description>Recent content in docker on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Jun 2021 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/docker/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 11 Jun 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>The Lab: Docker</title>
       <link>/post/the-lab-docker/</link>
@@ -18,8 +14,8 @@
       
       <guid>/post/the-lab-docker/</guid>
       <description>A deep dive into some common Docker misconfigurations, exploitations, etc. for learning and reference purposes, using a Ubuntu Server VM called &amp;ldquo;lab&amp;rdquo;.
-Disclaimer: I&amp;rsquo;m not a Docker expert, these are just some notes I put together whilst researching Docker security and general usage, for my own interest. The information here is taken from a wide variety of sources.
-Disclaimer for the disclaimer: That&amp;rsquo;s smart talk for &amp;ldquo;I just wanted to f*ck about with Docker&amp;rdquo;.</description>
+The Docker socket As stated on the Docker post-installation instructions:
+ The Docker daemon always runs as the root user. If you don’t want to preface the docker command with sudo, create a Unix group called docker and add users to it. (&amp;hellip;) The docker group grants privileges equivalent to the root user.</description>
     </item>
     
   </channel>

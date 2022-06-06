@@ -6,11 +6,7 @@
     <description>Recent content in sqli on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Mar 2022 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/sqli/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 11 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/sqli/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>TryHackMe: Plotted-TMS</title>
       <link>/post/tryhackme-plotted-tms/</link>

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>CI/CD Goat | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">CI/CD Goat</span></h1>
+
+<h2 class="date">2022/05/15</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/jenkins">jenkins</a> <a href="/tags/ssh">ssh</a> <a href="/tags/honeypot">honeypot</a> <a href="/tags/injection">injection</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://github.com/cider-security-research/cicd-goat">CI/CD Goat</a>, a purposely vulnerable CI/CD environment with a set of CTF challenges, created by <a href="https://www.cidersecurity.io/">Cider</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the environment on my machine using the instructions from the project&rsquo;s <a href="https://github.com/cider-security-research/cicd-goat#download--run">readme</a>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -o cicd-goat/docker-compose.yaml --create-dirs https://raw.githubusercontent.com/cider-security-research/cicd-goat/main/docker-compose.yaml
+cd cicd-goat <span style="color:#f92672">&amp;&amp;</span> docker compose up -d
+</code></pre></div><p>There are 10 challenges in total, each inspired by Alice in Wonderland.</p>
+<p><img src="/static/cicd_goat/1.png" alt=""></p>
+<h4 id="white-rabbit">White Rabbit</h4>
+<blockquote>
+<p>I’m late, I’m late! No time to say &ldquo;hello, goodbye&rdquo;! Before you get caught, use your access to the <em>Wonderland/white-rabbit</em> repository to steal the <em>flag1</em> secret stored in the Jenkins credential store.</p>
+</blockquote>
+<p>As directed by the challenge, I visited Gitea and logged in with the provided credentials: <code>thealice:thealice</code>. I cloned the <code>white-rabbit</code> repository and took a look at the Jenkinsfile.</p>
+<p><img src="/static/cicd_goat/white-rabbit/3.png" alt=""></p>
+<p>I added an arbitrary line to the Jenkins file to test if I could write to the repository and to test if I could see my changes reflected in the output of the Jenkins job.</p>
+<p><img src="/static/cicd_goat/white-rabbit/4.png" alt=""></p>
+<p>Unfortunately, I didn&rsquo;t have write access to the <code>main</code> branch&hellip;</p>
+<p><img src="/static/cicd_goat/white-rabbit/5.png" alt=""></p>
+<p>&hellip; but I could push my change to a separate branch. I created a PR and waited for the job to start.</p>
+<p><img src="/static/cicd_goat/white-rabbit/6.png" alt=""></p>
+<p>The job finished within a couple of seconds and I could see my change reflected in the Jenkins job output:</p>
+<p><img src="/static/cicd_goat/white-rabbit/7.png" alt=""></p>
+<p>Now that I had a way to execute commands, I needed to get the value of the <code>flag1</code> credential.</p>
+<p>Unfortunately (for me) it&rsquo;s not as simple as <code>echo</code>-ing the <code>flag1</code> credential as Jenkins would mask the value of the credential with several <code>*</code> characters.</p>
+<p><a href="https://www.codurance.com/publications/2019/05/30/accessing-and-dumping-jenkins-credentials">This</a> article describes many ways an attacker can dump credentials and bypass the credential masking logic.</p>
+<p>I made a second change to my branch, which added one of the suggested methods in the article to print out the value of a given credential, comma delimited.</p>
+<p><img src="/static/cicd_goat/white-rabbit/11.png" alt=""></p>
+<p>After the job finished, I had the flag.</p>
+<p><img src="/static/cicd_goat/white-rabbit/12.png" alt=""></p>
+<h4 id="mad-hatter">Mad Hatter</h4>
+<blockquote>
+<p>Jenkinsfile is protected? Sounds like an unbirthday party. Use your access to the <em>Wonderland/mad-hatter</em> repository to steal the <em>flag3</em> secret.</p>
+</blockquote>
+<p>For this challange, there are two repositories: <code>mad-hatter</code> and <code>mad-hatter-pipeline</code>.</p>
+<p><code>mad-hatter-pipeline</code> contains one file: a Jenkinsfile, which the <code>mad-hatter</code> repository uses as part of it&rsquo;s build pipeline.</p>
+<p><img src="/static/cicd_goat/mad-hatter/1.png" alt=""></p>
+<p>The interesting part of the Jenkinsfile appears when we get down to the <code>make</code> stage:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">stage<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;make&#39;</span><span style="color:#f92672">){</span>
+    steps <span style="color:#f92672">{</span>
+        withCredentials<span style="color:#f92672">([</span>usernamePassword<span style="color:#f92672">(</span>credentialsId: <span style="color:#e6db74">&#39;flag3&#39;</span><span style="color:#f92672">,</span> usernameVariable: <span style="color:#e6db74">&#39;USERNAME&#39;</span><span style="color:#f92672">,</span> passwordVariable: <span style="color:#e6db74">&#39;FLAG&#39;</span><span style="color:#f92672">)])</span> <span style="color:#f92672">{</span>
+        sh <span style="color:#e6db74">&#39;make || true&#39;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>           
+<span style="color:#f92672">}</span>
+</code></pre></div><p>This stage runs the <code>make</code> command with the value of the <code>flag3</code> credential available to <code>make</code> under the variable <code>FLAG</code>.</p>
+<p>I didn&rsquo;t have write access to this Jenkinsfile, but I did have write access to the <code>mad-hatter</code> repository.</p>
+<p>I took a look at the Makefile in <code>mad-hatter</code>:</p>
+<p><img src="/static/cicd_goat/mad-hatter/2.png" alt=""></p>
+<p>The Makefile makes a request to <code>http://wonderland:1234/api/user</code>, using the <code>flag3</code> credential (available via the <code>$FLAG</code> variable from the Jenkinsfile). I wondered if I could mimic this request, but point it to my machine instead.</p>
+<p>I set up <code>netcat</code> to listen for connections to port 9000 on my machine and I added a line to the Makefile which would make a request to my machine.</p>
+<p><img src="/static/cicd_goat/mad-hatter/6.png" alt=""></p>
+<p>I pushed the change to a new branch named <code>test</code> and clicked &ldquo;Scan Multibranch Pipeline Now&rdquo; so that an associated job for my branch would be created.</p>
+<p><img src="/static/cicd_goat/mad-hatter/5.png" alt=""></p>
+<p>I ran the job and watched the log file. Within a few seconds the code I added in the Makefile was executed:</p>
+<p><img src="/static/cicd_goat/mad-hatter/4.png" alt=""></p>
+<p>I checked my terminal and I could see <code>flag3</code>:</p>
+<p><img src="/static/cicd_goat/mad-hatter/3.png" alt=""></p>
+<h4 id="duchess">Duchess</h4>
+<blockquote>
+<p>If everybody minded their own business, the world would go round a deal faster than it does. Does it apply to your secrets as well? You’ve got access to the <em>Wonderland/duchess</em> repository, which heavily uses Python. The duchess cares a lot about the security of her credentials, but there must be some PyPi token left somewhere&hellip; Can you find it?</p>
+</blockquote>
+<p>The first thing I noticed about the <code>duchess</code> repository was how many commits there were: 696. This fact, combined with the prompt from the challenge text: &ldquo;but there must be some PyPi token left somewhere&hellip;&rdquo; got me thinking about leaked secrets.</p>
+<p>I cloned the <code>duchess</code> repository and used <a href="https://github.com/zricethezav/gitleaks">gitleaks</a> to scan the repository to see if anything came up.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull zricethezav/gitleaks:latest
+docker run -v /home/ben/cicd-goat-repos/duchess:/path zricethezav/gitleaks:latest detect --source<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/path&#34;</span> -v
+</code></pre></div><p>I scanned the output and spotted the token (the flag for this challenge):</p>
+<p><img src="/static/cicd_goat/duchess/1.png" alt=""></p>
+<p><code>gitleaks</code> also provides the commit the secret was committed under:</p>
+<p><img src="/static/cicd_goat/duchess/2.png" alt=""></p>
+<h4 id="caterpillar">Caterpillar</h4>
+<blockquote>
+<p>Who. Are. You? You just have read permissions… is that enough? Use your access to the <em>Wonderland/caterpillar</em> repository to steal the <em>flag2</em> secret, which is stored in the Jenkins credential store.</p>
+</blockquote>
+<p>For this challenge, there is one repository: &ldquo;caterpillar&rdquo; and two jobs on Jenkins: &ldquo;caterpillar-prod&rdquo; and &ldquo;caterpillar-test&rdquo;.</p>
+<p>I first took a look at the &ldquo;caterpillar&rdquo; repository. I spotted the Jenkinsfile and identified the interesting part:</p>
+<p><img src="/static/cicd_goat/caterpillar/1.png" alt=""></p>
+<p>I didn&rsquo;t have write access to this repository, so I moved my focus over to the Jenkins jobs.</p>
+<p>Running the &ldquo;caterpillar-prod&rdquo; job can be triggered manually from Jenkins. The &ldquo;caterpillar-prod&rdquo; job runs against the <code>main</code> branch, meaning that it will also execute the <code>deploy</code> stage in the project&rsquo;s Jenkinsfile:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">stage<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;deploy&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    when <span style="color:#f92672">{</span>
+        expression <span style="color:#f92672">{</span>
+            env<span style="color:#f92672">.</span><span style="color:#a6e22e">BRANCH_NAME</span> <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;main&#39;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    steps <span style="color:#f92672">{</span>
+        withCredentials<span style="color:#f92672">([</span>usernamePassword<span style="color:#f92672">(</span>credentialsId: <span style="color:#e6db74">&#39;flag2&#39;</span><span style="color:#f92672">,</span> usernameVariable: <span style="color:#e6db74">&#39;flag2&#39;</span><span style="color:#f92672">,</span> passwordVariable: <span style="color:#e6db74">&#39;TOKEN&#39;</span><span style="color:#f92672">)])</span> <span style="color:#f92672">{</span>
+            sh <span style="color:#e6db74">&#39;curl -isSL &#34;http://wonderland:1234/api/user&#34; -H &#34;Authorization: Token ${TOKEN}&#34; -H &#34;Content-Type: application/json&#34; || true&#39;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>I could see the &ldquo;deploy&rdquo; step being executed in the logs, although the <code>wonderland</code> hostname did not resolve:</p>
+<p><img src="/static/cicd_goat/caterpillar/2.png" alt=""></p>
+<p>The &ldquo;caterpillar-test&rdquo; job was interesting because it was a &ldquo;Pipeline Branch project&rdquo;. As stated on the job&rsquo;s page:</p>
+<p><img src="/static/cicd_goat/caterpillar/10.png" alt=""></p>
+<p>There exists a job/project on Jenkins, that is waiting for branches to appear in the repository, but I couldn&rsquo;t create branches on the &ldquo;caterpillar&rdquo; repository&hellip; but I could potentially create a branch if I forked the repository and then opened up a PR on the &ldquo;caterpillar&rdquo; repository.</p>
+<p>My change would be to remove the &ldquo;when&rdquo; expression from the Jenkinsfile, and also point the curl request at my machine instead of <code>wonderland</code>.</p>
+<p><img src="/static/cicd_goat/caterpillar/3.png" alt=""></p>
+<p>I created a PR with my change and saw a branch job appear in Jenkins&hellip; but the job failed.</p>
+<p><img src="/static/cicd_goat/caterpillar/11.png" alt=""></p>
+<p>The logs showed that the <code>flag2</code> credential wasn&rsquo;t available. Maybe it was only available to the &ldquo;caterpillar-prod&rdquo; job? I went back to the PR and noticed something interesting:</p>
+<p><img src="/static/cicd_goat/caterpillar/4.png" alt=""></p>
+<p>I couldn&rsquo;t merge the PR, but something could. I made a change to my PR to put back the &ldquo;when&rdquo; clause, to get a passing build. Now I just had to figure out how to merge my change.</p>
+<p>I did a little research, and there are several ways you can configure Gitea to merge changes after successful builds (which you might want to do in certain pipelines/use cases). One of those ways is with the Gitea API.</p>
+<p>I remembered that I had seen an error referencing a &ldquo;Gitea access token&rdquo; in the Jenkins logs:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">...
+The recommended git tool is: NONE
+Warning: CredentialId &#34;gitea-access-token&#34; could not be found.
+Cloning the remote Git repository
+...
+</code></pre></div><p>The Jenkins job was trying to pull an access token but it either wasn&rsquo;t being stored as a credential, or the credential ID was wrong. I edited my change to perform a little more recon, part of which involved running the <code>env</code> command from the Jenkinsfile. That&rsquo;s when I spotted the token:</p>
+<p><img src="/static/cicd_goat/caterpillar/5.png" alt=""></p>
+<p>Now that I had the token, I could merge the PR via the Gitea API, providing the <code>head_commit_id</code>, which was just the latest commit on the PR.</p>
+<p><img src="/static/cicd_goat/caterpillar/7.png" alt=""></p>
+<p>Checking back in Gitea I could see my PR had been merged.</p>
+<p><img src="/static/cicd_goat/caterpillar/6.png" alt=""></p>
+<p>I set up <code>netcat</code> again to listen on port 9000 and ran the &ldquo;caterpillar-prod&rdquo; Jenkins job.</p>
+<p><img src="/static/cicd_goat/caterpillar/8.png" alt=""></p>
+<p>Switching back to my terminal, I saw <code>flag2</code> had been sent to my machine:</p>
+<p><img src="/static/cicd_goat/caterpillar/9.png" alt=""></p>
+<h4 id="cheshire-cat">Cheshire Cat</h4>
+<blockquote>
+<p>Some go this way. Some go that way. But as for me, myself, personally, I prefer the short cut. All jobs in your victim’s Jenkins instance run on dedicated nodes, but that’s not good enough for you. You are special. You want to execute code on the Jenkins Controller. That’s where the real juice is! Use your access to the <em>Wonderland/cheshire-cat</em> repository to run code on the Controller and steal <em>~/flag5.txt</em> from its file system. <strong>Note:</strong> Don&rsquo;t use the access gained in this challenge to solve other challenges.</p>
+</blockquote>
+<p>For this challenge, I had access to the &ldquo;cheshire-cat&rdquo; repo, which I could push branches to and create PRs on, and the &ldquo;cheshire-cat&rdquo; Jenkins job, which was a &ldquo;Pipeline Branch project&rdquo;.</p>
+<p>Given the note on this challenge (and the fact I&rsquo;d gone this long without popping a shell on Jenkins), I thought I&rsquo;d try my hand at gaining shell access.</p>
+<p>Given this pipeline&rsquo;s setup, it was a case of raising a PR with a reverse shell in it, and waiting for the connection back to my machine (via <code>netcat</code>) when the job runs.</p>
+<p><img src="/static/cicd_goat/cheshire-cat/8.png" alt=""></p>
+<p><img src="/static/cicd_goat/cheshire-cat/1.png" alt=""></p>
+<p>I had a shell, but I couldn&rsquo;t find any trace of <code>flag5</code>, and I couldn&rsquo;t find a way to escalate to the Jenkins Controller from inside agent1.</p>
+<p><img src="/static/cicd_goat/cheshire-cat/3.png" alt=""></p>
+<p>I took a step back and did a little research.</p>
+<p>After a little Googling, I learnt that I could <a href="https://www.jenkins.io/doc/book/pipeline/syntax/#agent">set the agent manually</a> via the Jenkinsfile. The &ldquo;cheshire-cat&rdquo; Jenkinsfile was setting the &ldquo;agent&rdquo; value to &ldquo;any&rdquo;, meaning that the job would execute on any available agent.</p>
+<p>There was technically another &ldquo;agent&rdquo; though: the Jenkins Controller. Navigating to the home screen in Jenkins listed the two agents: &ldquo;Built-In Node&rdquo; (the one I wanted to access) and &ldquo;agent1&rdquo; (the one I already had access to). The &ldquo;Built-In Node&rdquo; was set to EXCLUSIVE, meaning that jobs would only run on it when specified. Fortunately for me, the agent&rsquo;s label can be seen in the URL when viewing the agent in Jenkins.</p>
+<p><img src="/static/cicd_goat/cheshire-cat/4.png" alt=""></p>
+<p>I updated my PR to specify the &ldquo;(built-in)&rdquo; agent as part of the Jenkinsfile, set up <code>netcat</code> again, and waited for the job to run.</p>
+<p><img src="/static/cicd_goat/cheshire-cat/6.png" alt=""></p>
+<p>Within a few moments the job started, and I had access to the Jenkins Controller:</p>
+<p><img src="/static/cicd_goat/cheshire-cat/5.png" alt=""></p>
+<p><code>flag5</code> was inside a file conveniently named &ldquo;flag5.txt&rdquo;, found in the &ldquo;jenkins_home&rdquo; directory.</p>
+<p><img src="/static/cicd_goat/cheshire-cat/7.png" alt=""></p>
+<h4 id="twiddledum">Twiddledum</h4>
+<blockquote>
+<p>Contrariwise, if it was so, it might be; and if it were so, it would be; but as it isn&rsquo;t, it ain&rsquo;t. That&rsquo;s logic. <em>Flag6</em> is waiting for you in the <em>twiddledum</em> pipeline. Get it.</p>
+</blockquote>
+<p>For this challenge, I had access to a &ldquo;twiddledum&rdquo; job on Jenkins, and two repositories: &ldquo;twiddledum&rdquo; and &ldquo;twiddledee&rdquo;. I didn&rsquo;t have write permissions to the &ldquo;twiddledum&rdquo; repository, but I did have write permissions to the &ldquo;twiddledee&rdquo; repository.</p>
+<p>The &ldquo;twiddledum&rdquo; job clones the &ldquo;twiddledum&rdquo; repo and runs <code>node index.js</code>. &ldquo;index.js&rdquo; is a file within the &ldquo;twiddledee&rdquo; repo: &ldquo;twiddledum&rdquo; requires &ldquo;twiddledee&rdquo;.</p>
+<p><img src="/static/cicd_goat/twiddledum/1.png" alt=""></p>
+<p>The output of <code>node index.js</code> was &ldquo;twiddledee - 1.1.0&rdquo;</p>
+<p><img src="/static/cicd_goat/twiddledum/4.png" alt=""></p>
+<p>I could see this code in the &ldquo;twiddledee&rdquo; repository:</p>
+<p><img src="/static/cicd_goat/twiddledum/3.png" alt=""></p>
+<p>I took a look at the &ldquo;package.json&rdquo; file in the &ldquo;twiddledum&rdquo; repo and could see a reference to the &ldquo;twiddledee&rdquo; repo.</p>
+<p><img src="/static/cicd_goat/twiddledum/2.png" alt=""></p>
+<p>NPM has a few &ldquo;interesting&rdquo; features when it comes to dependency management, and one of them is around automatically pulling in dependency updates. <a href="https://bytearcher.com/articles/semver-explained-why-theres-a-caret-in-my-package-json/">This</a> article explains the details, but in short:</p>
+<blockquote>
+<p>Instead of specifying the exact version to be installed in package.json, npm allows you to widen the range of accepted versions. You can allow a newer patch level version with tilde (~) and newer minor or patch level version with caret (^).</p>
+</blockquote>
+<p>The &ldquo;twiddledee&rdquo; version specified in &ldquo;package.json&rdquo; was <code>^1.1.0</code>. If I released a new minor or patch version of &ldquo;twiddledee&rdquo; then &ldquo;twiddledum&rdquo; would automatically pull in the update.</p>
+<p>I made a simple change to &ldquo;index.js&rdquo; in the &ldquo;twiddledee&rdquo; repository to confirm my suspicion  and released a new version of &ldquo;twiddledee&rdquo; on Gitea: <code>1.1.1</code></p>
+<p><img src="/static/cicd_goat/twiddledum/6.png" alt="">
+<img src="/static/cicd_goat/twiddledum/7.png" alt=""></p>
+<p>I ran the &ldquo;twiddledum&rdquo; jenkins job and saw my code reflected in the logs:</p>
+<p><img src="/static/cicd_goat/twiddledum/8.png" alt=""></p>
+<p>I made a second change and released a second version of &ldquo;twiddledee&rdquo;, but this time I included code to initiate a reverse shell, taken from <a href="https://github.com/cyberheartmi9/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Reverse%20Shell%20Cheatsheet.md">PayloadsAllTheThings</a>.</p>
+<p><img src="/static/cicd_goat/twiddledum/10.png" alt=""></p>
+<p><img src="/static/cicd_goat/twiddledum/9.png" alt=""></p>
+<p>I found the flag under the environment variable <code>FLAG6</code>.</p>
+<p><img src="/static/cicd_goat/twiddledum/11.png" alt=""></p>
+<h4 id="dodo">Dodo</h4>
+<blockquote>
+<p>Everybody has won, and all must have prizes! The Dodo pipeline is scanning you. Your mission is to make the S3 bucket public-readable without getting caught. Collect your prize in the job’s console output once you’re done.</p>
+</blockquote>
+<p>This challenge has one repository (with push directly to &ldquo;main&rdquo; enabled) and one job. Running the job sets up an S3 bucket via Terraform.</p>
+<p>The code to set up the S3 bucket is found in &ldquo;main.tf&rdquo;:</p>
+<p><img src="/static/cicd_goat/dodo/4.png" alt=""></p>
+<p>I set the &ldquo;acl&rdquo; value to &ldquo;public-read&rdquo; and committed the change. The job ran, but it failed.</p>
+<p><img src="/static/cicd_goat/dodo/7.png" alt="">
+<img src="/static/cicd_goat/dodo/1.png" alt=""></p>
+<p>Something called &ldquo;checkov&rdquo; was blocking my change. <a href="https://www.checkov.io/">Checkov</a> is a static code analysis tool that detects common misconfigurations in Terraform, CloudFormation, Kubernetes, etc.</p>
+<p>Because I had full write access to the &ldquo;dodo&rdquo; repo, I could turn off the Checkov checks by supplying an empty config file. From the <a href="https://github.com/bridgecrewio/checkov#configuration-using-a-config-file">docs</a>:</p>
+<p><img src="/static/cicd_goat/dodo/5.png" alt=""></p>
+<p>I added a &ldquo;.checkov.yaml&rdquo; file, with the config to suppress all failures.</p>
+<p><img src="/static/cicd_goat/dodo/6.png" alt=""></p>
+<p>I committed the change, ran the build again, and had the flag.</p>
+<p><img src="/static/cicd_goat/dodo/2.png" alt=""></p>
+<h4 id="hearts">Hearts</h4>
+<blockquote>
+<p>Who stole those tarts? Your goal is to put your hands on the flag8 credential. But not so fast… These are System credentials stored on Jenkins! How would you access THAT?! A permission to admin agents is something you might find useful&hellip;</p>
+</blockquote>
+<p>I guessed from this challenge that I needed to assume the role of another user on Jenkins. I could see a list of users in Jenkins: who is &ldquo;knave&rdquo;? Clicking through to the knave&rsquo;s profile shows that they can control admin agents.</p>
+<p><img src="/static/cicd_goat/hearts/9.png" alt=""></p>
+<p>I initialled tried to use <code>hydra</code> to brute force knave&rsquo;s password but I couldn&rsquo;t seem to get the validation check working, so I instead switched to ZAP. I could tell that I had a valid username and password combination because the response size was different: an invalid response returns 402 bytes, and a valid response doesn&rsquo;t.</p>
+<p><img src="/static/cicd_goat/hearts/1.png" alt=""></p>
+<p><img src="/static/cicd_goat/hearts/2.png" alt="">
+I signed in as &ldquo;knave&rdquo; and created a new node. I could see the credential I wanted was being used to authenticate via SSH. I set the host to my machine&rsquo;s IP and set up a listener on my machine to listen on port 22.</p>
+<p><img src="/static/cicd_goat/hearts/7.png" alt=""></p>
+<p>I saved the configuration and waited for the agent to start.</p>
+<p><img src="/static/cicd_goat/hearts/3.png" alt=""></p>
+<p>I saw the connection back to my machine but it wasn&rsquo;t going to be as easy as setting up <code>netcat</code>. This output didn&rsquo;t contain the credentials.</p>
+<p><img src="/static/cicd_goat/hearts/4.png" alt=""></p>
+<p>OpenSSH (a commonly used SSH server) doesn&rsquo;t output confidential connection information, even if logging is set to &ldquo;verbose&rdquo;. To get more information about the request, I set up a honeypot using <a href="https://github.com/cowrie/cowrie">Cowrie</a>. This was very easy to set up via Docker:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -p 22:2222 cowrie/cowrie:latest
+</code></pre></div><p>I reset the node and waited for the connection back to my machine. This time I could see more details about the connection, including the credentials (the flag), used to connect.</p>
+<p><img src="/static/cicd_goat/hearts/6.png" alt=""></p>
+<h4 id="dormouse">Dormouse</h4>
+<blockquote>
+<p>Is &ldquo;I breathe when I sleep&rdquo; the same thing as &ldquo;I sleep when I breathe&rdquo;? If you steal secrets when you hack pipelines, does it mean you hack pipelines when you steal secrets? Leave that nonsense aside. Hack the Dormouse pipeline. Steal flag 9. Good luck.</p>
+</blockquote>
+<p>This challenge has one repository and one pipeline job. The &ldquo;thealice&rdquo; user doesn&rsquo;t have write access to the &ldquo;dormouse&rdquo; repository.</p>
+<p>Taking a look at the Jenkinsfile shows an interesting stage:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">stage <span style="color:#f92672">(</span><span style="color:#e6db74">&#39;Unit Tests&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    steps <span style="color:#f92672">{</span>
+        sh <span style="color:#e6db74">&#34;pytest || true&#34;</span>
+        <span style="color:#75715e">// lighttpd is also accessible at http://0177.0.0.01:8008/reportcov.sh
+</span><span style="color:#75715e"></span>        withCredentials<span style="color:#f92672">([</span>usernamePassword<span style="color:#f92672">(</span>credentialsId: <span style="color:#e6db74">&#39;flag9&#39;</span><span style="color:#f92672">,</span> usernameVariable: <span style="color:#e6db74">&#39;USERNAME&#39;</span><span style="color:#f92672">,</span> passwordVariable: <span style="color:#e6db74">&#39;FLAG&#39;</span><span style="color:#f92672">)])</span> <span style="color:#f92672">{</span>
+            sh <span style="color:#e6db74">&#34;&#34;&#34;curl -Os http://lighttpd/reportcov.sh
+</span><span style="color:#e6db74">            chmod +x reportcov.sh
+</span><span style="color:#e6db74">            ./reportcov.sh
+</span><span style="color:#e6db74">            &#34;&#34;&#34;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>A file is downloaded from <code>lighttpd</code> and executed. If I could gain overwrite <code>reportcov.sh</code> in some way then I would have a code execution path.</p>
+<p><code>lighttpd</code> is running on port &ldquo;1111&rdquo; on my machine (as configured by CI/CD Goat&rsquo;s docker-compose file)</p>
+<p>Where does this <code>reportcov.sh</code> file come from? Looking around on Gitea highlighted a &ldquo;reportcov&rdquo; repo:</p>
+<p><img src="/static/cicd_goat/dormouse/16.png" alt=""></p>
+<p>I couldn&rsquo;t commit directly to the &ldquo;main&rdquo; branch but I could create a PR. I took a look at the Jenkinsfile inside the &ldquo;reportcov&rdquo; repo and spotted a section that emails the admin when a PR was opened on the repository:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">stages <span style="color:#f92672">{</span>
+    stage <span style="color:#f92672">(</span><span style="color:#e6db74">&#39;Send notification&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        steps<span style="color:#f92672">{</span>
+            script <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                    sh <span style="color:#e6db74">&#34;echo Pull Request ${title} created in the reportcov repository&#34;</span>
+                    mail bcc: <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">,</span> body: <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">,</span> cc: <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">,</span> from: <span style="color:#e6db74">&#39;&#39;</span><span style="color:#f92672">,</span> subject: <span style="color:#e6db74">&#34;Pull Request ${title} created in the reportcov repository&#34;</span><span style="color:#f92672">,</span> to: <span style="color:#e6db74">&#39;red_queen@localhost&#39;</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception err<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    currentBuild<span style="color:#f92672">.</span><span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;SUCCESS&#39;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>It was this part that got me thinking about potentially injecting code via the PRs title:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">subject: <span style="color:#e6db74">&#34;Pull Request ${title} created in the reportcov repository&#34;</span>
+</code></pre></div><p>Further down in the Jenkinsfile was the upload step for the &ldquo;reportcov.sh&rdquo; script:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">stage <span style="color:#f92672">(</span><span style="color:#e6db74">&#39;Deploy&#39;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    steps <span style="color:#f92672">{</span>
+        sh <span style="color:#e6db74">&#34;set +x &amp;&amp; echo \&#34;${KEY}\&#34; &gt; key &amp;&amp; chmod 400 key &amp;&amp; set -x&#34;</span>
+        sh <span style="color:#e6db74">&#39;scp -o StrictHostKeyChecking=no -i key reportcov.sh root@lighttpd:/var/www/localhost/htdocs&#39;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>It took a few attempts and a little local testing, but I eventually managed to inject a curl command into the Jenkinsfile via the PR&rsquo;s header:</p>
+<p><img src="/static/cicd_goat/dormouse/5.png" alt="">
+<img src="/static/cicd_goat/dormouse/6.png" alt="">
+<img src="/static/cicd_goat/dormouse/7.png" alt=""></p>
+<p>Now that I had a PoC working, I raised another PR which would send the key to my machine via a POST request body:</p>
+<p><img src="/static/cicd_goat/dormouse/11.png" alt="">
+<img src="/static/cicd_goat/dormouse/12.png" alt=""></p>
+<p>To capture the request I set up a listener using a script from <a href="https://gist.github.com/Ahmed-Galal/a902f4b2edb246f9639fe7917bacfa1d">Ahmed-Galal</a>.</p>
+<p>I created a malicious &ldquo;reportcov.sh&rdquo; script that would make a request back to my machine including the flag in the request (when executed by the dormouse job). I copied the script onto the lighttpd machine using <code>scp</code> and the SSH key.</p>
+<p><img src="/static/cicd_goat/dormouse/14.png" alt=""></p>
+<p>I set up the listener again, ran the dormouse main job on Jenkins, and saw the flag in my terminal.</p>
+<p><img src="/static/cicd_goat/dormouse/15.png" alt=""></p>
+<h4 id="mock-turtle">Mock Turtle</h4>
+<blockquote>
+<p>Have you seen the Mock Turtle yet? It&rsquo;s the thing Mock Turtle Soup is made from. Can you push to the main branch of the mock-turtle repo? Do what’s needed to steal the flag10 secret stored in the Jenkins credential store.</p>
+</blockquote>
+<p>This challenge has one repo &ldquo;mock-turtle&rdquo;, a pipeline job to run checks against each PR raised on Gitea, and a &ldquo;main&rdquo; job, which runs against the &ldquo;main&rdquo; branch.</p>
+<p>I checked out the repo and took a look at the Jenkinsfile:</p>
+<p><img src="/static/cicd_goat/mock-turtle/8.png" alt=""></p>
+<p>The Jenkinsfile will automatically merge the PR the build is associated with if the following conditions are met:</p>
+<ul>
+<li>check1: The number of &ldquo;words&rdquo; added is the same as the number of &ldquo;words&rdquo; removed (as determined by <code>wc -w</code>)</li>
+<li>check2: The version number is valid (as determined by the regex <code>&quot;^\\d{1,2}\\.\\d{1,2}\\.\\d{1,2}$&quot;</code>)</li>
+<li>check3: A file matching &ldquo;version&rdquo; (as determined by <code>grep version</code>) was changed.</li>
+</ul>
+<p>I realised (after some initial tinkering) that raising a PR with a simple malicious change to the Jenkinsfile wasn&rsquo;t going to work. This is because each PR appeared to run against the Jenkinsfile in &ldquo;main&rdquo;. In other words: I couldn&rsquo;t just add a line that spits out the flag and get the job to run, so I had to abide by the three checks and merge my PR, as the challenge stated.</p>
+<p>I raised a PR with two changes. The first change was to add a &ldquo;version1&rdquo; file which would satisfy check3. The second change was to add a <code>withCredentials</code> block above the existing code that would send the &ldquo;flag10&rdquo; credential to my machine via <code>curl</code>.</p>
+<p><img src="/static/cicd_goat/mock-turtle/5.png" alt=""></p>
+<p>To satisfy check1 I removed a few lines of code from the Jenksinsfile making sure to keep the code in the Jenkinsfile valid. In retrospect, I could have removed a few words from the README or something.</p>
+<p><img src="/static/cicd_goat/mock-turtle/1.png" alt=""></p>
+<p>After I raised the PR I switched over to Jenkins to check everything was working, and within a few seconds, my PR was merged.</p>
+<p><img src="/static/cicd_goat/mock-turtle/7.png" alt=""></p>
+<p><img src="/static/cicd_goat/mock-turtle/3.png" alt=""></p>
+<p>I set up <code>netcat</code> to listen on port 9000 and ran the &ldquo;main&rdquo; job. I had the final flag.</p>
+<p><img src="/static/cicd_goat/mock-turtle/6.png" alt=""></p>
+<p><img src="/static/cicd_goat/mock-turtle/2.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>CI/CD Goat is a must for anyone working regularly with deployment pipelines. The challenges are well structured, with the challenge text and hints giving you just the right amount of information to get to the solution. I can also recommend the <a href="https://www.securityjourney.com/podcast-episode/omer-gil-and-daniel-krivelevich-top-10-ci-cd-security-risks">Application Security Podcast episode</a> (featuring Omer and Daniel from Cider) if you want to hear more about the <a href="https://www.cidersecurity.io/top-10-cicd-security-risks">top 10 CI/CD security risks</a>.</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

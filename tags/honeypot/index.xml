@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>honeypot on ben-dale.co.uk</title>
+    <link>/tags/honeypot/</link>
+    <description>Recent content in honeypot on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/honeypot/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CI/CD Goat</title>
+      <link>/post/ci/cd-goat/</link>
+      <pubDate>Sun, 15 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/ci/cd-goat/</guid>
+      <description>Here&amp;rsquo;s my write-up for CI/CD Goat, a purposely vulnerable CI/CD environment with a set of CTF challenges, created by Cider.
+Write-up I deployed the environment on my machine using the instructions from the project&amp;rsquo;s readme:
+curl -o cicd-goat/docker-compose.yaml --create-dirs https://raw.githubusercontent.com/cider-security-research/cicd-goat/main/docker-compose.yaml cd cicd-goat &amp;amp;&amp;amp; docker compose up -d There are 10 challenges in total, each inspired by Alice in Wonderland.
+White Rabbit  I’m late, I’m late! No time to say &amp;ldquo;hello, goodbye&amp;rdquo;!</description>
+    </item>
+    
+  </channel>
+</rss>

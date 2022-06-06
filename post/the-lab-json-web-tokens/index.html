@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>The Lab: JSON Web Tokens | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">The Lab: JSON Web Tokens</span></h1>
+
+<h2 class="date">2022/04/15</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/jwt">jwt</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>A deep dive into JSON Web Tokens: what they are, how they&rsquo;re structured, and more specifically, common misconfigurations and exploits.</p>
+<h2 id="a-jwt">A JWT</h2>
+<p>JWTs are a core part of the OpenID Connect standard: a standard which extends the identity layer on top of OAuth 2.</p>
+<p>Whilst the OAuth 2 specification does not stipulate a format for access tokens, the industry has widely adopted the use of JWTs.</p>
+<p>JWTs are considered stateless. The authorization server does not need to maintain a list of valid JWTs as JWTs are signed using a cryptographic signature which can be checked each time a JWT is used.</p>
+<p>From <a href="https://datatracker.ietf.org/doc/html/rfc7519#section-3">section 3</a> of RFC 7519:</p>
+<blockquote>
+<p>A JWT is represented as a sequence of URL-safe parts separated by period ('.') characters.  Each part contains a base64url-encoded value.</p>
+</blockquote>
+<p>The line breaks in the example below are for display purposes only:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.
+eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ
+.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+</code></pre></div><p>Decoding the JWT reveals the contents:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;HS256&#34;</span>,
+  <span style="color:#f92672">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>
+}
+{
+  <span style="color:#f92672">&#34;sub&#34;</span>: <span style="color:#e6db74">&#34;1234567890&#34;</span>,
+  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>,
+  <span style="color:#f92672">&#34;iat&#34;</span>: <span style="color:#ae81ff">1516239022</span>
+}
+</code></pre></div><p>JWTs can be decoded by the <a href="https://jwt.io/">JWT debugger</a>.</p>
+<h2 id="signing-and-cracking-jwts">Signing and cracking JWTs</h2>
+<p>From the RFC:</p>
+<blockquote>
+<p>The header describes the cryptographic operations applied to the JWT and optionally, additional properties of the JWT.</p>
+</blockquote>
+<p>Encrypted JWTs contain a header, known as the JOSE (JSON Object Signing and Encryption) header. This header defines two attributes: <code>alg</code> and <code>typ</code>.</p>
+<p>An example header can be seen below:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;HS256&#34;</span>,
+  <span style="color:#f92672">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>
+}
+</code></pre></div><p>It&rsquo;s worth noting that a signed JWT is known as a &ldquo;JWS&rdquo;. This can be a bit confusing because &ldquo;JWT&rdquo; is commonly used in language to descibe what is actually a &ldquo;JWS&rdquo;.</p>
+<h3 id="the-alg-field">The alg field</h3>
+<p><code>alg</code> is the algorithm that was used to sign or encrypt the JWT and can have one of may values. The table below is taken from <a href="https://datatracker.ietf.org/doc/html/rfc7518#section-3">section 3 of RFC 7518</a>.</p>
+<table>
+<thead>
+<tr>
+<th>&ldquo;alg&rdquo; Param</th>
+<th>Digital Signature or MAC Algorithm</th>
+<th>Implementation Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HS256</td>
+<td>HMAC using SHA-256</td>
+<td>Required</td>
+</tr>
+<tr>
+<td>HS384</td>
+<td>HMAC using SHA-384</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>HS512</td>
+<td>HMAC using SHA-512</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>RS256</td>
+<td>RSASSA-PKCS1-v1_5 using SHA-256</td>
+<td>Recommended</td>
+</tr>
+<tr>
+<td>RS384</td>
+<td>RSASSA-PKCS1-v1_5 using SHA-384</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>RS512</td>
+<td>RSASSA-PKCS1-v1_5 using SHA-512</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>ES256</td>
+<td>ECDSA using P-256 and SHA-256</td>
+<td>Recommended+</td>
+</tr>
+<tr>
+<td>ES384</td>
+<td>ECDSA using P-384 and SHA-384</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>ES512</td>
+<td>ECDSA using P-521 and SHA-512</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>PS256</td>
+<td>RSASSA-PSS using SHA-256 and MGF1 with SHA-256</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>PS384</td>
+<td>RSASSA-PSS using SHA-384 and MGF1 with SHA-384</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>PS512</td>
+<td>RSASSA-PSS using SHA-512 and MGF1 with SHA-512</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>none</td>
+<td>No digital signature or MAC performed</td>
+<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>The use of &ldquo;+&rdquo; in the Implementation Requirements column indicates that the requirement strength is likely to be increased in a future version of the specification.</p>
+</blockquote>
+<p>The most common algorithms used are: HS256, RS256, ES256.</p>
+<h4 id="alg-hs256">&ldquo;alg&rdquo;: &ldquo;HS256&rdquo;</h4>
+<blockquote>
+<p>The HMAC SHA-256 MAC is generated per RFC 2104, using SHA-256 as the hash algorithm &ldquo;H&rdquo;, using the JWS Signing Input as the &ldquo;text&rdquo; value, and using the shared key. The HMAC output value is the JWS Signature.</p>
+</blockquote>
+<p>In simple terms, using HS265 as the signing algorithm produces a hash-based signature, using a secret key and cryptographic hashing function to generate a MAC (message authentication code). Anyone that has access to the secret key can sign a JWT. Because of this, it&rsquo;s not possible to know who created and signed a JWT, just that it was created and signed with the secret key.</p>
+<p>As this is essentially a shared private key, it&rsquo;s important to ensure that the key is adequately complex to defend against dictionary or brute-force attacks.</p>
+<p><a href="https://authlab.digi.ninja/JWT_Cracking">This website</a> generates JWTs that have been signed by a very weak secret key. Below is a generated JWT and it&rsquo;s contents:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTAwMjczNTAsImxldmVsIjoidXNlciIsInVzZXIiOiJqYXNwZXIifQ.FksDDlx-lIYCfa3_Y1FJdi0t55Mbmu0YGggFNVHPVJM
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;HS256&#34;</span>,
+  <span style="color:#f92672">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>
+}
+{
+  <span style="color:#f92672">&#34;iat&#34;</span>: <span style="color:#ae81ff">1650027350</span>,
+  <span style="color:#f92672">&#34;level&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+  <span style="color:#f92672">&#34;user&#34;</span>: <span style="color:#e6db74">&#34;jasper&#34;</span>
+}
+</code></pre></div><p>The website also lets us test the JWT, validating it and showing the contents.</p>
+<p><img src="/static/the-lab-jwt/1.png" alt=""></p>
+<p>We can see that we have successfully &ldquo;logged in&rdquo; as Jasper, with a level of &ldquo;user&rdquo;.</p>
+<p>Using <a href="https://github.com/ticarpi/jwt_tool">jwt_tool</a> I can attempt to find the secret key that was used to sign the JWT via a dictionary attack, using a list of <a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/10k-most-common.txt">commonly used passwords</a>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">python3 jwt_tool.py eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTAwMjczNTAsImxldmVsIjoidXNlciIsInVzZXIiOiJqYXNwZXIifQ.FksDDlx-lIYCfa3_Y1FJdi0t55Mbmu0YGggFNVHPVJM -C -d ../SecLists/Passwords/Common-Credentials/10k-most-common.txt
+</code></pre></div><p>After a second or two, the key is found:</p>
+<p><img src="/static/the-lab-jwt/2.png" alt=""></p>
+<p>Now that I have the key, I can modify the JWT however I like and sign it using the discovered secret key. <code>jwt_tool</code> has a nice interactive tampering option, which allows you to add, remove, and edit fields.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">python3 jwt_tool.py eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTAwMjczNTAsImxldmVsIjoidXNlciIsInVzZXIiOiJqYXNwZXIifQ.FksDDlx-lIYCfa3_Y1FJdi0t55Mbmu0YGggFNVHPVJM -T -S hs256 -p <span style="color:#e6db74">&#34;hello&#34;</span>
+</code></pre></div><p><img src="/static/the-lab-jwt/3.png" alt=""></p>
+<p>Above I changed the &ldquo;level&rdquo; field within the claims from &ldquo;user&rdquo; to &ldquo;admin&rdquo;.</p>
+<p>Submitting the edited and signed JWT on the website shows that I&rsquo;m now &ldquo;logged in&rdquo; as Jasper, but this time with a level of &ldquo;admin&rdquo;.</p>
+<p><img src="/static/the-lab-jwt/4.png" alt=""></p>
+<p>As defined in <a href="https://datatracker.ietf.org/doc/html/rfc7518#section-3.2">section 3.2</a> of RFC 7518:</p>
+<blockquote>
+<p>A key of the same size as the hash output (for instance, 256 bits for &ldquo;HS256&rdquo;) or larger MUST be used with this algorithm.</p>
+</blockquote>
+<p>One character is eight bits, thus a secret key should be at least 32 characters. Auth0 secret keys, for example, are 512 bits in length (64 characters).</p>
+<h4 id="alg-rs256">&ldquo;alg&rdquo;: &ldquo;RS256&rdquo;</h4>
+<h4 id="alg-es256">&ldquo;alg&rdquo;: &ldquo;ES256&rdquo;</h4>
+<h4 id="alg-none">&ldquo;alg&rdquo;: &ldquo;none&rdquo;</h4>
+<p>As defined in <a href="https://datatracker.ietf.org/doc/html/rfc7518#page-11">section 3.6</a> of RFC 7518:</p>
+<blockquote>
+<p>JWSs MAY also be created that do not provide integrity protection. Such a JWS is called an Unsecured JWS.  An Unsecured JWS uses the &ldquo;alg&rdquo; value &ldquo;none&rdquo; and is formatted identically to other JWSs, but MUST use the empty octet sequence as its JWS Signature value. Recipients MUST verify that the JWS Signature value is the empty octet sequence.</p>
+</blockquote>
+<p>As the RFC suggests above, you do not need to sign a JWT, but in most cases (if not all cases) you should sign a JWT. In fact, the RFC continues with:</p>
+<blockquote>
+<p>Implementations MUST NOT accept Unsecured JWSs by default.</p>
+</blockquote>
+<p>Implementations MUST NOT accept unsigned JWTs by default, as this is a common attack. Take for instance, the following JWT:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTAwMjczNTAsImxldmVsIjoidXNlciIsInVzZXIiOiJqYXNwZXIifQ.FksDDlx-lIYCfa3_Y1FJdi0t55Mbmu0YGggFNVHPVJM
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;HS256&#34;</span>,
+  <span style="color:#f92672">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>
+}
+{
+  <span style="color:#f92672">&#34;iat&#34;</span>: <span style="color:#ae81ff">1650027350</span>,
+  <span style="color:#f92672">&#34;level&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+  <span style="color:#f92672">&#34;user&#34;</span>: <span style="color:#e6db74">&#34;jasper&#34;</span>
+}
+</code></pre></div><p>Generating a new unsigned JWT that has the same structure can be done quite easily using <a href="https://gchq.github.io/CyberChef/#recipe=JWT_Sign('','None')&amp;input=ewogICJpYXQiOiAxNjUwMDI3MzUwLAogICJsZXZlbCI6ICJ1c2VyIiwKICAidXNlciI6ICJqYXNwZXIiCn0">CyberChef</a>.</p>
+<p><img src="/static/the-lab-jwt/5.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.eyJpYXQiOjE2NTAwMjczNTAsImxldmVsIjoidXNlciIsInVzZXIiOiJqYXNwZXIifQ.
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;alg&#34;</span>: <span style="color:#e6db74">&#34;none&#34;</span>,
+  <span style="color:#f92672">&#34;typ&#34;</span>: <span style="color:#e6db74">&#34;JWT&#34;</span>
+}
+{
+  <span style="color:#f92672">&#34;iat&#34;</span>: <span style="color:#ae81ff">1650027350</span>,
+  <span style="color:#f92672">&#34;level&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>,
+  <span style="color:#f92672">&#34;user&#34;</span>: <span style="color:#e6db74">&#34;jasper&#34;</span>
+}
+</code></pre></div><p>Notice that the JWT does not end with a signature section, but rather ends with a period ('.') character, essentially an empty signature.</p>
+<p>A system that accepts unsigned JWTs when it should only accept signed JWTs is a system that can exploited. This is sometimes known as a <a href="https://auth0.com/blog/critical-vulnerabilities-in-json-web-token-libraries/#Meet-the--None--Algorithm">downgrade attack</a>.</p>
+<h2 id="jwks-and-spoofing-keys">JWKS and spoofing keys</h2>
+<h2 id="the-kid-claim">The &ldquo;kid&rdquo; claim</h2>
+<h2 id="useful-links">Useful links</h2>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc7519">JWT RFC</a> - The JSON Web Token specification.</p>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc7518">JSON Web Algorithms RFC</a> - The JWS, JWE, and JWK cryptographic algorithms specification.</p>
+<p><a href="https://datatracker.ietf.org/doc/html/draft-ietf-oauth-jwt-bcp-07">JWT Best Practices</a> - Best practices for implementing and deploying JWTs.</p>
+<p><a href="https://jwt.io/">JWT debugger</a> - Decode, verify, and generate JWTs.</p>
+<p><a href="https://medium.facilelogin.com/jwt-jws-and-jwe-for-not-so-dummies-b63310d201a3">JWT, JWS and JWE for Not So Dummies!</a> - An in-depth overview on the difference between JWT, JWS, and JWE.</p>
+<p><a href="https://medium.com/swlh/hacking-json-web-tokens-jwts-9122efe91e4a">Hacking JSON Web Tokens (JWT)</a> - An overview of common JWT vulnerabilities.</p>
+<p><a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html">OWASP JWT cheat sheet</a> - A cheatsheet from OWASP, that says &ldquo;for Java&rdquo; but the information contained within is general enough.</p>
+<p><a href="https://github.com/ticarpi/jwt_tool/wiki/Attack-Methodology">JWT Attack Methodology</a> - Attacking JWTs, a step by step guide.</p>
+<p><a href="https://github.com/ticarpi/jwt_tool/wiki/Using-jwt_tool#running-scans">Automated JWT assessments</a> - Running automated assessments with JWT_Tool</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

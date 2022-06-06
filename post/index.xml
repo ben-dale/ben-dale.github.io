@@ -6,10 +6,30 @@
     <description>Recent content in Posts on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Mar 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 15 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CI/CD Goat</title>
+      <link>/post/ci/cd-goat/</link>
+      <pubDate>Sun, 15 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/ci/cd-goat/</guid>
+      <description>Here&amp;rsquo;s my write-up for CI/CD Goat, a purposely vulnerable CI/CD environment with a set of CTF challenges, created by Cider.
+Write-up I deployed the environment on my machine using the instructions from the project&amp;rsquo;s readme:
+curl -o cicd-goat/docker-compose.yaml --create-dirs https://raw.githubusercontent.com/cider-security-research/cicd-goat/main/docker-compose.yaml cd cicd-goat &amp;amp;&amp;amp; docker compose up -d There are 10 challenges in total, each inspired by Alice in Wonderland.
+White Rabbit  I’m late, I’m late! No time to say &amp;ldquo;hello, goodbye&amp;rdquo;!</description>
+    </item>
     
-	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
-    
+    <item>
+      <title>The Lab: JSON Web Tokens</title>
+      <link>/post/the-lab-json-web-tokens/</link>
+      <pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/the-lab-json-web-tokens/</guid>
+      <description>A deep dive into JSON Web Tokens: what they are, how they&amp;rsquo;re structured, and more specifically, common misconfigurations and exploits.
+A JWT JWTs are a core part of the OpenID Connect standard: a standard which extends the identity layer on top of OAuth 2.
+Whilst the OAuth 2 specification does not stipulate a format for access tokens, the industry has widely adopted the use of JWTs.
+JWTs are considered stateless. The authorization server does not need to maintain a list of valid JWTs as JWTs are signed using a cryptographic signature which can be checked each time a JWT is used.</description>
+    </item>
     
     <item>
       <title>TryHackMe: Plotted-TMS</title>
@@ -55,8 +75,8 @@ gobuster identified a page under &amp;ldquo;/hidden&amp;rdquo; which exposed som
       
       <guid>/post/the-lab-docker/</guid>
       <description>A deep dive into some common Docker misconfigurations, exploitations, etc. for learning and reference purposes, using a Ubuntu Server VM called &amp;ldquo;lab&amp;rdquo;.
-Disclaimer: I&amp;rsquo;m not a Docker expert, these are just some notes I put together whilst researching Docker security and general usage, for my own interest. The information here is taken from a wide variety of sources.
-Disclaimer for the disclaimer: That&amp;rsquo;s smart talk for &amp;ldquo;I just wanted to f*ck about with Docker&amp;rdquo;.</description>
+The Docker socket As stated on the Docker post-installation instructions:
+ The Docker daemon always runs as the root user. If you don’t want to preface the docker command with sudo, create a Unix group called docker and add users to it. (&amp;hellip;) The docker group grants privileges equivalent to the root user.</description>
     </item>
     
     <item>

@@ -6,11 +6,7 @@
     <description>Recent content in nfs on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 09 Mar 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="/tags/nfs/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Mon, 09 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/nfs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VulnHub: HappyCorp</title>
       <link>/post/vulnhub-happycorp/</link>

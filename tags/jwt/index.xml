@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jwt on ben-dale.co.uk</title>
+    <link>/tags/jwt/</link>
+    <description>Recent content in jwt on ben-dale.co.uk</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 15 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/jwt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Lab: JSON Web Tokens</title>
+      <link>/post/the-lab-json-web-tokens/</link>
+      <pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/the-lab-json-web-tokens/</guid>
+      <description>A deep dive into JSON Web Tokens: what they are, how they&amp;rsquo;re structured, and more specifically, common misconfigurations and exploits.
+A JWT JWTs are a core part of the OpenID Connect standard: a standard which extends the identity layer on top of OAuth 2.
+Whilst the OAuth 2 specification does not stipulate a format for access tokens, the industry has widely adopted the use of JWTs.
+JWTs are considered stateless. The authorization server does not need to maintain a list of valid JWTs as JWTs are signed using a cryptographic signature which can be checked each time a JWT is used.</description>
+    </item>
+    
+  </channel>
+</rss>
