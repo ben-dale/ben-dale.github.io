@@ -6,13 +6,40 @@
     <description>Recent content in Tags on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>cve</title>
       <link>/tags/cve/</link>
-      <pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 28 May 2022 00:00:00 +0000</pubDate>
       
       <guid>/tags/cve/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>exiftool</title>
+      <link>/tags/exiftool/</link>
+      <pubDate>Sat, 28 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/exiftool/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>php</title>
+      <link>/tags/php/</link>
+      <pubDate>Sat, 28 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/php/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssh</title>
+      <link>/tags/ssh/</link>
+      <pubDate>Sat, 28 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ssh/</guid>
       <description></description>
     </item>
     
@@ -49,15 +76,6 @@
       <pubDate>Sun, 15 May 2022 00:00:00 +0000</pubDate>
       
       <guid>/tags/jenkins/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ssh</title>
-      <link>/tags/ssh/</link>
-      <pubDate>Sun, 15 May 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ssh/</guid>
       <description></description>
     </item>
     
@@ -103,15 +121,6 @@
       <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
       
       <guid>/tags/sqli/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>php</title>
-      <link>/tags/php/</link>
-      <pubDate>Mon, 28 Jun 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/php/</guid>
       <description></description>
     </item>
     

