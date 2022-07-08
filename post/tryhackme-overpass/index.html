@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Overpass, a TryHackMe box created by NinjaJc01.">
+    <title>TryHackMe: Overpass | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">TryHackMe: Overpass</span></h1>
+
+<h2 class="date">2022/07/07</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/ssh">ssh</a> <a href="/tags/cron">cron</a> <a href="/tags/john">john</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://tryhackme.com/room/overpass">Overpass</a>, a CTF challenge created by <a href="https://tryhackme.com/p/NinjaJc01">NinjaJc01</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using TryHackMe&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">└─$ nmap -sC -sV 10.10.131.138 -p-
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-08 09:27 EDT
+Nmap scan report for 10.10.131.138
+Host is up (0.059s latency).
+Not shown: 65533 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   2048 37:96:85:98:d1:00:9c:14:63:d9:b0:34:75:b1:f9:57 (RSA)
+|   256 53:75:fa:c0:65:da:dd:b1:e8:dd:40:b8:f6:82:39:24 (ECDSA)
+|_  256 1c:4a:da:1f:36:54:6d:a6:c6:17:00:27:2e:67:75:9c (ED25519)
+80/tcp open  http    Golang net/http server (Go-IPFS json-rpc or InfluxDB API)
+|_http-title: Overpass
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 80.15 seconds
+</code></pre></div><p>This machine had the following ports exposed:</p>
+<ul>
+<li>Port 22: OpenSSH 7.6p1</li>
+<li>Port 80: Golang net/http server</li>
+</ul>
+<p>Navigating to port 80 in Firefox showed a landing page for a password management tool named &ldquo;Overpass&rdquo;.</p>
+<p><img src="/static/overpass/1.png" alt=""></p>
+<p>Clicking &ldquo;Downloads&rdquo; loaded a download page, which hosted builds of Overpass, a link to the source code, and a build script.</p>
+<p><img src="/static/overpass/3.png" alt=""></p>
+<p>I downloaded the source code to review it. The source code revealed that the password management tool was using a rot47 algorithm to encrypt the password. The passwords were being stored in the user&rsquo;s home directory, under <code>~/.overpass</code>.</p>
+<p><img src="/static/overpass/5.png" alt=""></p>
+<p><img src="/static/overpass/6.png" alt=""></p>
+<p>After running <code>overpass</code> to encrypt a test password, I manually decrypted the contents of <code>~/.overpass</code> to confirm my understanding.</p>
+<p><img src="/static/overpass/7.png" alt=""></p>
+<p><img src="/static/overpass/8.png" alt=""></p>
+<p>This knowledge proved to be useful later on.</p>
+<p>In the background, I ran <code>gobuster</code> which quickly highlighted an administration page.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">└─$ gobuster dir --url http://10.10.131.138 --wordlist /opt/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.10.131.138
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /opt/SecLists/Discovery/Web-Content/directory-list-2.3-medium.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2022/07/08 09:30:28 Starting gobuster in directory enumeration mode
+===============================================================
+/img                  (Status: 301) [Size: 0] [--&gt; img/]
+/downloads            (Status: 301) [Size: 0] [--&gt; downloads/]
+/aboutus              (Status: 301) [Size: 0] [--&gt; aboutus/]  
+/admin                (Status: 301) [Size: 42] [--&gt; /admin/]  
+/css                  (Status: 301) [Size: 0] [--&gt; css/]                   
+</code></pre></div><p><img src="/static/overpass/4.png" alt=""></p>
+<p>I tried some basic credentials, such as <code>admin:admin</code>, <code>root:root</code> etc. , but soon gave up and turned my attention to the source code of the admin page.</p>
+<p><img src="/static/overpass/10.png" alt=""></p>
+<p>The <code>login.js</code> source code wasn&rsquo;t minified, making it easy to read. The curious part was at the bottom of the script:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">const statusOrCookie = await response.text()
+if (statusOrCookie === &#34;Incorrect credentials&#34;) {
+    loginStatus.textContent = &#34;Incorrect Credentials&#34;
+    passwordBox.value = &#34;&#34;
+} else {
+    Cookies.set(&#34;SessionToken&#34;, statusOrCookie)
+    window.location = &#34;/admin&#34;
+}
+</code></pre></div><p>This code appeared to make a login request and validate the response. If the response text was &ldquo;Incorrect credentials&rdquo; it would report an error on the screen and clear the password box. If the response text was anything other than &ldquo;Incorrect credentials&rdquo;, a SessionToken cookie was set, and the browser was redirected to <code>/admin</code>.</p>
+<p>I manually set up a &ldquo;SessionToken&rdquo; Cookie in my browser&rsquo;s storage and navigated to <code>/admin</code> and was in!</p>
+<p><img src="/static/overpass/9.png" alt=""></p>
+<p>Hidden in the <code>/admin</code> page was an RSA private key, left for someone called &ldquo;James&rdquo;. I tried using the key to <code>ssh</code> into the machine, but the key required a passphrase.</p>
+<p><img src="/static/overpass/11.png" alt=""></p>
+<p>I cracked the password using <code>john</code> and the rockyou wordlist&hellip;</p>
+<p><img src="/static/overpass/12.png" alt=""></p>
+<p>and then gained access to the <code>james</code> user.</p>
+<p>I found the first flag (<code>user.txt</code>) in James&rsquo; home directory, along with James&rsquo; <code>.overpass</code> file which contained his system password.</p>
+<p><img src="/static/overpass/13.png" alt=""></p>
+<p><img src="/static/overpass/14.png" alt=""></p>
+<p>There was also a note left in James&rsquo; home directory, which led me to check the cron jobs.</p>
+<p><img src="/static/overpass/16.png" alt=""></p>
+<p>One job was being run by root every minute that would download and execute a script located at <code>overpass.thm/downloads/src/buildscript.sh</code></p>
+<p>A record for <code>overpass.thm</code> was present in <code>/etc/hosts</code>. Luckily for me, the permissions weren&rsquo;t set correctly on <code>/etc/hosts</code> and I was able to edit this record to instead point at my machine (<code>10.11.23.23</code>)</p>
+<p><img src="/static/overpass/17.png" alt=""></p>
+<p>I set up a reverse shell and hosted it under the same directory structure as the request, under <code>/downloads/src</code> on port 80.</p>
+<p><img src="/static/overpass/18.png" alt=""></p>
+<p>I set up <code>nc</code> to listen out for the connection back to my machine, and within a few seconds the cronjob executed and I had a root shell.</p>
+<p><img src="/static/overpass/19.png" alt=""></p>
+<h3 id="final-thoughts">Final thoughts</h3>
+<p>A realistic CTF that is excellent for beginners! Thanks, NinjaJc01!</p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+
