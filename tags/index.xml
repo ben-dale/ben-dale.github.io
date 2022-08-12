@@ -6,10 +6,55 @@
     <description>Recent content in Tags on ben-dale.co.uk</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Jul 2022 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 29 Jul 2022 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>capabilities</title>
+      <link>/tags/capabilities/</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/capabilities/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ftp</title>
+      <link>/tags/ftp/</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ftp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gobuster</title>
+      <link>/tags/gobuster/</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/gobuster/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>linpeas</title>
+      <link>/tags/linpeas/</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/linpeas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ssh</title>
+      <link>/tags/ssh/</link>
+      <pubDate>Fri, 29 Jul 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/ssh/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>cron</title>
@@ -26,15 +71,6 @@
       <pubDate>Thu, 07 Jul 2022 00:00:00 +0000</pubDate>
       
       <guid>/tags/john/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ssh</title>
-      <link>/tags/ssh/</link>
-      <pubDate>Thu, 07 Jul 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ssh/</guid>
       <description></description>
     </item>
     
@@ -62,15 +98,6 @@
       <pubDate>Sat, 28 May 2022 00:00:00 +0000</pubDate>
       
       <guid>/tags/php/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>ftp</title>
-      <link>/tags/ftp/</link>
-      <pubDate>Tue, 17 May 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/ftp/</guid>
       <description></description>
     </item>
     
@@ -125,15 +152,6 @@
       <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
       
       <guid>/tags/lfi/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>linpeas</title>
-      <link>/tags/linpeas/</link>
-      <pubDate>Fri, 11 Mar 2022 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/linpeas/</guid>
       <description></description>
     </item>
     

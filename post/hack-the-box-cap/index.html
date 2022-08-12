@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="My write-up for Cap, a Hack The Box machine created by InfoSecJack.">
+    <title>Hack The Box: Cap | ben-dale.co.uk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/theme-override.css">
+    <header>
+
+  <nav>
+    <ul>
+      
+      
+      <li class="pull-left ">
+        <a href="/">~/ben-dale.co.uk</a>
+      </li>
+      
+      
+      <li class="pull-left ">
+        <a href="/tags/">~/tags</a>
+      </li>
+      
+
+      
+      
+      <li class="pull-right">
+        <a href="/index.xml">~/rss</a>
+      </li>
+      
+
+    </ul>
+  </nav>
+</header>
+
+  </head>
+
+  <body>
+    <br/>
+
+<div class="article-meta">
+<h1><span class="title">Hack The Box: Cap</span></h1>
+
+<h2 class="date">2022/07/29</h2>
+<p class="terms">
+  
+  
+  
+  
+  Tags: <a href="/tags/ssh">ssh</a> <a href="/tags/ftp">ftp</a> <a href="/tags/gobuster">gobuster</a> <a href="/tags/linpeas">linpeas</a> <a href="/tags/capabilities">capabilities</a> 
+  
+  
+</p>
+</div>
+
+
+<div class="content-wrapper">
+  <main>
+    <p>Here&rsquo;s my write-up for <a href="https://app.hackthebox.com/machines/Cap">Cap</a>, a CTF challenge created by <a href="https://app.hackthebox.com/users/52045">InfoSecJack</a>.</p>
+<h3 id="write-up">Write-up</h3>
+<p>I deployed the box using HTB&rsquo;s interface and scanned the host using <code>nmap</code>:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">└─$ nmap 10.129.70.0 -sC -sV            
+Starting Nmap 7.92 ( https://nmap.org ) at 2022-07-22 08:32 EDT
+Nmap scan report for 10.129.70.0
+Host is up (0.062s latency).
+Not shown: 997 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.3
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.2 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey: 
+|   3072 fa:80:a9:b2:ca:3b:88:69:a4:28:9e:39:0d:27:d5:75 (RSA)
+|   256 96:d8:f8:e3:e8:f7:71:36:c5:49:d5:9d:b6:a4:c9:0c (ECDSA)
+|_  256 3f:d0:ff:91:eb:3b:f6:e1:9f:2e:8d🇩🇪b3🇩🇪b2:18 (ED25519)
+80/tcp open  http    gunicorn
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.0 404 NOT FOUND
+|     Server: gunicorn
+|     Date: Fri, 22 Jul 2022 12:32:59 GMT
+|     Connection: close
+|     Content-Type: text/html; charset=utf-8
+|     Content-Length: 232
+|     &lt;!DOCTYPE HTML PUBLIC &#34;-//W3C//DTD HTML 3.2 Final//EN&#34;&gt;
+|     &lt;title&gt;404 Not Found&lt;/title&gt;
+|     &lt;h1&gt;Not Found&lt;/h1&gt;
+|     &lt;p&gt;The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.&lt;/p&gt;
+|   GetRequest: 
+|     HTTP/1.0 200 OK
+|     Server: gunicorn
+|     Date: Fri, 22 Jul 2022 12:32:54 GMT
+|     Connection: close
+|     Content-Type: text/html; charset=utf-8
+|     Content-Length: 19386
+|     &lt;!DOCTYPE html&gt;
+|     &lt;html class=&#34;no-js&#34; lang=&#34;en&#34;&gt;
+|     &lt;head&gt;
+|     &lt;meta charset=&#34;utf-8&#34;&gt;
+|     &lt;meta http-equiv=&#34;x-ua-compatible&#34; content=&#34;ie=edge&#34;&gt;
+|     &lt;title&gt;Security Dashboard&lt;/title&gt;
+|     &lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1&#34;&gt;
+|     &lt;link rel=&#34;shortcut icon&#34; type=&#34;image/png&#34; href=&#34;/static/images/icon/favicon.ico&#34;&gt;
+|     &lt;link rel=&#34;stylesheet&#34; href=&#34;/static/css/bootstrap.min.css&#34;&gt;
+|     &lt;link rel=&#34;stylesheet&#34; href=&#34;/static/css/font-awesome.min.css&#34;&gt;
+|     &lt;link rel=&#34;stylesheet&#34; href=&#34;/static/css/themify-icons.css&#34;&gt;
+|     &lt;link rel=&#34;stylesheet&#34; href=&#34;/static/css/metisMenu.css&#34;&gt;
+|     &lt;link rel=&#34;stylesheet&#34; href=&#34;/static/css/owl.carousel.min.css&#34;&gt;
+|     &lt;link rel=&#34;stylesheet&#34; href=&#34;/static/css/slicknav.min.css&#34;&gt;
+|     &lt;!-- amchar
+|   HTTPOptions: 
+|     HTTP/1.0 200 OK
+|     Server: gunicorn
+|     Date: Fri, 22 Jul 2022 12:32:54 GMT
+|     Connection: close
+|     Content-Type: text/html; charset=utf-8
+|     Allow: GET, HEAD, OPTIONS
+|     Content-Length: 0
+|   RTSPRequest: 
+|     HTTP/1.1 400 Bad Request
+|     Connection: close
+|     Content-Type: text/html
+|     Content-Length: 196
+|     &lt;html&gt;
+|     &lt;head&gt;
+|     &lt;title&gt;Bad Request&lt;/title&gt;
+|     &lt;/head&gt;
+|     &lt;body&gt;
+|     &lt;h1&gt;&lt;p&gt;Bad Request&lt;/p&gt;&lt;/h1&gt;
+|     Invalid HTTP Version &amp;#x27;Invalid HTTP Version: &amp;#x27;RTSP/1.0&amp;#x27;&amp;#x27;
+|     &lt;/body&gt;
+|_    &lt;/html&gt;
+|_http-title: Security Dashboard
+|_http-server-header: gunicorn
+...
+</code></pre></div><p>This machine had the following ports exposed:</p>
+<ul>
+<li>Port 21: vsftpd 3.0.3</li>
+<li>Port 22: OpenSSH 8.2p1</li>
+<li>Port 80: http    gunicorn</li>
+</ul>
+<p>I first checked port 21 for anonymous login and tried a few basic username and password combinations, but I couldn&rsquo;t gain any access.</p>
+<p>I moved my attention to port 80, checking out the website in my browser and running <code>gobuster</code> in the background.</p>
+<p><img src="/static/cap/2.png" alt=""></p>
+<p>Clicking around the website didn&rsquo;t turn up much, as it appeared to just be a static placeholder site that doesn&rsquo;t make many (if any) HTTP requests.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-text" data-lang="text">└─$ gobuster dir -u http://10.129.70.0 -w /opt/SecLists/Discovery/Web-Content/raft-medium-directories.txt
+===============================================================
+Gobuster v3.1.0
+by OJ Reeves (@TheColonial) &amp; Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://10.129.70.0
+[+] Method:                  GET
+[+] Threads:                 10
+[+] Wordlist:                /opt/SecLists/Discovery/Web-Content/raft-medium-directories.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.1.0
+[+] Timeout:                 10s
+===============================================================
+2022/07/22 08:37:43 Starting gobuster in directory enumeration mode
+===============================================================
+/data                 (Status: 302) [Size: 208] [--&gt; http://10.129.70.0/]
+/ip                   (Status: 200) [Size: 17444]                        
+/capture              (Status: 302) [Size: 220] [--&gt; http://10.129.70.0/data/1]
+</code></pre></div><p><code>gobuster</code> found a <code>/capture</code> path which redirected to <code>/data/1</code>.</p>
+<p><code>/data/1</code> returned a page containing a link to .pcap file.</p>
+<p><img src="/static/cap/3.png" alt=""></p>
+<p>I downloaded the .pcap file and opened it with Wireshark.</p>
+<p><img src="/static/cap/4.png" alt=""></p>
+<p>The contents showed the packets my machine sent to the target via <code>gobuster</code>.</p>
+<p>Back on the website, I visited <code>/data/0</code> and found that the page returned a different .pcap file.</p>
+<p><img src="/static/cap/1.png" alt=""></p>
+<p>Inside this file, I found some user credentials, which I used to log in via ftp to get the user flag.</p>
+<p><img src="/static/cap/5.png" alt=""></p>
+<p><img src="/static/cap/6.png" alt=""></p>
+<p>I used the same credentials to log in via ssh, and ran <a href="https://github.com/carlospolop/PEASS-ng/tree/master/linPEAS">linpeas</a>, which identified that <code>/usr/bin/python3.8</code> had the <code>cap_setuid</code> capability set, which would allow me to write a small exploit in python to assume the role of <code>root</code>.</p>
+<p><img src="/static/cap/7.png" alt=""></p>
+<p>Once I had a proof of concept working, I used the exploit to find the final flag.</p>
+<p><img src="/static/cap/8.png" alt=""></p>
+<p><img src="/static/cap/9.png" alt=""></p>
+<p><img src="/static/cap/10.png" alt=""></p>
+
+    <a href="/"> >> Home</a>
+  </main>
+</div>
+    <footer>
+      
+<script>
+(function() {
+  function center_el(tagName) {
+    var tags = document.getElementsByTagName(tagName), i, tag;
+    for (i = 0; i < tags.length; i++) {
+      tag = tags[i];
+      var parent = tag.parentElement;
+      
+      if (parent.childNodes.length === 1) {
+        
+        if (parent.nodeName === 'A') {
+          parent = parent.parentElement;
+          if (parent.childNodes.length != 1) continue;
+        }
+        if (parent.nodeName === 'P') parent.style.textAlign = 'center';
+      }
+    }
+  }
+  var tagNames = ['img', 'embed', 'object'];
+  for (var i = 0; i < tagNames.length; i++) {
+    center_el(tagNames[i]);
+  }
+})();
+</script>
+
+      
+      <hr/>
+      <a href="https://github.com/ben-dale">Github</a> | <a href="https://keybase.io/mrbenjamind">Keybase</a> | <a href="https://twitter.com/mrbenjamind">Twitter</a>
+      
+    </footer>
+    
+  </body>
+</html>
+

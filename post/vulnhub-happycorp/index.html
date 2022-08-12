@@ -259,8 +259,6 @@ Enter passphrase for key 'id_rsa':
 </code></pre><p>I had to copy the copy of <code>/etc/passwd</code> to my local machine (using <code>python -m http.server</code>) so that I could edit it. This was because <code>cp</code> has the SUID bit set and the copy of <code>/etc/passwd</code> has read-only root privilege so I couldn&rsquo;t edit it on the box. Once I made the edit I used the same method to copy the edited <code>/etc/passwd</code> file back to HappyCorp (<code>python -m http.server</code> from my machine and <code>wget</code> from the HappyCorp box) and overwrote the passwd file under <code>/etc</code>:</p>
 <pre><code>$ cp passwd /etc/passwd
 </code></pre><p><img src="/static/happycorp/17.png" alt=""></p>
-<h3 id="final-thoughts">Final thoughts</h3>
-<p>I enjoyed HappyCorp a lot. I was left scratching my head a couple of times but with the right amount of research, I managed to get to the root flag. Thanks for the challenge Zayotic!</p>
 
     <a href="/"> >> Home</a>
   </main>
