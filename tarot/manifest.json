@@ -1,0 +1,10 @@
+{
+  "name": "Tarot Reading",
+  "short_name": "Tarot",
+  "description": "A tarot reading application",
+  "start_url": "/tarot/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": []
+} 
