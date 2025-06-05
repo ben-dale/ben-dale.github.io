@@ -50,161 +50,161 @@ Error generating stack: `+a.message+`
 
 `)[0]}),$.jsx("div",{className:"meaning-text",children:K.meaning.split(`
 
-`).slice(1).map((Z,ce)=>$.jsx("p",{children:Z},ce))})]})})]})})})}),xm=({cards:N,onCardSelect:K})=>$.jsx("div",{className:"container",children:$.jsx("div",{className:"grid",children:N.map(x=>$.jsx("div",{className:"cell",onClick:()=>K(x),children:$.jsxs("div",{className:"grid-card",children:[$.jsx("img",{src:x.image,alt:x.name}),$.jsx("h3",{children:x.name})]})},x.name))})});function Gm(){const[N,K]=_a.useState("reading"),[x,y]=_a.useState([]),[B,Z]=_a.useState(null),[ce,ze]=_a.useState(!1),[D,S]=_a.useState(!1);_a.useEffect(()=>{const re=[{id:1,name:"The Fool",image:"/cards/00-TheFool.jpg",meaning:`BEGINNING • TRUST • FREEDOM
+`).slice(1).map((Z,ce)=>$.jsx("p",{children:Z},ce))})]})})]})})})}),xm=({cards:N,onCardSelect:K})=>$.jsx("div",{className:"container",children:$.jsx("div",{className:"grid",children:N.map(x=>$.jsx("div",{className:"cell",onClick:()=>K(x),children:$.jsxs("div",{className:"grid-card",children:[$.jsx("img",{src:x.image,alt:x.name}),$.jsx("h3",{children:x.name})]})},x.name))})});function Gm(){const[N,K]=_a.useState("reading"),[x,y]=_a.useState([]),[B,Z]=_a.useState(null),[ce,ze]=_a.useState(!1),[D,S]=_a.useState(!1);_a.useEffect(()=>{const re=[{id:1,name:"The Fool",image:"/tarot/cards/00-TheFool.jpg",meaning:`BEGINNING • TRUST • FREEDOM
 
 I stand at the edge of a cliff, my small dog barking warnings at my feet. The sun rises before me, and I feel the wind in my hair. My bag holds everything I need, and a white rose blooms in my hand, pure and full of promise. I'm not afraid of the unknown - I know the path will appear as I walk.
 
 With one foot raised, I'm ready to take that first step. The dog's warning barks remind me that while I trust in the journey, I'm not naive to its challenges. The white rose in my hand symbolizes my pure intentions, and my bag contains the wisdom I've gathered. This is my moment to begin, to trust in life's unfolding, and to embrace the freedom of infinite possibilities.
 
 
-Consider the new beginning that calls to you.`},{id:2,name:"The Magician",image:"/cards/01-TheMagician.jpg",meaning:`MANIFESTATION • POWER • CREATION
+Consider the new beginning that calls to you.`},{id:2,name:"The Magician",image:"/tarot/cards/01-TheMagician.jpg",meaning:`MANIFESTATION • POWER • CREATION
 
 I stand before my altar, one hand raised to the heavens, the other pointing to the earth. The four elements - cup, wand, sword, and pentacle - lie before me, ready to be transformed. The red roses and white lilies around me symbolize the balance of passion and purity in creation.
 
 I am the bridge between heaven and earth, the master of manifestation. Each tool before me represents a different aspect of creation - the cup for emotions, the wand for will, the sword for thought, and the pentacle for the physical. When I align these elements with my intention, I can manifest my dreams into reality. This is my power - to transform thought into form.
 
 
-Reflect on what you are ready to manifest.`},{id:3,name:"The High Priestess",image:"/cards/02-TheHighPriestess.jpg",meaning:`INTUITION • MYSTERY • WISDOM
+Reflect on what you are ready to manifest.`},{id:3,name:"The High Priestess",image:"/tarot/cards/02-TheHighPriestess.jpg",meaning:`INTUITION • MYSTERY • WISDOM
 
 I sit between two pillars - one black, one white - the guardians of the threshold between worlds. The moon's light illuminates my face, and the pomegranates behind me hold the seeds of hidden knowledge. The scroll in my lap contains wisdom that can only be accessed through intuition.
 
 In the silence of my temple, I listen to the whispers of the unconscious. The two pillars represent the duality of existence, and the veil behind me conceals the mysteries of the inner world. The moon's light teaches me that true wisdom comes not from the bright light of reason, but from the subtle illumination of intuition. This is my gift - to guide others to their own inner wisdom.
 
 
-Listen to the whispers of your intuition.`},{id:4,name:"The Empress",image:"/cards/03-TheEmpress.jpg",meaning:`ABUNDANCE • CREATIVITY • NOURISHMENT
+Listen to the whispers of your intuition.`},{id:4,name:"The Empress",image:"/tarot/cards/03-TheEmpress.jpg",meaning:`ABUNDANCE • CREATIVITY • NOURISHMENT
 
 I recline in my garden, surrounded by golden wheat and a flowing river. My crown of stars connects me to the heavens, while my feet rest firmly on the earth. The pomegranates on my robe symbolize fertility, and the heart-shaped shield beside me represents the power of love.
 
 I am the mother of all things, the source of life and creativity. The wheat fields sway in the breeze, reminding me that abundance comes from nurturing growth. The river flows endlessly, teaching me that creativity is a constant stream. This is my power - to bring forth life and beauty through love and care.
 
 
-Nurture your creative spirit.`},{id:5,name:"The Emperor",image:"/cards/04-TheEmperor.jpg",meaning:`AUTHORITY • STRUCTURE • STABILITY
+Nurture your creative spirit.`},{id:5,name:"The Emperor",image:"/tarot/cards/04-TheEmperor.jpg",meaning:`AUTHORITY • STRUCTURE • STABILITY
 
 I sit on my throne, the mountains rising behind me like a crown. The ram's heads on my throne speak of determination, and my scepter and orb are symbols of my authority. The red robe I wear represents power, while the armor beneath shows my readiness to protect.
 
 I am the architect of order, the builder of structures that stand the test of time. The mountains behind me remind me that true strength comes from stability and endurance. The ram's heads teach me that progress requires both determination and wisdom. This is my role - to create and maintain the foundations upon which growth can occur.
 
 
-Consider the structures that need your attention.`},{id:6,name:"The Hierophant",image:"/cards/05-TheHierophant.jpg",meaning:`TRADITION • SPIRITUALITY • GUIDANCE
+Consider the structures that need your attention.`},{id:6,name:"The Hierophant",image:"/tarot/cards/05-TheHierophant.jpg",meaning:`TRADITION • SPIRITUALITY • GUIDANCE
 
 I stand between two pillars, my hand raised in blessing. Two acolytes kneel before me, seeking wisdom and guidance. The keys at my feet represent the knowledge that unlocks spiritual understanding, and my triple crown connects me to the divine.
 
 I am the bridge between heaven and earth, the interpreter of divine wisdom. The two pillars remind me that spiritual growth requires both tradition and personal experience. The keys teach me that true understanding comes from unlocking the mysteries of both the outer and inner worlds. This is my purpose - to guide others on their spiritual journey.
 
 
-Seek the spiritual guidance that calls to you.`},{id:7,name:"The Lovers",image:"/cards/06-TheLovers.jpg",meaning:`CHOICE • LOVE • HARMONY
+Seek the spiritual guidance that calls to you.`},{id:7,name:"The Lovers",image:"/tarot/cards/06-TheLovers.jpg",meaning:`CHOICE • LOVE • HARMONY
 
 I stand in the garden, faced with a choice that will shape my destiny. Above me, the sun shines brightly, and an angel blesses the path ahead. The tree of knowledge and the tree of life frame my decision, while the serpent reminds me that every choice has consequences.
 
 I understand that true love requires both passion and discernment. The angel above teaches me that divine guidance is always present, while the trees remind me that growth comes from making conscious choices. This is my lesson - to choose from a place of love and authenticity, creating harmony in my life.
 
 
-Listen to your heart's guidance.`},{id:8,name:"The Chariot",image:"/cards/07-TheChariot.jpg",meaning:`VICTORY • DETERMINATION • CONTROL
+Listen to your heart's guidance.`},{id:8,name:"The Chariot",image:"/tarot/cards/07-TheChariot.jpg",meaning:`VICTORY • DETERMINATION • CONTROL
 
 I stand in my golden chariot, the reins of two sphinxes in my hands. The city walls behind me represent the challenges I've overcome, while the stars on my canopy guide my path forward. The black and white sphinxes represent the opposing forces I've learned to balance.
 
 I am the master of my destiny, the driver of my own chariot. The sphinxes teach me that victory comes from harmonizing opposing forces - light and dark, conscious and unconscious. The stars above remind me that divine guidance is always present. This is my strength - to move forward with purpose and determination.
 
 
-Balance the opposing forces in your life.`},{id:9,name:"Strength",image:"/cards/08-Strength.jpg",meaning:`COURAGE • COMPASSION • INNER POWER
+Balance the opposing forces in your life.`},{id:9,name:"Strength",image:"/tarot/cards/08-Strength.jpg",meaning:`COURAGE • COMPASSION • INNER POWER
 
 I stand before a lion, gently closing its jaws with my hands. The infinity symbol floats above my head, reminding me that true strength is infinite. The flowers in my hair and the lion's tail in my hand show that I've mastered not just the beast, but myself.
 
 I understand that true strength comes from compassion and understanding. The lion teaches me that raw power can be transformed through love, while the infinity symbol reminds me that inner strength is limitless. This is my wisdom - that the gentle touch is often more powerful than force.
 
 
-Develop your inner strength.`},{id:10,name:"The Hermit",image:"/cards/09-TheHermit.jpg",meaning:`INTROSPECTION • WISDOM • GUIDANCE
+Develop your inner strength.`},{id:10,name:"The Hermit",image:"/tarot/cards/09-TheHermit.jpg",meaning:`INTROSPECTION • WISDOM • GUIDANCE
 
 I stand on the mountain peak, my lantern held high. The light within it is a star, guiding those who seek wisdom. My staff supports me as I contemplate the path I've chosen, while the snow around me speaks of the clarity that comes from solitude.
 
 I am the guide who shows that wisdom comes from within. The lantern teaches me that inner light can illuminate the darkest paths, while the mountain reminds me that perspective comes from rising above the world. This is my gift - to help others find their own inner light through the wisdom I've gained in solitude.
 
 
-Discover the wisdom in your solitude.`},{id:11,name:"Wheel of Fortune",image:"/cards/10-WheelOfFortune.jpg",meaning:`CHANGE • DESTINY • CYCLES
+Discover the wisdom in your solitude.`},{id:11,name:"Wheel of Fortune",image:"/tarot/cards/10-WheelOfFortune.jpg",meaning:`CHANGE • DESTINY • CYCLES
 
 I watch the wheel turn, its spokes marking the cycles of life. The four creatures at the corners - the eagle, lion, bull, and angel - read from their books of wisdom, while the sphinx sits atop, maintaining balance. The snake descending and the Anubis rising remind me that what goes down must come up.
 
 I understand that life moves in cycles, and change is the only constant. The wheel teaches me that both good and challenging times are temporary, and wisdom lies in adapting to each turn. The four creatures show me that learning comes from all directions - through thought, action, emotion, and spirit. This is my lesson - to embrace change and find meaning in life's cycles.
 
 
-Embrace the cycle of change you're experiencing.`},{id:12,name:"Justice",image:"/cards/11-Justice.jpg",meaning:`BALANCE • TRUTH • KARMA
+Embrace the cycle of change you're experiencing.`},{id:12,name:"Justice",image:"/tarot/cards/11-Justice.jpg",meaning:`BALANCE • TRUTH • KARMA
 
 I sit on my throne, scales in one hand, sword in the other. The scales hang perfectly balanced, ready to weigh truth and consequence. My sword points upward, cutting through illusion to reveal what is real. The pillars behind me frame the path of truth.
 
 I am the guardian of cosmic justice, the keeper of balance. The scales remind me that every action has its consequence, while the sword teaches me that truth requires both clarity and courage. The pillars show me that justice stands on the foundation of wisdom and strength. This is my role - to maintain balance and reveal truth.
 
 
-Face the truth that calls to you.`},{id:13,name:"The Hanged Man",image:"/cards/12-TheHangedMan.jpg",meaning:`SURRENDER • PERSPECTIVE • SACRIFICE
+Face the truth that calls to you.`},{id:13,name:"The Hanged Man",image:"/tarot/cards/12-TheHangedMan.jpg",meaning:`SURRENDER • PERSPECTIVE • SACRIFICE
 
 I hang from the tree, suspended between heaven and earth. My right foot is bound, but my left foot is free, forming a cross with my leg. The golden halo around my head shows my enlightenment, while my peaceful expression reveals my acceptance of this moment.
 
 I have chosen to surrender to this position, seeing the world from a new perspective. The tree teaches me that growth sometimes requires sacrifice, while my bound foot shows that limitation can lead to freedom. This is my wisdom - that sometimes we must let go to gain understanding.
 
 
-Surrender to what needs to be released.`},{id:14,name:"Death",image:"/cards/13-Death.jpg",meaning:`TRANSFORMATION • ENDINGS • CHANGE
+Surrender to what needs to be released.`},{id:14,name:"Death",image:"/tarot/cards/13-Death.jpg",meaning:`TRANSFORMATION • ENDINGS • CHANGE
 
 I ride my white horse through the field, carrying my black flag with the white rose. The king lies fallen, while the bishop, child, and maiden stand before me, each in their own stage of acceptance. The sun rises between two towers, promising new beginnings.
 
 I am not the end, but the agent of transformation. The white horse shows that change comes with purity of purpose, while the black flag with white rose reminds that beauty can emerge from endings. The rising sun teaches that every ending brings a new beginning. This is my truth - that transformation is necessary for growth.
 
 
-Transform what needs to change.`},{id:15,name:"Temperance",image:"/cards/14-Temperance.jpg",meaning:`BALANCE • MODERATION • HARMONY
+Transform what needs to change.`},{id:15,name:"Temperance",image:"/tarot/cards/14-Temperance.jpg",meaning:`BALANCE • MODERATION • HARMONY
 
 I stand between earth and water, pouring liquid between two cups. One foot tests the water, while the other remains on solid ground. The path behind me leads to the crown of light, and my wings show my connection to higher wisdom.
 
 I am the alchemist of balance, the master of moderation. The cups teach me that harmony comes from the careful blending of opposites, while my stance shows the importance of testing before committing. The path reminds me that balance leads to enlightenment. This is my gift - to show others how to find harmony in their lives.
 
 
-Find balance in your life.`},{id:16,name:"The Devil",image:"/cards/15-TheDevil.jpg",meaning:`BONDAGE • MATERIALISM • SHADOW
+Find balance in your life.`},{id:16,name:"The Devil",image:"/tarot/cards/15-TheDevil.jpg",meaning:`BONDAGE • MATERIALISM • SHADOW
 
 I sit on my throne, the inverted pentagram above my head. Two figures stand chained before me, though their chains are loose enough to remove. The torch in my hand illuminates the shadows we fear to face, while the grapes and fire represent earthly pleasures.
 
 I am the mirror that shows our self-imposed limitations. The loose chains teach that we are often bound by our own choices, while the inverted pentagram reveals how we can transform our shadows into light. The torch shows that facing our fears leads to freedom. This is my lesson - that true liberation comes from recognizing our self-imposed bonds.
 
 
-Break the chains that bind you.`},{id:17,name:"The Tower",image:"/cards/16-TheTower.jpg",meaning:`SUDDEN CHANGE • AWAKENING • DESTRUCTION
+Break the chains that bind you.`},{id:17,name:"The Tower",image:"/tarot/cards/16-TheTower.jpg",meaning:`SUDDEN CHANGE • AWAKENING • DESTRUCTION
 
 I watch as lightning strikes the tower, sending the crown tumbling. The figures fall from the structure, their expressions showing shock and realization. The flames of transformation burn away false foundations, while the black background emphasizes the sudden nature of change.
 
 I am the force that shatters illusions, the bringer of necessary destruction. The lightning teaches that truth can strike suddenly, while the falling figures show that sometimes we must fall to rise again. The flames remind me that from destruction comes purification. This is my purpose - to break down what needs to be rebuilt.
 
 
-Let fall what needs to be destroyed.`},{id:18,name:"The Star",image:"/cards/17-TheStar.jpg",meaning:`HOPE • INSPIRATION • RENEWAL
+Let fall what needs to be destroyed.`},{id:18,name:"The Star",image:"/tarot/cards/17-TheStar.jpg",meaning:`HOPE • INSPIRATION • RENEWAL
 
 I kneel by the pool, pouring water from two vessels - one onto the land, one into the water. The eight-pointed star shines above me, while the tree and bird remind me of the connection between earth and heaven. The night sky is clear, filled with possibility.
 
 I am the bringer of hope, the guide to renewal. The star teaches me that light can be found even in darkness, while the water shows that healing flows in many directions. The bird reminds me that freedom comes from trusting in the universe. This is my gift - to show others that hope is always present.
 
 
-Renew your hope.`},{id:19,name:"The Moon",image:"/cards/18-TheMoon.jpg",meaning:`INTUITION • ILLUSION • SUBCONSCIOUS
+Renew your hope.`},{id:19,name:"The Moon",image:"/tarot/cards/18-TheMoon.jpg",meaning:`INTUITION • ILLUSION • SUBCONSCIOUS
 
 I watch as the moon casts its mysterious light, creating shadows that dance between the two towers. The path winds between the wolf and dog, while the crayfish emerges from the pool of the subconscious. The moon's face shows both light and shadow.
 
 I am the guide through the realm of dreams and intuition. The path teaches me that sometimes we must walk through darkness to find our way, while the animals show the different aspects of our nature. The moon reminds me that truth can be found in the shadows. This is my wisdom - to trust in intuition when reason fails.
 
 
-Seek the truth in your shadows.`},{id:20,name:"The Sun",image:"/cards/19-TheSun.jpg",meaning:`JOY • VITALITY • SUCCESS
+Seek the truth in your shadows.`},{id:20,name:"The Sun",image:"/tarot/cards/19-TheSun.jpg",meaning:`JOY • VITALITY • SUCCESS
 
 I ride my white horse beneath the radiant sun, its face beaming with joy. The sunflowers grow tall, turning their faces to the light, while the wall behind me shows that I've moved beyond limitations. The child's flag waves in celebration of life.
 
 I am the bringer of light and joy, the herald of success. The sun teaches me that true happiness comes from within, while the horse shows that progress can be effortless. The sunflowers remind me to always turn toward the light. This is my truth - that joy is our natural state.
 
 
-Embrace your joy.`},{id:21,name:"Judgement",image:"/cards/20-Judgement.jpg",meaning:`AWAKENING • REBIRTH • PURPOSE
+Embrace your joy.`},{id:21,name:"Judgement",image:"/tarot/cards/20-Judgement.jpg",meaning:`AWAKENING • REBIRTH • PURPOSE
 
 I sound my trumpet, calling the figures from their graves. The angel's wings spread wide, while the figures rise with arms outstretched in acceptance. The mountains in the background show the heights we can reach, and the flag of resurrection waves in the cosmic wind.
 
 I am the herald of awakening, the caller to higher purpose. The trumpet teaches me that each of us has a unique call to answer, while the rising figures show that transformation is available to all. The mountains remind me that our potential is limitless. This is my message - that it's never too late to awaken to our true purpose.
 
 
-Answer your soul's call.`},{id:22,name:"The World",image:"/cards/21-TheWorld.jpg",meaning:`COMPLETION • WHOLENESS • INTEGRATION
+Answer your soul's call.`},{id:22,name:"The World",image:"/tarot/cards/21-TheWorld.jpg",meaning:`COMPLETION • WHOLENESS • INTEGRATION
 
 I dance within the wreath of completion, holding the wands of power in each hand. The four creatures at the corners - the eagle, lion, bull, and angel - represent the elements I've mastered. The purple ribbon forms the figure eight, showing the infinite nature of completion.
 
 I am the dancer of wholeness, the master of integration. The wreath teaches me that completion is not an end but a new beginning, while the four creatures show that wholeness comes from balancing all aspects of life. The dance reminds me that movement is the nature of existence. This is my truth - that we are all part of the cosmic dance.
 
 
-Complete your current cycle.`},{id:23,name:"Ace of Cups",image:"/cards/Cups01.jpg",meaning:`NEW EMOTIONS • INTUITION • CREATIVITY
+Complete your current cycle.`},{id:23,name:"Ace of Cups",image:"/tarot/cards/Cups01.jpg",meaning:`NEW EMOTIONS • INTUITION • CREATIVITY
 
 Theme: New Beginnings in Emotions
 Suit Theme: Emotional and Intuitive Energy
@@ -214,7 +214,7 @@ I hold a cup overflowing with water, a dove descending with a sacred wafer. The 
 This is a time of emotional renewal and spiritual connection. The overflowing cup represents the abundance of love and creativity available to you. The dove brings a message of peace and divine inspiration. Trust your intuition and allow your emotions to flow freely.
 
 
-Open your heart to new emotional possibilities.`},{id:24,name:"Two of Cups",image:"/cards/Cups02.jpg",meaning:`CONNECTION • PARTNERSHIP • ATTRACTION
+Open your heart to new emotional possibilities.`},{id:24,name:"Two of Cups",image:"/tarot/cards/Cups02.jpg",meaning:`CONNECTION • PARTNERSHIP • ATTRACTION
 
 Theme: Partnership and Balance
 Suit Theme: Emotional Connection
@@ -224,7 +224,7 @@ I stand face to face with another, our cups raised in a toast. The caduceus betw
 This card represents the power of connection and partnership. Whether in love, friendship, or business, there is a strong bond forming. The caduceus reminds us that true connection brings healing and balance. This is a time to nurture your relationships and celebrate the connections that bring joy to your life.
 
 
-Cherish the connections that bring meaning to your life.`},{id:25,name:"Three of Cups",image:"/cards/Cups03.jpg",meaning:`CELEBRATION • FRIENDSHIP • ABUNDANCE
+Cherish the connections that bring meaning to your life.`},{id:25,name:"Three of Cups",image:"/tarot/cards/Cups03.jpg",meaning:`CELEBRATION • FRIENDSHIP • ABUNDANCE
 
 Theme: Growth and Expansion
 Suit Theme: Emotional Fulfillment
@@ -234,7 +234,7 @@ I dance with two others in a circle of joy, our cups raised in celebration. The 
 This is a time of celebration and joy. The three cups represent the abundance of friendship and community. The dancing figures show the importance of sharing our happiness with others. This card reminds us to take time to celebrate our achievements and enjoy the company of those we love.
 
 
-Celebrate your connections and achievements.`},{id:26,name:"Four of Cups",image:"/cards/Cups04.jpg",meaning:`CONTEMPLATION • MEDITATION • WITHDRAWAL
+Celebrate your connections and achievements.`},{id:26,name:"Four of Cups",image:"/tarot/cards/Cups04.jpg",meaning:`CONTEMPLATION • MEDITATION • WITHDRAWAL
 
 Theme: Stability and Foundation
 Suit Theme: Emotional Assessment
@@ -244,7 +244,7 @@ I sit in meditation, three cups before me, while a hand offers a fourth from the
 This card represents a time of introspection and emotional assessment. The three cups before you represent past experiences, while the fourth cup offers new possibilities. This is a time to reflect on your emotional needs and be open to new opportunities for growth.
 
 
-Take time to reflect on your emotional needs.`},{id:27,name:"Five of Cups",image:"/cards/Cups05.jpg",meaning:`LOSS • GRIEF • DISAPPOINTMENT
+Take time to reflect on your emotional needs.`},{id:27,name:"Five of Cups",image:"/tarot/cards/Cups05.jpg",meaning:`LOSS • GRIEF • DISAPPOINTMENT
 
 Theme: Challenge and Conflict
 Suit Theme: Emotional Loss
@@ -254,7 +254,7 @@ I stand before three spilled cups, mourning their loss. Two cups remain standing
 This card represents a time of emotional loss and disappointment. The spilled cups symbolize what has been lost, while the standing cups remind us that not all is lost. The bridge shows that healing and moving forward is possible. This is a time to acknowledge your feelings while remaining open to new possibilities.
 
 
-Acknowledge your losses while remaining open to new possibilities.`},{id:28,name:"Six of Cups",image:"/cards/Cups06.jpg",meaning:`NOSTALGIA • INNOCENCE • MEMORIES
+Acknowledge your losses while remaining open to new possibilities.`},{id:28,name:"Six of Cups",image:"/tarot/cards/Cups06.jpg",meaning:`NOSTALGIA • INNOCENCE • MEMORIES
 
 Theme: Harmony and Balance
 Suit Theme: Emotional Memory
@@ -264,7 +264,7 @@ I stand in a garden of memories, offering a cup of flowers to a child. The past 
 This card represents a time of nostalgia and reconnecting with the past. The six cups remind us of the importance of our memories and the lessons they teach us. This is a time to honor your past while bringing its wisdom into your present. The child represents the innocence and joy that can be found in simple moments.
 
 
-Honor your past while staying present in the moment.`},{id:29,name:"Seven of Cups",image:"/cards/Cups07.jpg",meaning:`CHOICES • ILLUSION • OPPORTUNITIES
+Honor your past while staying present in the moment.`},{id:29,name:"Seven of Cups",image:"/tarot/cards/Cups07.jpg",meaning:`CHOICES • ILLUSION • OPPORTUNITIES
 
 Theme: Challenge and Choice
 Suit Theme: Emotional Confusion
@@ -274,7 +274,7 @@ I stand before seven cups, each offering different possibilities. Some cups cont
 This card represents a time of multiple choices and opportunities. The seven cups show the various paths available to you, but not all may be what they seem. This is a time to carefully consider your options and distinguish between illusion and reality. Trust your intuition to guide you to the right choice.
 
 
-Carefully consider your options and trust your intuition.`},{id:30,name:"Eight of Cups",image:"/cards/Cups08.jpg",meaning:`WALKING AWAY • MOVING ON • SPIRITUAL JOURNEY
+Carefully consider your options and trust your intuition.`},{id:30,name:"Eight of Cups",image:"/tarot/cards/Cups08.jpg",meaning:`WALKING AWAY • MOVING ON • SPIRITUAL JOURNEY
 
 Theme: Movement and Change
 Suit Theme: Emotional Transition
@@ -284,7 +284,7 @@ I walk away from eight cups, leaving them behind as I climb the mountain path. T
 This card represents a time of transition and moving on. The eight cups symbolize what you are leaving behind, while the mountain path shows the journey ahead. This is a time to trust your intuition and follow your heart's true calling. The moon reminds us that this journey is guided by our inner wisdom.
 
 
-Trust your intuition and follow your heart's calling.`},{id:31,name:"Nine of Cups",image:"/cards/Cups09.jpg",meaning:`SATISFACTION • CONTENTMENT • WISHES FULFILLED
+Trust your intuition and follow your heart's calling.`},{id:31,name:"Nine of Cups",image:"/tarot/cards/Cups09.jpg",meaning:`SATISFACTION • CONTENTMENT • WISHES FULFILLED
 
 Theme: Completion and Fulfillment
 Suit Theme: Emotional Satisfaction
@@ -294,7 +294,7 @@ I sit contentedly with nine cups arranged behind me. My arms are crossed in sati
 This card represents a time of emotional satisfaction and contentment. The nine cups show that your emotional needs are being met, and your wishes are coming true. This is a time to appreciate what you have and enjoy the fruits of your emotional labor. The card reminds us that true happiness comes from within.
 
 
-Appreciate your emotional fulfillment in your life.`},{id:32,name:"Ten of Cups",image:"/cards/Cups10.jpg",meaning:`HARMONY • COMPLETION • EMOTIONAL FULFILLMENT
+Appreciate your emotional fulfillment in your life.`},{id:32,name:"Ten of Cups",image:"/tarot/cards/Cups10.jpg",meaning:`HARMONY • COMPLETION • EMOTIONAL FULFILLMENT
 
 Theme: Completion and New Cycle
 Suit Theme: Emotional Wholeness
@@ -304,35 +304,35 @@ I stand with my family under a rainbow of cups, celebrating our emotional fulfil
 This card represents a time of emotional completion and harmony. The ten cups show that your emotional journey has reached a point of fulfillment. This is a time to celebrate your relationships and the emotional security you have created. The rainbow reminds us that after the storm comes peace and joy.
 
 
-Celebrate your emotional fulfillment and harmony.`},{id:33,name:"Page of Cups",image:"/cards/Cups11.jpg",meaning:`CREATIVITY • INSPIRATION • NEW IDEAS
+Celebrate your emotional fulfillment and harmony.`},{id:33,name:"Page of Cups",image:"/tarot/cards/Cups11.jpg",meaning:`CREATIVITY • INSPIRATION • NEW IDEAS
 
 I stand by the sea, holding a cup with a fish leaping from it. My expression is one of wonder and curiosity. The sea represents the depths of emotion and creativity, while the fish symbolizes new ideas and inspiration.
 
 This card represents a time of creative inspiration and emotional exploration. The Page of Cups brings messages of new creative possibilities and emotional growth. This is a time to trust your intuition and explore your creative potential. The fish reminds us that inspiration can come from unexpected places.
 
 
-Explore your creative potential and trust your intuition.`},{id:34,name:"Knight of Cups",image:"/cards/Cups12.jpg",meaning:`ROMANCE • CREATIVITY • FOLLOWING YOUR HEART
+Explore your creative potential and trust your intuition.`},{id:34,name:"Knight of Cups",image:"/tarot/cards/Cups12.jpg",meaning:`ROMANCE • CREATIVITY • FOLLOWING YOUR HEART
 
 I ride my white horse, holding a cup with purpose and passion. My armor is decorated with images of fish, symbolizing intuition and emotion. I am on a quest for love and creative fulfillment.
 
 This card represents a time of romantic pursuit and creative expression. The Knight of Cups brings messages of love and artistic inspiration. This is a time to follow your heart and express your emotions freely. The white horse shows that this journey is guided by purity of intention.
 
 
-Follow your heart and express your emotions freely.`},{id:35,name:"Queen of Cups",image:"/cards/Cups13.jpg",meaning:`COMPASSION • INTUITION • EMOTIONAL WISDOM
+Follow your heart and express your emotions freely.`},{id:35,name:"Queen of Cups",image:"/tarot/cards/Cups13.jpg",meaning:`COMPASSION • INTUITION • EMOTIONAL WISDOM
 
 I sit by the sea, holding a cup with a lid, symbolizing the mysteries of emotion. My throne is decorated with sea creatures, and the water flows freely around me. I am the guardian of emotional wisdom and intuition.
 
 This card represents a time of emotional wisdom and intuitive understanding. The Queen of Cups brings messages of compassion and emotional insight. This is a time to trust your intuition and offer emotional support to others. The sea reminds us of the depth and mystery of our emotions.
 
 
-Trust your intuition and offer emotional support.`},{id:36,name:"King of Cups",image:"/cards/Cups14.jpg",meaning:`EMOTIONAL BALANCE • WISDOM • COMPASSION
+Trust your intuition and offer emotional support.`},{id:36,name:"King of Cups",image:"/tarot/cards/Cups14.jpg",meaning:`EMOTIONAL BALANCE • WISDOM • COMPASSION
 
 I sit on my throne, holding a cup and a scepter. The sea behind me is calm, showing my emotional control. I am the master of emotional balance and wisdom.
 
 This card represents a time of emotional mastery and balanced wisdom. The King of Cups brings messages of emotional stability and compassionate leadership. This is a time to maintain emotional balance while offering guidance to others. The calm sea shows the importance of emotional control.
 
 
-Maintain emotional balance while offering guidance.`},{id:37,name:"Ace of Wands",image:"/cards/Wands01.jpg",meaning:`INSPIRATION • CREATIVITY • NEW BEGINNINGS
+Maintain emotional balance while offering guidance.`},{id:37,name:"Ace of Wands",image:"/tarot/cards/Wands01.jpg",meaning:`INSPIRATION • CREATIVITY • NEW BEGINNINGS
 
 Theme: New Beginnings in Action
 Suit Theme: Creative Energy
@@ -342,7 +342,7 @@ I hold a wand sprouting with new growth, reaching toward the sky. The castle in 
 This card represents a time of new creative energy and inspiration. The Ace of Wands brings messages of new beginnings and creative potential. This is a time to trust your intuition and follow your creative impulses. The sprouting wand shows that your ideas have the potential to grow and flourish.
 
 
-Trust your creative impulses and follow your inspiration.`},{id:38,name:"Two of Wands",image:"/cards/Wands02.jpg",meaning:`PLANNING • DECISION • DISCOVERY
+Trust your creative impulses and follow your inspiration.`},{id:38,name:"Two of Wands",image:"/tarot/cards/Wands02.jpg",meaning:`PLANNING • DECISION • DISCOVERY
 
 Theme: Partnership and Balance
 Suit Theme: Creative Planning
@@ -352,7 +352,7 @@ I stand holding two wands, looking out over the world. The globe in my hand repr
 This card represents a time of planning and decision-making. The Two of Wands brings messages of potential and opportunity. This is a time to consider your options and make plans for the future. The globe reminds us that the world is full of possibilities waiting to be explored.
 
 
-Consider your options and plan your next move.`},{id:39,name:"Three of Wands",image:"/cards/Wands03.jpg",meaning:`EXPANSION • GROWTH • OPPORTUNITY
+Consider your options and plan your next move.`},{id:39,name:"Three of Wands",image:"/tarot/cards/Wands03.jpg",meaning:`EXPANSION • GROWTH • OPPORTUNITY
 
 Theme: Growth and Expansion
 Suit Theme: Creative Vision
@@ -362,7 +362,7 @@ I stand on a cliff, holding three wands, looking out to sea. The ships in the di
 This card represents a time of growth and expansion. The Three of Wands brings messages of opportunity and progress. This is a time to look beyond your current situation and plan for future growth. The ships remind us that new opportunities are on the horizon.
 
 
-Look beyond your current situation and plan for growth.`},{id:40,name:"Four of Wands",image:"/cards/Wands04.jpg",meaning:`CELEBRATION • HARMONY • STABILITY
+Look beyond your current situation and plan for growth.`},{id:40,name:"Four of Wands",image:"/tarot/cards/Wands04.jpg",meaning:`CELEBRATION • HARMONY • STABILITY
 
 Theme: Stability and Foundation
 Suit Theme: Creative Achievement
@@ -372,7 +372,7 @@ I stand under a canopy of four wands, celebrating a moment of achievement. The f
 This card represents a time of celebration and harmony. The Four of Wands brings messages of achievement and stability. This is a time to celebrate your successes and enjoy the fruits of your labor. The canopy reminds us of the importance of creating a stable foundation.
 
 
-Celebrate your achievements and enjoy your success.`},{id:41,name:"Five of Wands",image:"/cards/Wands05.jpg",meaning:`COMPETITION • CONFLICT • CHALLENGE
+Celebrate your achievements and enjoy your success.`},{id:41,name:"Five of Wands",image:"/tarot/cards/Wands05.jpg",meaning:`COMPETITION • CONFLICT • CHALLENGE
 
 Theme: Challenge and Conflict
 Suit Theme: Creative Competition
@@ -382,7 +382,7 @@ I stand among five wands, engaged in a friendly competition. The energy is high,
 This card represents a time of competition and challenge. The Five of Wands brings messages of conflict and growth through struggle. This is a time to stand your ground and prove your worth. The competition reminds us that challenges can lead to personal growth.
 
 
-Embrace challenges as opportunities for growth.`},{id:42,name:"Six of Wands",image:"/cards/Wands06.jpg",meaning:`VICTORY • SUCCESS • RECOGNITION
+Embrace challenges as opportunities for growth.`},{id:42,name:"Six of Wands",image:"/tarot/cards/Wands06.jpg",meaning:`VICTORY • SUCCESS • RECOGNITION
 
 Theme: Harmony and Balance
 Suit Theme: Creative Victory
@@ -392,7 +392,7 @@ I ride through the crowd, holding a wand decorated with a victory wreath. The pe
 This card represents a time of victory and success. The Six of Wands brings messages of achievement and recognition. This is a time to celebrate your successes and enjoy the rewards of your hard work. The victory wreath reminds us that persistence leads to success.
 
 
-Celebrate your victories and enjoy your success.`},{id:43,name:"Seven of Wands",image:"/cards/Wands07.jpg",meaning:`CHALLENGE • COMPETITION • DEFENSE
+Celebrate your victories and enjoy your success.`},{id:43,name:"Seven of Wands",image:"/tarot/cards/Wands07.jpg",meaning:`CHALLENGE • COMPETITION • DEFENSE
 
 Theme: Challenge and Choice
 Suit Theme: Creative Defense
@@ -402,7 +402,7 @@ I stand on high ground, defending my position with a wand. Six other wands chall
 This card represents a time of challenge and defense. The Seven of Wands brings messages of competition and standing your ground. This is a time to defend your position and fight for what you believe in. The high ground reminds us of the importance of maintaining our principles.
 
 
-Stand your ground and defend your position.`},{id:44,name:"Eight of Wands",image:"/cards/Wands08.jpg",meaning:`ACTION • MOVEMENT • PROGRESS
+Stand your ground and defend your position.`},{id:44,name:"Eight of Wands",image:"/tarot/cards/Wands08.jpg",meaning:`ACTION • MOVEMENT • PROGRESS
 
 Theme: Movement and Change
 Suit Theme: Creative Momentum
@@ -412,7 +412,7 @@ I watch as eight wands fly through the air, moving swiftly toward their target. 
 This card represents a time of rapid progress and movement. The Eight of Wands brings messages of action and forward momentum. This is a time to act quickly and decisively. The flying wands remind us that sometimes we need to move quickly to achieve our goals.
 
 
-Act quickly and decisively on your opportunities.`},{id:45,name:"Nine of Wands",image:"/cards/Wands09.jpg",meaning:`RESILIENCE • PERSEVERANCE • STRENGTH
+Act quickly and decisively on your opportunities.`},{id:45,name:"Nine of Wands",image:"/tarot/cards/Wands09.jpg",meaning:`RESILIENCE • PERSEVERANCE • STRENGTH
 
 Theme: Completion and Fulfillment
 Suit Theme: Creative Perseverance
@@ -422,7 +422,7 @@ I stand with a bandaged head, holding a wand, ready to face the next challenge. 
 This card represents a time of resilience and perseverance. The Nine of Wands brings messages of strength and determination. This is a time to stay strong and keep going, even when faced with challenges. The bandage reminds us that we can heal and grow stronger from our experiences.
 
 
-Stay strong and keep moving forward.`},{id:46,name:"Ten of Wands",image:"/cards/Wands10.jpg",meaning:`BURDEN • RESPONSIBILITY • HARD WORK
+Stay strong and keep moving forward.`},{id:46,name:"Ten of Wands",image:"/tarot/cards/Wands10.jpg",meaning:`BURDEN • RESPONSIBILITY • HARD WORK
 
 Theme: Completion and New Cycle
 Suit Theme: Creative Responsibility
@@ -432,35 +432,35 @@ I carry ten wands, moving forward despite the weight. The town in the distance r
 This card represents a time of burden and responsibility. The Ten of Wands brings messages of hard work and perseverance. This is a time to carry your responsibilities and work toward your goals. The town reminds us that there is a light at the end of the tunnel.
 
 
-Carry your responsibilities and work toward your goals.`},{id:47,name:"Page of Wands",image:"/cards/Wands11.jpg",meaning:`EXPLORATION • ENTHUSIASM • DISCOVERY
+Carry your responsibilities and work toward your goals.`},{id:47,name:"Page of Wands",image:"/tarot/cards/Wands11.jpg",meaning:`EXPLORATION • ENTHUSIASM • DISCOVERY
 
 I stand in the desert, holding a wand, ready to explore. The pyramids in the distance represent the mysteries waiting to be discovered. This is a time of new ideas and enthusiasm.
 
 This card represents a time of exploration and discovery. The Page of Wands brings messages of enthusiasm and new ideas. This is a time to explore new possibilities and follow your curiosity. The desert reminds us that there is always more to discover.
 
 
-Explore new possibilities and follow your curiosity.`},{id:48,name:"Knight of Wands",image:"/cards/Wands12.jpg",meaning:`ACTION • ADVENTURE • PASSION
+Explore new possibilities and follow your curiosity.`},{id:48,name:"Knight of Wands",image:"/tarot/cards/Wands12.jpg",meaning:`ACTION • ADVENTURE • PASSION
 
 I ride my horse at full speed, holding a wand, ready for adventure. The desert landscape represents the journey ahead, and I am eager to explore. This is a time of action and passion.
 
 This card represents a time of action and adventure. The Knight of Wands brings messages of passion and movement. This is a time to take action and follow your passions. The horse reminds us that we need to move forward with energy and purpose.
 
 
-Take action and follow your passions.`},{id:49,name:"Queen of Wands",image:"/cards/Wands13.jpg",meaning:`CONFIDENCE • PASSION • INDEPENDENCE
+Take action and follow your passions.`},{id:49,name:"Queen of Wands",image:"/tarot/cards/Wands13.jpg",meaning:`CONFIDENCE • PASSION • INDEPENDENCE
 
 I sit on my throne, holding a wand and a sunflower, surrounded by a black cat. The desert landscape represents my independence and strength. This is a time of confidence and passion.
 
 This card represents a time of confidence and independence. The Queen of Wands brings messages of passion and self-assurance. This is a time to trust your instincts and follow your passions. The sunflower reminds us to always face the light.
 
 
-Trust your instincts and follow your passions.`},{id:50,name:"King of Wands",image:"/cards/Wands14.jpg",meaning:`LEADERSHIP • VISION • ENTREPRENEURSHIP
+Trust your instincts and follow your passions.`},{id:50,name:"King of Wands",image:"/tarot/cards/Wands14.jpg",meaning:`LEADERSHIP • VISION • ENTREPRENEURSHIP
 
 I sit on my throne, holding a wand and a salamander, symbolizing transformation. The desert landscape represents my vision and leadership. This is a time of inspiration and action.
 
 This card represents a time of leadership and vision. The King of Wands brings messages of inspiration and action. This is a time to lead with confidence and follow your vision. The salamander reminds us of the power of transformation.
 
 
-Lead with confidence and follow your vision.`},{id:51,name:"Ace of Swords",image:"/cards/Swords01.jpg",meaning:`CLARITY • TRUTH • BREAKTHROUGH
+Lead with confidence and follow your vision.`},{id:51,name:"Ace of Swords",image:"/tarot/cards/Swords01.jpg",meaning:`CLARITY • TRUTH • BREAKTHROUGH
 
 Theme: New Beginnings in Thought
 Suit Theme: Mental Clarity
@@ -470,7 +470,7 @@ I hold a sword pointing upward, crowned with a golden crown. The clouds part aro
 This card represents a time of mental clarity and breakthrough. The Ace of Swords brings messages of truth and new ideas. This is a time to cut through confusion and see things clearly. The crown reminds us of the power of clear thinking.
 
 
-Cut through confusion and see things clearly.`},{id:52,name:"Two of Swords",image:"/cards/Swords02.jpg",meaning:`DECISION • BALANCE • TRUCE
+Cut through confusion and see things clearly.`},{id:52,name:"Two of Swords",image:"/tarot/cards/Swords02.jpg",meaning:`DECISION • BALANCE • TRUCE
 
 Theme: Partnership and Balance
 Suit Theme: Mental Balance
@@ -480,7 +480,7 @@ I sit blindfolded, holding two crossed swords. The moon above represents intuiti
 This card represents a time of decision and balance. The Two of Swords brings messages of choice and equilibrium. This is a time to weigh your options carefully and find balance. The blindfold reminds us to trust our intuition.
 
 
-Weigh your options carefully and find balance.`},{id:53,name:"Three of Swords",image:"/cards/Swords03.jpg",meaning:`HEARTBREAK • SORROW • PAIN
+Weigh your options carefully and find balance.`},{id:53,name:"Three of Swords",image:"/tarot/cards/Swords03.jpg",meaning:`HEARTBREAK • SORROW • PAIN
 
 Theme: Growth and Expansion
 Suit Theme: Mental Pain
@@ -490,7 +490,7 @@ I see three swords piercing a heart, while rain falls from dark clouds. The hear
 This card represents a time of emotional pain and healing. The Three of Swords brings messages of heartbreak and recovery. This is a time to acknowledge your pain and begin the healing process. The rain reminds us that healing comes after the storm.
 
 
-Acknowledge your pain and begin healing.`},{id:54,name:"Four of Swords",image:"/cards/Swords04.jpg",meaning:`REST • RECOVERY • MEDITATION
+Acknowledge your pain and begin healing.`},{id:54,name:"Four of Swords",image:"/tarot/cards/Swords04.jpg",meaning:`REST • RECOVERY • MEDITATION
 
 Theme: Stability and Foundation
 Suit Theme: Mental Rest
@@ -500,7 +500,7 @@ I lie in repose, hands folded in prayer, while four swords hang above. The stain
 This card represents a time of rest and recovery. The Four of Swords brings messages of peace and restoration. This is a time to take a break and recharge your energy. The swords remind us that rest is necessary for strength.
 
 
-Take time to rest and recharge.`},{id:55,name:"Five of Swords",image:"/cards/Swords05.jpg",meaning:`DEFEAT • CONFLICT • LOSS
+Take time to rest and recharge.`},{id:55,name:"Five of Swords",image:"/tarot/cards/Swords05.jpg",meaning:`DEFEAT • CONFLICT • LOSS
 
 Theme: Challenge and Conflict
 Suit Theme: Mental Conflict
@@ -510,7 +510,7 @@ I stand holding three swords, while two others lie on the ground. The figures wa
 This card represents a time of conflict and defeat. The Five of Swords brings messages of loss and the need to move on. This is a time to learn from your losses and choose your battles wisely. The scattered swords remind us that not every victory is worth the cost.
 
 
-Learn from your losses and choose your battles.`},{id:56,name:"Six of Swords",image:"/cards/Swords06.jpg",meaning:`TRANSITION • CHANGE • MOVING ON
+Learn from your losses and choose your battles.`},{id:56,name:"Six of Swords",image:"/tarot/cards/Swords06.jpg",meaning:`TRANSITION • CHANGE • MOVING ON
 
 Theme: Harmony and Balance
 Suit Theme: Mental Transition
@@ -520,7 +520,7 @@ I stand in a boat, being ferried across water, while six swords stand upright. T
 This card represents a time of transition and change. The Six of Swords brings messages of moving on and progress. This is a time to leave the past behind and move toward new horizons. The boat reminds us that change is a journey.
 
 
-Leave the past behind and move forward.`},{id:57,name:"Seven of Swords",image:"/cards/Swords07.jpg",meaning:`DECEPTION • STRATEGY • TACTICS
+Leave the past behind and move forward.`},{id:57,name:"Seven of Swords",image:"/tarot/cards/Swords07.jpg",meaning:`DECEPTION • STRATEGY • TACTICS
 
 Theme: Challenge and Choice
 Suit Theme: Mental Strategy
@@ -530,7 +530,7 @@ I carry five swords, while two remain in the ground. My expression is one of cun
 This card represents a time of strategy and tactics. The Seven of Swords brings messages of careful planning and resourcefulness. This is a time to think strategically and be resourceful. The remaining swords remind us to leave some options open.
 
 
-Think strategically and be resourceful.`},{id:58,name:"Eight of Swords",image:"/cards/Swords08.jpg",meaning:`RESTRICTION • IMPRISONMENT • ENTANGLEMENT
+Think strategically and be resourceful.`},{id:58,name:"Eight of Swords",image:"/tarot/cards/Swords08.jpg",meaning:`RESTRICTION • IMPRISONMENT • ENTANGLEMENT
 
 Theme: Movement and Change
 Suit Theme: Mental Limitation
@@ -540,7 +540,7 @@ I stand bound and blindfolded, surrounded by eight swords. The ground is muddy, 
 This card represents a time of restriction and feeling trapped. The Eight of Swords brings messages of self-imposed limitations. This is a time to recognize that you have the power to free yourself. The blindfold reminds us that sometimes we can't see our way out.
 
 
-Recognize your power to free yourself.`},{id:59,name:"Nine of Swords",image:"/cards/Swords09.jpg",meaning:`ANXIETY • WORRY • FEAR
+Recognize your power to free yourself.`},{id:59,name:"Nine of Swords",image:"/tarot/cards/Swords09.jpg",meaning:`ANXIETY • WORRY • FEAR
 
 Theme: Completion and Fulfillment
 Suit Theme: Mental Anguish
@@ -550,7 +550,7 @@ I sit up in bed, head in hands, while nine swords hang on the wall. The dark bac
 This card represents a time of anxiety and worry. The Nine of Swords brings messages of fear and mental anguish. This is a time to face your fears and seek support. The night reminds us that our worries often seem worse in the dark.
 
 
-Face your fears and seek support.`},{id:60,name:"Ten of Swords",image:"/cards/Swords10.jpg",meaning:`ENDINGS • DEFEAT • ROCK BOTTOM
+Face your fears and seek support.`},{id:60,name:"Ten of Swords",image:"/tarot/cards/Swords10.jpg",meaning:`ENDINGS • DEFEAT • ROCK BOTTOM
 
 Theme: Completion and New Cycle
 Suit Theme: Mental Transformation
@@ -560,35 +560,35 @@ I lie face down with ten swords in my back, while the dawn breaks on the horizon
 This card represents a time of endings and new beginnings. The Ten of Swords brings messages of hitting bottom and the promise of renewal. This is a time to let go of what's ending and prepare for new growth. The dawn reminds us that after the darkest night comes a new day.
 
 
-Let go of what's ending and prepare for renewal.`},{id:61,name:"Page of Swords",image:"/cards/Swords11.jpg",meaning:`CURIOSITY • INTELLECT • NEW IDEAS
+Let go of what's ending and prepare for renewal.`},{id:61,name:"Page of Swords",image:"/tarot/cards/Swords11.jpg",meaning:`CURIOSITY • INTELLECT • NEW IDEAS
 
 I stand holding a sword, looking alert and curious. The wind blows through my hair, representing mental energy. This is a time of new ideas and intellectual curiosity.
 
 This card represents a time of intellectual curiosity and new ideas. The Page of Swords brings messages of mental alertness and learning. This is a time to be curious and open to new information. The wind reminds us of the power of mental energy.
 
 
-Be curious and open to new ideas.`},{id:62,name:"Knight of Swords",image:"/cards/Swords12.jpg",meaning:`ACTION • INTELLECT • CHALLENGE
+Be curious and open to new ideas.`},{id:62,name:"Knight of Swords",image:"/tarot/cards/Swords12.jpg",meaning:`ACTION • INTELLECT • CHALLENGE
 
 I ride my horse at full speed, sword raised, ready for action. The clouds and wind represent mental energy and movement. This is a time of decisive action and intellectual challenge.
 
 This card represents a time of action and intellectual challenge. The Knight of Swords brings messages of decisive action and mental energy. This is a time to act quickly and think clearly. The wind reminds us of the power of mental force.
 
 
-Act quickly and think clearly.`},{id:63,name:"Queen of Swords",image:"/cards/Swords13.jpg",meaning:`CLARITY • TRUTH • INDEPENDENCE
+Act quickly and think clearly.`},{id:63,name:"Queen of Swords",image:"/tarot/cards/Swords13.jpg",meaning:`CLARITY • TRUTH • INDEPENDENCE
 
 I sit on my throne, holding a sword, looking directly ahead. The clouds behind me represent mental clarity, while my expression shows wisdom and discernment. This is a time of clear thinking and independence.
 
 This card represents a time of clear thinking and independence. The Queen of Swords brings messages of truth and wisdom. This is a time to think clearly and speak your truth. The clouds remind us of the importance of mental clarity.
 
 
-Think clearly and speak your truth.`},{id:64,name:"King of Swords",image:"/cards/Swords14.jpg",meaning:`AUTHORITY • TRUTH • JUSTICE
+Think clearly and speak your truth.`},{id:64,name:"King of Swords",image:"/tarot/cards/Swords14.jpg",meaning:`AUTHORITY • TRUTH • JUSTICE
 
 I sit on my throne, holding a sword, looking directly ahead. The clouds behind me represent mental clarity, while my expression shows authority and wisdom. This is a time of clear judgment and leadership.
 
 This card represents a time of authority and clear judgment. The King of Swords brings messages of truth and justice. This is a time to lead with wisdom and make fair decisions. The clouds remind us of the importance of mental clarity in leadership.
 
 
-Lead with wisdom and make fair decisions.`},{id:65,name:"Ace of Pentacles",image:"/cards/Pentacles01.jpg",meaning:`OPPORTUNITY • ABUNDANCE • NEW BEGINNINGS
+Lead with wisdom and make fair decisions.`},{id:65,name:"Ace of Pentacles",image:"/tarot/cards/Pentacles01.jpg",meaning:`OPPORTUNITY • ABUNDANCE • NEW BEGINNINGS
 
 Theme: New Beginnings in Material World
 Suit Theme: Material Opportunity
@@ -598,7 +598,7 @@ I hold a pentacle in my hand, while a path leads to a garden of abundance. The h
 This card represents a time of new opportunities and abundance. The Ace of Pentacles brings messages of financial potential and material growth. This is a time to recognize and seize new opportunities. The garden reminds us of the potential for growth and abundance.
 
 
-Recognize and seize new opportunities.`},{id:66,name:"Two of Pentacles",image:"/cards/Pentacles02.jpg",meaning:`BALANCE • ADAPTABILITY • PRIORITIES
+Recognize and seize new opportunities.`},{id:66,name:"Two of Pentacles",image:"/tarot/cards/Pentacles02.jpg",meaning:`BALANCE • ADAPTABILITY • PRIORITIES
 
 Theme: Partnership and Balance
 Suit Theme: Material Balance
@@ -608,7 +608,7 @@ I juggle two pentacles connected by an infinity symbol, while a ship rides the w
 This card represents a time of balance and adaptability. The Two of Pentacles brings messages of managing multiple priorities. This is a time to stay flexible and maintain balance. The infinity symbol reminds us that life is a continuous cycle.
 
 
-Stay flexible and maintain balance.`},{id:67,name:"Three of Pentacles",image:"/cards/Pentacles03.jpg",meaning:`TEAMWORK • COLLABORATION • SKILL
+Stay flexible and maintain balance.`},{id:67,name:"Three of Pentacles",image:"/tarot/cards/Pentacles03.jpg",meaning:`TEAMWORK • COLLABORATION • SKILL
 
 Theme: Growth and Expansion
 Suit Theme: Material Achievement
@@ -618,7 +618,7 @@ I stand on a bench, working with others to create something beautiful. The penta
 This card represents a time of teamwork and collaboration. The Three of Pentacles brings messages of working together and using your skills. This is a time to contribute your talents to a group effort. The architecture reminds us of the importance of solid foundations.
 
 
-Contribute your talents to a group effort.`},{id:68,name:"Four of Pentacles",image:"/cards/Pentacles04.jpg",meaning:`SECURITY • CONSERVATION • STABILITY
+Contribute your talents to a group effort.`},{id:68,name:"Four of Pentacles",image:"/tarot/cards/Pentacles04.jpg",meaning:`SECURITY • CONSERVATION • STABILITY
 
 Theme: Stability and Foundation
 Suit Theme: Material Security
@@ -628,7 +628,7 @@ I hold a pentacle close to my chest, while three others are arranged around me. 
 This card represents a time of security and stability. The Four of Pentacles brings messages of financial security and conservation. This is a time to protect your resources and maintain stability. The city reminds us of the importance of material security.
 
 
-Protect your resources and maintain stability.`},{id:69,name:"Five of Pentacles",image:"/cards/Pentacles05.jpg",meaning:`LOSS • POVERTY • HARDSHIP
+Protect your resources and maintain stability.`},{id:69,name:"Five of Pentacles",image:"/tarot/cards/Pentacles05.jpg",meaning:`LOSS • POVERTY • HARDSHIP
 
 Theme: Challenge and Conflict
 Suit Theme: Material Loss
@@ -638,7 +638,7 @@ I walk past a stained glass window, leaning on a crutch, while another figure fo
 This card represents a time of financial difficulty and loss. The Five of Pentacles brings messages of hardship and the need for support. This is a time to seek help and maintain hope. The window reminds us that help is available if we look for it.
 
 
-Seek help and maintain hope.`},{id:70,name:"Six of Pentacles",image:"/cards/Pentacles06.jpg",meaning:`GENEROSITY • CHARITY • GIVING
+Seek help and maintain hope.`},{id:70,name:"Six of Pentacles",image:"/tarot/cards/Pentacles06.jpg",meaning:`GENEROSITY • CHARITY • GIVING
 
 Theme: Harmony and Balance
 Suit Theme: Material Generosity
@@ -648,7 +648,7 @@ I stand holding scales, giving coins to those in need. The scales represent fair
 This card represents a time of generosity and giving. The Six of Pentacles brings messages of charity and fair distribution. This is a time to give what you can and help others. The scales remind us of the importance of fair giving.
 
 
-Give what you can and help others.`},{id:71,name:"Seven of Pentacles",image:"/cards/Pentacles07.jpg",meaning:`PATIENCE • LONG-TERM VIEW • INVESTMENT
+Give what you can and help others.`},{id:71,name:"Seven of Pentacles",image:"/tarot/cards/Pentacles07.jpg",meaning:`PATIENCE • LONG-TERM VIEW • INVESTMENT
 
 Theme: Challenge and Choice
 Suit Theme: Material Patience
@@ -658,7 +658,7 @@ I lean on my staff, looking at a bush heavy with pentacles. The garden represent
 This card represents a time of patience and long-term planning. The Seven of Pentacles brings messages of investment and waiting for results. This is a time to be patient and trust in your efforts. The garden reminds us that growth takes time.
 
 
-Be patient and trust in your efforts.`},{id:72,name:"Eight of Pentacles",image:"/cards/Pentacles08.jpg",meaning:`CRAFTSMANSHIP • SKILL • DEDICATION
+Be patient and trust in your efforts.`},{id:72,name:"Eight of Pentacles",image:"/tarot/cards/Pentacles08.jpg",meaning:`CRAFTSMANSHIP • SKILL • DEDICATION
 
 Theme: Movement and Change
 Suit Theme: Material Skill
@@ -668,7 +668,7 @@ I sit at my workbench, carefully crafting pentacles. The tools and materials aro
 This card represents a time of skill development and dedication. The Eight of Pentacles brings messages of craftsmanship and attention to detail. This is a time to focus on improving your skills. The workbench reminds us of the importance of practice.
 
 
-Focus on improving your skills.`},{id:73,name:"Nine of Pentacles",image:"/cards/Pentacles09.jpg",meaning:`LUXURY • SELF-SUFFICIENCY • INDEPENDENCE
+Focus on improving your skills.`},{id:73,name:"Nine of Pentacles",image:"/tarot/cards/Pentacles09.jpg",meaning:`LUXURY • SELF-SUFFICIENCY • INDEPENDENCE
 
 Theme: Completion and Fulfillment
 Suit Theme: Material Success
@@ -678,7 +678,7 @@ I stand in a garden, a falcon on my hand, surrounded by abundance. The garden re
 This card represents a time of success and independence. The Nine of Pentacles brings messages of self-sufficiency and enjoying the fruits of your labor. This is a time to appreciate your achievements and independence. The garden reminds us of the rewards of hard work.
 
 
-Appreciate your achievements and independence.`},{id:74,name:"Ten of Pentacles",image:"/cards/Pentacles10.jpg",meaning:`LEGACY • WEALTH • FAMILY
+Appreciate your achievements and independence.`},{id:74,name:"Ten of Pentacles",image:"/tarot/cards/Pentacles10.jpg",meaning:`LEGACY • WEALTH • FAMILY
 
 Theme: Completion and New Cycle
 Suit Theme: Material Legacy
@@ -688,28 +688,28 @@ I see a family gathered under an arch of pentacles, while an elder watches over 
 This card represents a time of lasting wealth and family security. The Ten of Pentacles brings messages of legacy and financial stability. This is a time to think about your long-term security and family. The castle reminds us of the importance of building lasting foundations.
 
 
-Think about your long-term security and family.`},{id:75,name:"Page of Pentacles",image:"/cards/Pentacles11.jpg",meaning:`STUDY • MANIFESTATION • OPPORTUNITY
+Think about your long-term security and family.`},{id:75,name:"Page of Pentacles",image:"/tarot/cards/Pentacles11.jpg",meaning:`STUDY • MANIFESTATION • OPPORTUNITY
 
 I stand in a field, holding a pentacle, looking at it with curiosity. The flowers around me represent growth and potential. This is a time of learning and new opportunities.
 
 This card represents a time of learning and new opportunities. The Page of Pentacles brings messages of study and manifestation. This is a time to be open to learning and new possibilities. The field reminds us of the potential for growth.
 
 
-Be open to learning and new possibilities.`},{id:76,name:"Knight of Pentacles",image:"/cards/Pentacles12.jpg",meaning:`HARD WORK • RELIABILITY • CONSERVATISM
+Be open to learning and new possibilities.`},{id:76,name:"Knight of Pentacles",image:"/tarot/cards/Pentacles12.jpg",meaning:`HARD WORK • RELIABILITY • CONSERVATISM
 
 I sit on my horse, holding a pentacle, looking ahead with determination. The plowed field represents hard work and preparation. This is a time of steady progress.
 
 This card represents a time of hard work and reliability. The Knight of Pentacles brings messages of steady progress and determination. This is a time to work steadily toward your goals. The field reminds us of the importance of preparation.
 
 
-Work steadily toward your goals.`},{id:77,name:"Queen of Pentacles",image:"/cards/Pentacles13.jpg",meaning:`NURTURING • PRACTICALITY • COMFORT
+Work steadily toward your goals.`},{id:77,name:"Queen of Pentacles",image:"/tarot/cards/Pentacles13.jpg",meaning:`NURTURING • PRACTICALITY • COMFORT
 
 I sit in a garden, holding a pentacle, surrounded by flowers and a rabbit. The garden represents abundance and nurturing. This is a time of practical care and comfort.
 
 This card represents a time of nurturing and practicality. The Queen of Pentacles brings messages of comfort and practical care. This is a time to take care of yourself and others. The garden reminds us of the importance of nurturing growth.
 
 
-Take care of yourself and others.`},{id:78,name:"King of Pentacles",image:"/cards/Pentacles14.jpg",meaning:`ABUNDANCE • PROSPERITY • SECURITY
+Take care of yourself and others.`},{id:78,name:"King of Pentacles",image:"/tarot/cards/Pentacles14.jpg",meaning:`ABUNDANCE • PROSPERITY • SECURITY
 
 I sit on my throne, holding a pentacle and a scepter, surrounded by abundance. The garden represents wealth and security, while my expression shows confidence. This is a time of financial mastery.
 
