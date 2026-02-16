@@ -1,9 +1,9 @@
 #!/bin/bash
 
-cd ../crm-stock-app
+cd ../workchip
 npm run build
 cd ../ben-dale.github.io
-rm -rf crm-stock-app && cp -R ../crm-stock-app/dist crm-stock-app
+rm -rf workchip && cp -R ../workchip/dist workchip
 git add .
 git commit -m "deploy"
 git push
