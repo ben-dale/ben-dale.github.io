@@ -1,0 +1,224 @@
+{
+  "name": "Hair Salon Demo",
+  "users": [
+    { "id": "u1", "name": "Sam", "role": "owner" },
+    { "id": "u2", "name": "Ben", "role": "stylist" },
+    { "id": "u3", "name": "Rea", "role": "stylist" }
+  ],
+  "services": [
+    { "id": "svc-1", "name": "Cut & Blow Dry", "price": 4500, "durationMinutes": 60 },
+    { "id": "svc-2", "name": "Trim", "price": 2500, "durationMinutes": 30 },
+    { "id": "svc-3", "name": "Full Colour", "price": 8500, "durationMinutes": 120 },
+    { "id": "svc-4", "name": "Highlights", "price": 9500, "durationMinutes": 150 },
+    { "id": "svc-5", "name": "Root Touch-Up", "price": 5500, "durationMinutes": 60 },
+    { "id": "svc-6", "name": "Blow Dry", "price": 3000, "durationMinutes": 45 },
+    { "id": "svc-7", "name": "Keratin Treatment", "price": 15000, "durationMinutes": 180 },
+    { "id": "svc-8", "name": "Balayage", "price": 12000, "durationMinutes": 150 },
+    { "id": "svc-9", "name": "Deep Conditioning", "price": 3500, "durationMinutes": 30 }
+  ],
+  "clients": [
+    { "id": "c1", "forename": "Alice", "surname": "Johnson", "phoneNumber": "07700 900001", "email": "alice.johnson@email.com", "address": "12 High Street, London SW1A 1AA" },
+    { "id": "c2", "forename": "Beth", "surname": "Williams", "phoneNumber": "07700 900002", "email": "beth.w@email.com", "address": "45 Oak Avenue, Manchester M1 2AB" },
+    { "id": "c3", "forename": "Claire", "surname": "Brown", "phoneNumber": "07700 900003", "email": "claire.brown@email.com" },
+    { "id": "c4", "forename": "Diana", "surname": "Taylor", "phoneNumber": "07700 900004", "email": "diana.t@email.com", "address": "78 Rose Lane, Birmingham B2 3CD" },
+    { "id": "c5", "forename": "Emma", "surname": "Davies", "phoneNumber": "07700 900005" },
+    { "id": "c6", "forename": "Fiona", "surname": "Wilson", "phoneNumber": "07700 900006", "email": "fiona.wilson@email.com", "address": "23 Park Road, Leeds LS1 4EF" },
+    { "id": "c7", "forename": "Grace", "surname": "Evans", "phoneNumber": "07700 900007", "email": "grace.e@email.com" },
+    { "id": "c8", "forename": "Hannah", "surname": "Thomas", "phoneNumber": "07700 900008", "address": "56 Church Street, Bristol BS1 5GH" },
+    { "id": "c9", "forename": "Isla", "surname": "Roberts", "phoneNumber": "07700 900009", "email": "isla.roberts@email.com", "address": "89 Mill Lane, Liverpool L1 6IJ" },
+    { "id": "c10", "forename": "Jessica", "surname": "Walker", "phoneNumber": "07700 900010", "email": "jess.walker@email.com" },
+    { "id": "c11", "forename": "Katie", "surname": "Harris", "phoneNumber": "07700 900011", "email": "katie.h@email.com", "address": "34 Station Road, Sheffield S1 7KL" },
+    { "id": "c12", "forename": "Laura", "surname": "Clark", "phoneNumber": "07700 900012" },
+    { "id": "c13", "forename": "Megan", "surname": "Lewis", "phoneNumber": "07700 900013", "email": "megan.lewis@email.com", "address": "67 Victoria Street, Newcastle NE1 8MN" },
+    { "id": "c14", "forename": "Natalie", "surname": "Young", "phoneNumber": "07700 900014", "email": "nat.young@email.com" },
+    { "id": "c15", "forename": "Olivia", "surname": "Hall", "phoneNumber": "07700 900015", "address": "90 King Street, Edinburgh EH1 9OP" }
+  ],
+  "appointments": [
+    {
+      "id": "apt-c1",
+      "clientId": "c14",
+      "scheduledTime": { "relative": "today", "time": "08:00" },
+      "status": "completed",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Trim", "price": 2500, "durationMinutes": 30 },
+        { "name": "Blow Dry Add-on", "price": 1000, "durationMinutes": 15 }
+      ],
+      "address": "42 Maple Street, London W1A 2BC",
+      "notes": "Quick trim and blow dry. Lovely chat about her holiday plans!"
+    },
+    {
+      "id": "apt-c2",
+      "clientId": "c15",
+      "scheduledTime": { "relative": "today", "time": "09:30" },
+      "status": "completed",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Full Colour", "price": 8500, "durationMinutes": 120 },
+        { "name": "Toner", "price": 1000 }
+      ],
+      "address": "90 King Street, Edinburgh EH1 9OP",
+      "notes": "Full colour - went with the copper tones she wanted. Paused for tea break."
+    },
+    {
+      "id": "apt-c3",
+      "clientId": "c12",
+      "scheduledTime": { "relative": "today", "time": "11:00" },
+      "status": "completed",
+      "assignedUserId": "u3",
+      "services": [
+        { "name": "Highlights", "price": 7500, "durationMinutes": 90 }
+      ],
+      "notes": "Highlights touch-up. Very happy with the results."
+    },
+    {
+      "id": "apt-1",
+      "clientId": "c1",
+      "scheduledTime": { "relative": "today", "time": "12:00" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Cut & Blow Dry", "price": 4500, "durationMinutes": 60 }
+      ],
+      "address": "12 High Street, London SW1A 1AA",
+      "notes": "Prefers low heat on straighteners. Allergic to certain hair dyes - check before applying."
+    },
+    {
+      "id": "apt-2",
+      "clientId": "c2",
+      "scheduledTime": { "relative": "today", "time": "18:00" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Trim", "price": 2500, "durationMinutes": 30 },
+        { "name": "Styling", "price": 1500, "durationMinutes": 15 }
+      ],
+      "address": "45 Oak Avenue, Manchester M1 2AB",
+      "notes": "Regular trim. Likes to keep length just below shoulders."
+    },
+    {
+      "id": "apt-3",
+      "clientId": "c3",
+      "scheduledTime": { "relative": "today", "time": "18:30" },
+      "status": "scheduled",
+      "assignedUserId": "u3",
+      "services": [
+        { "name": "Trim", "price": 2500, "durationMinutes": 30 },
+        { "name": "Consultation", "price": 1000 }
+      ],
+      "notes": "Wants to discuss colour options for next visit."
+    },
+    {
+      "id": "apt-4",
+      "clientId": "c4",
+      "scheduledTime": { "relative": "today", "time": "19:00" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Balayage", "price": 12000, "durationMinutes": 150 }
+      ],
+      "address": "78 Rose Lane, Birmingham B2 3CD",
+      "notes": "Balayage touch-up. Reference photos saved in client folder."
+    },
+    {
+      "id": "apt-5",
+      "clientId": "c5",
+      "scheduledTime": { "relative": "today", "time": "19:30" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Keratin Treatment", "price": 15000, "durationMinutes": 180 }
+      ],
+      "notes": "Keratin treatment. Remind to avoid washing hair for 48 hours after."
+    },
+    {
+      "id": "apt-6",
+      "clientId": "c6",
+      "scheduledTime": { "relative": "+2", "time": "09:30" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Full Colour", "price": 8500, "durationMinutes": 120 }
+      ],
+      "notes": "Full colour treatment booked."
+    },
+    {
+      "id": "apt-7",
+      "clientId": "c7",
+      "scheduledTime": { "relative": "+2", "time": "11:00" },
+      "status": "scheduled",
+      "services": [
+        { "name": "Cut & Blow Dry", "price": 4500, "durationMinutes": 60 }
+      ],
+      "notes": "First visit. Consultation for bob cut - bring style references."
+    },
+    {
+      "id": "apt-8",
+      "clientId": "c8",
+      "scheduledTime": { "relative": "+2", "time": "14:00" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Highlights", "price": 7500, "durationMinutes": 90 }
+      ],
+      "notes": "Highlights refresh. Use same formula as last time - saved in system."
+    },
+    {
+      "id": "apt-9",
+      "clientId": "c9",
+      "scheduledTime": { "relative": "+3", "time": "10:00" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Blow Dry", "price": 3000, "durationMinutes": 45 },
+        { "name": "Wedding Trial Styling", "price": 3500, "durationMinutes": 45 }
+      ],
+      "notes": "Wedding hair trial."
+    },
+    {
+      "id": "apt-10",
+      "clientId": "c10",
+      "scheduledTime": { "relative": "+3", "time": "13:30" },
+      "status": "scheduled",
+      "assignedUserId": "u3",
+      "services": [
+        { "name": "Root Touch-Up", "price": 5500, "durationMinutes": 60 }
+      ],
+      "notes": "Root touch-up only. Running late is fine - flexible schedule."
+    },
+    {
+      "id": "apt-11",
+      "clientId": "c11",
+      "scheduledTime": { "relative": "+5", "time": "09:00" },
+      "status": "scheduled",
+      "services": [
+        { "name": "Blow Dry", "price": 3000, "durationMinutes": 45 }
+      ],
+      "notes": "Blow dry for event. Wants volume and loose curls."
+    },
+    {
+      "id": "apt-12",
+      "clientId": "c12",
+      "scheduledTime": { "relative": "+5", "time": "11:30" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Trim", "price": 2500, "durationMinutes": 30 },
+        { "name": "Child's First Haircut", "price": 2500, "durationMinutes": 30 }
+      ],
+      "notes": "Bringing daughter for first haircut."
+    },
+    {
+      "id": "apt-13",
+      "clientId": "c13",
+      "scheduledTime": { "relative": "+5", "time": "15:00" },
+      "status": "scheduled",
+      "assignedUserId": "u3",
+      "services": [
+        { "name": "Deep Conditioning", "price": 3500, "durationMinutes": 30 },
+        { "name": "Scalp Treatment", "price": 2000, "durationMinutes": 45 }
+      ],
+      "notes": "Scalp treatment and deep conditioning. Has been experiencing dryness."
+    }
+  ]
+}

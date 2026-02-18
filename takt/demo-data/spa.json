@@ -1,0 +1,152 @@
+{
+  "name": "Spa & Wellness Demo",
+  "users": [
+    { "id": "u1", "name": "Maya", "role": "owner" },
+    { "id": "u2", "name": "Jordan", "role": "stylist" },
+    { "id": "u3", "name": "Alex", "role": "stylist" }
+  ],
+  "services": [
+    { "id": "svc-1", "name": "Swedish Massage (60 min)", "price": 8500, "durationMinutes": 60 },
+    { "id": "svc-2", "name": "Swedish Massage (90 min)", "price": 12000, "durationMinutes": 90 },
+    { "id": "svc-3", "name": "Deep Tissue Massage", "price": 9500, "durationMinutes": 60 },
+    { "id": "svc-4", "name": "Hot Stone Massage", "price": 11000, "durationMinutes": 75 },
+    { "id": "svc-5", "name": "Aromatherapy Massage", "price": 9000, "durationMinutes": 60 },
+    { "id": "svc-6", "name": "Classic Facial", "price": 6500, "durationMinutes": 45 },
+    { "id": "svc-7", "name": "Hydrating Facial", "price": 8500, "durationMinutes": 60 },
+    { "id": "svc-8", "name": "Anti-Aging Facial", "price": 12000, "durationMinutes": 75 },
+    { "id": "svc-9", "name": "Body Scrub", "price": 5500, "durationMinutes": 30 },
+    { "id": "svc-10", "name": "Body Wrap", "price": 7500, "durationMinutes": 45 },
+    { "id": "svc-11", "name": "Manicure", "price": 3500, "durationMinutes": 30 },
+    { "id": "svc-12", "name": "Pedicure", "price": 4500, "durationMinutes": 45 }
+  ],
+  "clients": [
+    { "id": "c1", "forename": "Sophie", "surname": "Anderson", "phoneNumber": "07700 800001", "email": "sophie.a@email.com", "address": "15 Willow Lane, Bath BA1 2AB" },
+    { "id": "c2", "forename": "James", "surname": "Mitchell", "phoneNumber": "07700 800002", "email": "james.m@email.com", "address": "8 Cedar Grove, Bristol BS1 3CD" },
+    { "id": "c3", "forename": "Emily", "surname": "Chen", "phoneNumber": "07700 800003", "email": "emily.chen@email.com" },
+    { "id": "c4", "forename": "Michael", "surname": "O'Brien", "phoneNumber": "07700 800004", "email": "michael.ob@email.com", "address": "42 Oak Street, Cheltenham GL50 4EF" },
+    { "id": "c5", "forename": "Rachel", "surname": "Kumar", "phoneNumber": "07700 800005" },
+    { "id": "c6", "forename": "David", "surname": "Thompson", "phoneNumber": "07700 800006", "email": "david.t@email.com", "address": "27 Maple Road, Oxford OX1 5GH" },
+    { "id": "c7", "forename": "Lucy", "surname": "Martinez", "phoneNumber": "07700 800007", "email": "lucy.m@email.com" },
+    { "id": "c8", "forename": "Tom", "surname": "Wilson", "phoneNumber": "07700 800008", "address": "63 Pine Avenue, Cambridge CB2 6IJ" },
+    { "id": "c9", "forename": "Hannah", "surname": "Lee", "phoneNumber": "07700 800009", "email": "hannah.lee@email.com", "address": "91 Birch Close, Brighton BN1 7KL" },
+    { "id": "c10", "forename": "Oliver", "surname": "Brown", "phoneNumber": "07700 800010", "email": "oliver.b@email.com" }
+  ],
+  "appointments": [
+    {
+      "id": "apt-c1",
+      "clientId": "c1",
+      "scheduledTime": { "relative": "today", "time": "09:00" },
+      "status": "completed",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Swedish Massage (60 min)", "price": 8500, "durationMinutes": 60 }
+      ],
+      "notes": "Regular client. Prefers medium pressure. Uses lavender oil."
+    },
+    {
+      "id": "apt-c2",
+      "clientId": "c2",
+      "scheduledTime": { "relative": "today", "time": "10:30" },
+      "status": "completed",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Deep Tissue Massage", "price": 9500, "durationMinutes": 60 },
+        { "name": "Body Scrub", "price": 5500, "durationMinutes": 30 }
+      ],
+      "notes": "Focus on lower back. Athletic client - training for marathon."
+    },
+    {
+      "id": "apt-1",
+      "clientId": "c3",
+      "scheduledTime": { "relative": "today", "time": "14:00" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Hydrating Facial", "price": 8500, "durationMinutes": 60 }
+      ],
+      "notes": "Sensitive skin - patch test required. First visit."
+    },
+    {
+      "id": "apt-2",
+      "clientId": "c4",
+      "scheduledTime": { "relative": "today", "time": "15:00" },
+      "status": "scheduled",
+      "assignedUserId": "u3",
+      "services": [
+        { "name": "Hot Stone Massage", "price": 11000, "durationMinutes": 75 }
+      ],
+      "address": "42 Oak Street, Cheltenham GL50 4EF",
+      "notes": "Mobile appointment. Bring portable massage table and stones."
+    },
+    {
+      "id": "apt-3",
+      "clientId": "c5",
+      "scheduledTime": { "relative": "today", "time": "16:30" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Manicure", "price": 3500, "durationMinutes": 30 },
+        { "name": "Pedicure", "price": 4500, "durationMinutes": 45 }
+      ],
+      "notes": "Gel polish preferred. Last time: Coral Sunrise shade."
+    },
+    {
+      "id": "apt-4",
+      "clientId": "c6",
+      "scheduledTime": { "relative": "+1", "time": "10:00" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Swedish Massage (90 min)", "price": 12000, "durationMinutes": 90 },
+        { "name": "Aromatherapy Massage", "price": 9000, "durationMinutes": 60 }
+      ],
+      "notes": "VIP client. Complimentary herbal tea. Private room requested."
+    },
+    {
+      "id": "apt-5",
+      "clientId": "c7",
+      "scheduledTime": { "relative": "+1", "time": "14:00" },
+      "status": "scheduled",
+      "services": [
+        { "name": "Anti-Aging Facial", "price": 12000, "durationMinutes": 75 }
+      ],
+      "notes": "Interested in discussing skincare routine. May upsell products."
+    },
+    {
+      "id": "apt-6",
+      "clientId": "c8",
+      "scheduledTime": { "relative": "+2", "time": "11:00" },
+      "status": "scheduled",
+      "assignedUserId": "u3",
+      "services": [
+        { "name": "Deep Tissue Massage", "price": 9500, "durationMinutes": 60 }
+      ],
+      "address": "63 Pine Avenue, Cambridge CB2 6IJ",
+      "notes": "Shoulder injury recovery. Be gentle around left shoulder blade."
+    },
+    {
+      "id": "apt-7",
+      "clientId": "c9",
+      "scheduledTime": { "relative": "+3", "time": "09:30" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Classic Facial", "price": 6500, "durationMinutes": 45 },
+        { "name": "Body Wrap", "price": 7500, "durationMinutes": 45 }
+      ],
+      "notes": "Spa day package. Include complimentary robe and slippers."
+    },
+    {
+      "id": "apt-8",
+      "clientId": "c10",
+      "scheduledTime": { "relative": "+5", "time": "15:00" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Hot Stone Massage", "price": 11000, "durationMinutes": 75 },
+        { "name": "Body Scrub", "price": 5500, "durationMinutes": 30 }
+      ],
+      "notes": "Birthday gift from partner. Make it special!"
+    }
+  ]
+}
