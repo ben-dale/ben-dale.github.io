@@ -1,0 +1,186 @@
+{
+  "name": "Flooring Fitters Demo",
+  "users": [
+    { "id": "u1", "name": "Christy", "role": "owner" },
+    { "id": "u2", "name": "Matt", "role": "manager" },
+    { "id": "u3", "name": "Jack", "role": "apprentice" }
+  ],
+  "services": [
+    { "id": "svc-1", "name": "Carpet Fitting (per room)", "price": 15000, "durationMinutes": 120 },
+    { "id": "svc-2", "name": "Laminate Flooring", "price": 20000, "durationMinutes": 180 },
+    { "id": "svc-3", "name": "Vinyl Flooring", "price": 18000, "durationMinutes": 150 },
+    { "id": "svc-4", "name": "Underlay Installation", "price": 5000, "durationMinutes": 60 },
+    { "id": "svc-5", "name": "Floor Preparation", "price": 8000, "durationMinutes": 90 },
+    { "id": "svc-6", "name": "Carpet Removal", "price": 4000, "durationMinutes": 45 },
+    { "id": "svc-7", "name": "Gripper Rod Installation", "price": 3000, "durationMinutes": 30 },
+    { "id": "svc-8", "name": "Door Trim Adjustment", "price": 2500, "durationMinutes": 20 }
+  ],
+  "clients": [
+    { "id": "c1", "forename": "Tom", "surname": "Henderson", "phoneNumber": "07700 800001", "email": "tom.henderson@email.com", "address": "14 Willow Close, Reading RG1 2AB" },
+    { "id": "c2", "forename": "Sarah", "surname": "Mitchell", "phoneNumber": "07700 800002", "email": "sarah.m@email.com", "address": "28 Maple Drive, Slough SL1 3CD" },
+    { "id": "c3", "forename": "David", "surname": "Cooper", "phoneNumber": "07700 800003", "email": "david.cooper@email.com", "address": "7 Birch Lane, Windsor SL4 4EF" },
+    { "id": "c4", "forename": "Emma", "surname": "Hughes", "phoneNumber": "07700 800004", "address": "52 Oak Road, Maidenhead SL6 5GH" },
+    { "id": "c5", "forename": "James", "surname": "Wright", "phoneNumber": "07700 800005", "email": "james.wright@email.com", "address": "19 Cedar Avenue, Bracknell RG12 6IJ" },
+    { "id": "c6", "forename": "Lisa", "surname": "Thompson", "phoneNumber": "07700 800006", "email": "lisa.t@email.com", "address": "33 Pine Street, Wokingham RG40 7KL" },
+    { "id": "c7", "forename": "Michael", "surname": "Green", "phoneNumber": "07700 800007", "address": "45 Elm Crescent, Henley RG9 8MN" },
+    { "id": "c8", "forename": "Rachel", "surname": "Adams", "phoneNumber": "07700 800008", "email": "rachel.adams@email.com", "address": "61 Ash Grove, Newbury RG14 9OP" },
+    { "id": "c9", "forename": "Paul", "surname": "Baker", "phoneNumber": "07700 800009", "email": "paul.baker@email.com", "address": "8 Sycamore Way, Thatcham RG18 1QR" },
+    { "id": "c10", "forename": "Helen", "surname": "Scott", "phoneNumber": "07700 800010", "address": "72 Beech Road, Hungerford RG17 2ST" }
+  ],
+  "appointments": [
+    {
+      "id": "apt-c1",
+      "clientId": "c1",
+      "scheduledTime": { "relative": "today", "time": "08:00" },
+      "status": "completed",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Carpet Removal", "price": 4000, "durationMinutes": 45 },
+        { "name": "Floor Preparation", "price": 8000, "durationMinutes": 90 }
+      ],
+      "address": "14 Willow Close, Reading RG1 2AB",
+      "notes": "Removed old carpet from living room. Subfloor in good condition, ready for new laminate."
+    },
+    {
+      "id": "apt-c2",
+      "clientId": "c2",
+      "scheduledTime": { "relative": "today", "time": "09:00" },
+      "status": "completed",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Laminate Flooring", "price": 20000, "durationMinutes": 180 },
+        { "name": "Underlay Installation", "price": 5000, "durationMinutes": 60 }
+      ],
+      "address": "28 Maple Drive, Slough SL1 3CD",
+      "notes": "Completed laminate installation in master bedroom. Customer very happy with finish."
+    },
+    {
+      "id": "apt-c3",
+      "clientId": "c3",
+      "scheduledTime": { "relative": "today", "time": "10:30" },
+      "status": "completed",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Vinyl Flooring", "price": 18000, "durationMinutes": 150 }
+      ],
+      "address": "7 Birch Lane, Windsor SL4 4EF",
+      "notes": "Kitchen vinyl installation. Worked around island unit as discussed."
+    },
+    {
+      "id": "apt-1",
+      "clientId": "c4",
+      "scheduledTime": { "relative": "today", "time": "14:00" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Carpet Fitting (per room)", "price": 15000, "durationMinutes": 120 },
+        { "name": "Gripper Rod Installation", "price": 3000, "durationMinutes": 30 }
+      ],
+      "address": "52 Oak Road, Maidenhead SL6 5GH",
+      "notes": "Bedroom carpet fitting. Carpet delivered yesterday - stored in garage."
+    },
+    {
+      "id": "apt-2",
+      "clientId": "c5",
+      "scheduledTime": { "relative": "today", "time": "15:30" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Laminate Flooring", "price": 20000, "durationMinutes": 180 }
+      ],
+      "address": "19 Cedar Avenue, Bracknell RG12 6IJ",
+      "notes": "Hallway and stairs laminate. Take extra care on stairs - use nose trims."
+    },
+    {
+      "id": "apt-3",
+      "clientId": "c6",
+      "scheduledTime": { "relative": "today", "time": "17:00" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Door Trim Adjustment", "price": 2500, "durationMinutes": 20 },
+        { "name": "Door Trim Adjustment", "price": 2500, "durationMinutes": 20 }
+      ],
+      "address": "33 Pine Street, Wokingham RG40 7KL",
+      "notes": "Trim 2 doors to fit new flooring height. Customer will be home from 5pm."
+    },
+    {
+      "id": "apt-4",
+      "clientId": "c7",
+      "scheduledTime": { "relative": "+2", "time": "09:00" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Carpet Removal", "price": 4000, "durationMinutes": 45 },
+        { "name": "Floor Preparation", "price": 8000, "durationMinutes": 90 },
+        { "name": "Vinyl Flooring", "price": 18000, "durationMinutes": 150 }
+      ],
+      "address": "45 Elm Crescent, Henley RG9 8MN",
+      "notes": "Full bathroom renovation floor. Remove old carpet, prep and lay vinyl. Watch for damp."
+    },
+    {
+      "id": "apt-5",
+      "clientId": "c8",
+      "scheduledTime": { "relative": "+2", "time": "10:00" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Carpet Fitting (per room)", "price": 15000, "durationMinutes": 120 },
+        { "name": "Carpet Fitting (per room)", "price": 15000, "durationMinutes": 120 }
+      ],
+      "address": "61 Ash Grove, Newbury RG14 9OP",
+      "notes": "Two bedrooms - matching carpet. Furniture will be moved by customer beforehand."
+    },
+    {
+      "id": "apt-6",
+      "clientId": "c9",
+      "scheduledTime": { "relative": "+3", "time": "08:30" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Laminate Flooring", "price": 20000, "durationMinutes": 180 },
+        { "name": "Underlay Installation", "price": 5000, "durationMinutes": 60 }
+      ],
+      "address": "8 Sycamore Way, Thatcham RG18 1QR",
+      "notes": "Open plan living area. Large job - may need full day. Customer working from home."
+    },
+    {
+      "id": "apt-7",
+      "clientId": "c10",
+      "scheduledTime": { "relative": "+3", "time": "14:00" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Vinyl Flooring", "price": 18000, "durationMinutes": 150 }
+      ],
+      "address": "72 Beech Road, Hungerford RG17 2ST",
+      "notes": "Utility room vinyl. Check measurements - awkward shape around boiler."
+    },
+    {
+      "id": "apt-8",
+      "clientId": "c1",
+      "scheduledTime": { "relative": "+5", "time": "09:00" },
+      "status": "scheduled",
+      "assignedUserId": "u1",
+      "services": [
+        { "name": "Laminate Flooring", "price": 20000, "durationMinutes": 180 },
+        { "name": "Underlay Installation", "price": 5000, "durationMinutes": 60 },
+        { "name": "Door Trim Adjustment", "price": 2500, "durationMinutes": 20 }
+      ],
+      "address": "14 Willow Close, Reading RG1 2AB",
+      "notes": "Follow-up from prep work. Installing laminate in living room. Same customer as earlier this week."
+    },
+    {
+      "id": "apt-9",
+      "clientId": "c3",
+      "scheduledTime": { "relative": "+5", "time": "13:00" },
+      "status": "scheduled",
+      "assignedUserId": "u2",
+      "services": [
+        { "name": "Carpet Fitting (per room)", "price": 15000, "durationMinutes": 120 }
+      ],
+      "address": "7 Birch Lane, Windsor SL4 4EF",
+      "notes": "Spare bedroom carpet. Same customer - did kitchen vinyl earlier this week."
+    }
+  ]
+}
