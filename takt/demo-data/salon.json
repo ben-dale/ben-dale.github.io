@@ -55,7 +55,7 @@
       "assignedUserId": "u2",
       "services": [
         { "name": "Full Colour", "price": 8500, "durationMinutes": 120 },
-        { "name": "Toner", "price": 1000 }
+        { "name": "Toner", "price": 1000, "durationMinutes": 15 }
       ],
       "address": "90 King Street, Edinburgh EH1 9OP",
       "notes": "Full colour - went with the copper tones she wanted. Paused for tea break."
@@ -104,7 +104,7 @@
       "assignedUserId": "u3",
       "services": [
         { "name": "Trim", "price": 2500, "durationMinutes": 30 },
-        { "name": "Consultation", "price": 1000 }
+        { "name": "Consultation", "price": 1000, "durationMinutes": 15 }
       ],
       "notes": "Wants to discuss colour options for next visit."
     },
