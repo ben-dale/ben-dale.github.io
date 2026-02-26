@@ -1,8 +1,5 @@
 {
   "files": [
-    { "id": "default", "name": "Hair Salon Demo", "filename": "salon.json" },
-    { "id": "solo", "name": "Solo Stylist Demo", "filename": "solo.json" },
-    { "id": "spa", "name": "Spa & Wellness Demo", "filename": "spa.json" },
-    { "id": "flooring", "name": "Flooring Fitters Demo", "filename": "flooring.json" }
+    { "id": "default", "name": "Solo Stylist Demo", "filename": "solo.json" }
   ]
 }

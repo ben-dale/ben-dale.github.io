@@ -1,38 +1,167 @@
 {
   "name": "Solo Stylist Demo",
-  "users": [
-    { "id": "u1", "name": "Sarah", "role": "owner" }
-  ],
   "services": [
-    { "id": "svc-1", "name": "Cut & Blow Dry", "price": 4500, "durationMinutes": 60 },
-    { "id": "svc-2", "name": "Trim", "price": 2500, "durationMinutes": 30 },
-    { "id": "svc-3", "name": "Full Colour", "price": 8500, "durationMinutes": 120 },
-    { "id": "svc-4", "name": "Highlights", "price": 9500, "durationMinutes": 150 },
-    { "id": "svc-5", "name": "Root Touch-Up", "price": 5500, "durationMinutes": 60 },
-    { "id": "svc-6", "name": "Blow Dry", "price": 3000, "durationMinutes": 45 },
-    { "id": "svc-7", "name": "Keratin Treatment", "price": 15000, "durationMinutes": 180 },
-    { "id": "svc-8", "name": "Balayage", "price": 12000, "durationMinutes": 150 },
-    { "id": "svc-9", "name": "Deep Conditioning", "price": 3500, "durationMinutes": 30 }
+    {
+      "id": "svc-1",
+      "name": "Cut & Blow Dry",
+      "price": 4500,
+      "durationMinutes": 60
+    },
+    {
+      "id": "svc-2",
+      "name": "Trim",
+      "price": 2500,
+      "durationMinutes": 30
+    },
+    {
+      "id": "svc-3",
+      "name": "Full Colour",
+      "price": 8500,
+      "durationMinutes": 120
+    },
+    {
+      "id": "svc-4",
+      "name": "Highlights",
+      "price": 9500,
+      "durationMinutes": 150
+    },
+    {
+      "id": "svc-5",
+      "name": "Root Touch-Up",
+      "price": 5500,
+      "durationMinutes": 60
+    },
+    {
+      "id": "svc-6",
+      "name": "Blow Dry",
+      "price": 3000,
+      "durationMinutes": 45
+    },
+    {
+      "id": "svc-7",
+      "name": "Keratin Treatment",
+      "price": 15000,
+      "durationMinutes": 180
+    },
+    {
+      "id": "svc-8",
+      "name": "Balayage",
+      "price": 12000,
+      "durationMinutes": 150
+    },
+    {
+      "id": "svc-9",
+      "name": "Deep Conditioning",
+      "price": 3500,
+      "durationMinutes": 30
+    }
   ],
   "clients": [
-    { "id": "c1", "forename": "Emma", "surname": "Thompson", "phoneNumber": "07700 800001", "email": "emma.t@email.com", "address": "14 Willow Road, London N1 2AB" },
-    { "id": "c2", "forename": "Sophie", "surname": "Wright", "phoneNumber": "07700 800002", "email": "sophie.wright@email.com", "address": "28 Cedar Lane, London N1 3CD" },
-    { "id": "c3", "forename": "Lily", "surname": "Foster", "phoneNumber": "07700 800003", "email": "lily.f@email.com" },
-    { "id": "c4", "forename": "Amelia", "surname": "Hughes", "phoneNumber": "07700 800004", "address": "52 Birch Close, London N1 4EF" },
-    { "id": "c5", "forename": "Chloe", "surname": "Bennett", "phoneNumber": "07700 800005", "email": "chloe.bennett@email.com", "address": "9 Elm Street, London N1 5GH" },
-    { "id": "c6", "forename": "Ruby", "surname": "Cole", "phoneNumber": "07700 800006", "email": "ruby.cole@email.com" },
-    { "id": "c7", "forename": "Mia", "surname": "Parker", "phoneNumber": "07700 800007", "address": "31 Oak Avenue, London N1 6IJ" },
-    { "id": "c8", "forename": "Ella", "surname": "Morgan", "phoneNumber": "07700 800008", "email": "ella.m@email.com", "address": "67 Pine Road, London N1 7KL" }
+    {
+      "id": "c1",
+      "forename": "Emma",
+      "surname": "Thompson",
+      "phoneNumber": "07700 800001",
+      "email": "emma.t@email.com",
+      "address": "14 Willow Road, London N1 2AB"
+    },
+    {
+      "id": "c2",
+      "forename": "Sophie",
+      "surname": "Wright",
+      "phoneNumber": "07700 800002",
+      "email": "sophie.wright@email.com",
+      "address": "28 Cedar Lane, London N1 3CD"
+    },
+    {
+      "id": "c3",
+      "forename": "Lily",
+      "surname": "Foster",
+      "phoneNumber": "07700 800003",
+      "email": "lily.f@email.com"
+    },
+    {
+      "id": "c4",
+      "forename": "Amelia",
+      "surname": "Hughes",
+      "phoneNumber": "07700 800004",
+      "address": "52 Birch Close, London N1 4EF"
+    },
+    {
+      "id": "c5",
+      "forename": "Chloe",
+      "surname": "Bennett",
+      "phoneNumber": "07700 800005",
+      "email": "chloe.bennett@email.com",
+      "address": "9 Elm Street, London N1 5GH"
+    },
+    {
+      "id": "c6",
+      "forename": "Ruby",
+      "surname": "Cole",
+      "phoneNumber": "07700 800006",
+      "email": "ruby.cole@email.com"
+    },
+    {
+      "id": "c7",
+      "forename": "Mia",
+      "surname": "Parker",
+      "phoneNumber": "07700 800007",
+      "address": "31 Oak Avenue, London N1 6IJ"
+    },
+    {
+      "id": "c8",
+      "forename": "Ella",
+      "surname": "Morgan",
+      "phoneNumber": "07700 800008",
+      "email": "ella.m@email.com",
+      "address": "67 Pine Road, London N1 7KL"
+    }
+  ],
+  "stock": [
+    { "id": "stk-1", "name": "Permanent Colour - Black (1N)", "unit": "g", "quantity": 150 },
+    { "id": "stk-2", "name": "Permanent Colour - Dark Brown (3N)", "unit": "g", "quantity": 200 },
+    { "id": "stk-3", "name": "Permanent Colour - Medium Brown (5N)", "unit": "g", "quantity": 180 },
+    { "id": "stk-4", "name": "Permanent Colour - Light Brown (6N)", "unit": "g", "quantity": 220 },
+    { "id": "stk-5", "name": "Permanent Colour - Dark Blonde (7N)", "unit": "g", "quantity": 160 },
+    { "id": "stk-6", "name": "Permanent Colour - Medium Blonde (8N)", "unit": "g", "quantity": 140 },
+    { "id": "stk-7", "name": "Permanent Colour - Light Blonde (9N)", "unit": "g", "quantity": 120 },
+    { "id": "stk-8", "name": "Permanent Colour - Auburn (6R)", "unit": "g", "quantity": 100 },
+    { "id": "stk-9", "name": "Permanent Colour - Copper (7C)", "unit": "g", "quantity": 80 },
+    { "id": "stk-10", "name": "Bleach Powder", "unit": "g", "quantity": 500 },
+    { "id": "stk-11", "name": "Developer 10 Vol", "unit": "ml", "quantity": 1000 },
+    { "id": "stk-12", "name": "Developer 20 Vol", "unit": "ml", "quantity": 1500 },
+    { "id": "stk-13", "name": "Developer 30 Vol", "unit": "ml", "quantity": 800 },
+    { "id": "stk-14", "name": "Developer 40 Vol", "unit": "ml", "quantity": 400 },
+    { "id": "stk-15", "name": "Toner - Ash", "unit": "ml", "quantity": 250 },
+    { "id": "stk-16", "name": "Toner - Pearl", "unit": "ml", "quantity": 200 },
+    { "id": "stk-17", "name": "Toner - Beige", "unit": "ml", "quantity": 180 },
+    { "id": "stk-18", "name": "Olaplex No. 1", "unit": "ml", "quantity": 100 },
+    { "id": "stk-19", "name": "Olaplex No. 2", "unit": "ml", "quantity": 250 },
+    { "id": "stk-20", "name": "Keratin Treatment", "unit": "ml", "quantity": 300 },
+    { "id": "stk-21", "name": "Deep Conditioning Mask", "unit": "g", "quantity": 500 },
+    { "id": "stk-22", "name": "Shampoo (Colour Safe)", "unit": "ml", "quantity": 2000 },
+    { "id": "stk-23", "name": "Conditioner (Colour Safe)", "unit": "ml", "quantity": 1800 },
+    { "id": "stk-24", "name": "Foils (Pre-cut)", "unit": "units", "quantity": 300 },
+    { "id": "stk-25", "name": "Disposable Gloves (M)", "unit": "units", "quantity": 80 },
+    { "id": "stk-26", "name": "Colour Bowls", "unit": "units", "quantity": 6 },
+    { "id": "stk-27", "name": "Colour Brushes", "unit": "units", "quantity": 8 }
   ],
   "appointments": [
     {
       "id": "apt-c1",
       "clientId": "c1",
-      "scheduledTime": { "relative": "today", "time": "09:00" },
+      "scheduledTime": {
+        "relative": "today",
+        "time": "09:00"
+      },
       "status": "completed",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Cut & Blow Dry", "price": 4500, "durationMinutes": 60 }
+        {
+          "name": "Cut & Blow Dry",
+          "price": 4500,
+          "durationMinutes": 60
+        }
       ],
       "address": "14 Willow Road, London N1 2AB",
       "notes": "Regular cut, 2 inches off. Happy with the usual style."
@@ -40,12 +169,22 @@
     {
       "id": "apt-c2",
       "clientId": "c2",
-      "scheduledTime": { "relative": "today", "time": "10:30" },
+      "scheduledTime": {
+        "relative": "today",
+        "time": "10:30"
+      },
       "status": "completed",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Root Touch-Up", "price": 5500, "durationMinutes": 60 },
-        { "name": "Blow Dry", "price": 3000, "durationMinutes": 45 }
+        {
+          "name": "Root Touch-Up",
+          "price": 5500,
+          "durationMinutes": 60
+        },
+        {
+          "name": "Blow Dry",
+          "price": 3000,
+          "durationMinutes": 45
+        }
       ],
       "address": "28 Cedar Lane, London N1 3CD",
       "notes": "Root touch-up with usual colour (6N). Added toner at the end."
@@ -53,22 +192,34 @@
     {
       "id": "apt-1",
       "clientId": "c3",
-      "scheduledTime": { "relative": "today", "time": "14:00" },
+      "scheduledTime": {
+        "relative": "today",
+        "time": "14:00"
+      },
       "status": "scheduled",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Highlights", "price": 9500, "durationMinutes": 150 }
+        {
+          "name": "Highlights",
+          "price": 9500,
+          "durationMinutes": 150
+        }
       ],
       "notes": "Half-head highlights. Wants to go slightly lighter for summer."
     },
     {
       "id": "apt-2",
       "clientId": "c4",
-      "scheduledTime": { "relative": "today", "time": "17:00" },
+      "scheduledTime": {
+        "relative": "today",
+        "time": "17:00"
+      },
       "status": "scheduled",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Trim", "price": 2500, "durationMinutes": 30 }
+        {
+          "name": "Trim",
+          "price": 2500,
+          "durationMinutes": 30
+        }
       ],
       "address": "52 Birch Close, London N1 4EF",
       "notes": "Quick trim to tidy up ends. Keeping current length."
@@ -76,11 +227,17 @@
     {
       "id": "apt-3",
       "clientId": "c5",
-      "scheduledTime": { "relative": "+2", "time": "09:30" },
+      "scheduledTime": {
+        "relative": "+2",
+        "time": "09:30"
+      },
       "status": "scheduled",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Balayage", "price": 12000, "durationMinutes": 150 }
+        {
+          "name": "Balayage",
+          "price": 12000,
+          "durationMinutes": 150
+        }
       ],
       "address": "9 Elm Street, London N1 5GH",
       "notes": "Balayage refresh. Reference photos in messages."
@@ -88,23 +245,39 @@
     {
       "id": "apt-4",
       "clientId": "c6",
-      "scheduledTime": { "relative": "+2", "time": "13:00" },
+      "scheduledTime": {
+        "relative": "+2",
+        "time": "13:00"
+      },
       "status": "scheduled",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Cut & Blow Dry", "price": 4500, "durationMinutes": 60 },
-        { "name": "Deep Conditioning", "price": 3500, "durationMinutes": 30 }
+        {
+          "name": "Cut & Blow Dry",
+          "price": 4500,
+          "durationMinutes": 60
+        },
+        {
+          "name": "Deep Conditioning",
+          "price": 3500,
+          "durationMinutes": 30
+        }
       ],
       "notes": "Cut and deep conditioning treatment. Hair has been feeling dry lately."
     },
     {
       "id": "apt-5",
       "clientId": "c7",
-      "scheduledTime": { "relative": "+3", "time": "10:00" },
+      "scheduledTime": {
+        "relative": "+3",
+        "time": "10:00"
+      },
       "status": "scheduled",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Full Colour", "price": 8500, "durationMinutes": 120 }
+        {
+          "name": "Full Colour",
+          "price": 8500,
+          "durationMinutes": 120
+        }
       ],
       "address": "31 Oak Avenue, London N1 6IJ",
       "notes": "Full colour - going from brunette to auburn. Patch test done."
@@ -112,11 +285,17 @@
     {
       "id": "apt-6",
       "clientId": "c8",
-      "scheduledTime": { "relative": "+3", "time": "14:00" },
+      "scheduledTime": {
+        "relative": "+3",
+        "time": "14:00"
+      },
       "status": "scheduled",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Keratin Treatment", "price": 15000, "durationMinutes": 180 }
+        {
+          "name": "Keratin Treatment",
+          "price": 15000,
+          "durationMinutes": 180
+        }
       ],
       "address": "67 Pine Road, London N1 7KL",
       "notes": "Keratin treatment. Reminded not to wash for 72 hours after."
@@ -124,11 +303,17 @@
     {
       "id": "apt-7",
       "clientId": "c1",
-      "scheduledTime": { "relative": "+5", "time": "11:00" },
+      "scheduledTime": {
+        "relative": "+5",
+        "time": "11:00"
+      },
       "status": "scheduled",
-      "assignedUserId": "u1",
       "services": [
-        { "name": "Blow Dry", "price": 3000, "durationMinutes": 45 }
+        {
+          "name": "Blow Dry",
+          "price": 3000,
+          "durationMinutes": 45
+        }
       ],
       "address": "14 Willow Road, London N1 2AB",
       "notes": "Blow dry for wedding guest. Wants loose waves."
